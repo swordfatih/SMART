@@ -1,7 +1,3 @@
-
-
-using Player;
-
 public class Game
 {
     private List<Player.Player> players = [];
@@ -20,12 +16,12 @@ public class Game
         for (int i = 0; i < players.Count; ++i)
         {
             players[i].Position = i;
-            players[i].Team = Team.Prisoner;
-            players[i].State = i == Guard ? new GuardState() : new SafeState();
+            players[i].Team = Player.Team.Prisoner;
+            players[i].State = i == Guard ? new Player.GuardState() : new Player.SafeState();
         }
 
         var Associate = randomizer.Next(0, players.Count);
-        players[Associate].Team = Team.Associate;
+        players[Associate].Team = Player.Team.Associate;
     }
 
     public void Run()

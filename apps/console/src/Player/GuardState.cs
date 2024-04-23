@@ -1,5 +1,3 @@
-using Action;
-
 namespace Player
 {
     public class GuardState : IPlayerState
@@ -20,7 +18,7 @@ namespace Player
 
                     var target = Convert.ToInt32(Console.ReadLine());
 
-                    return new RedirectGuardAction(player, target);
+                    return new Action.RedirectGuardAction(player, target);
                 }
             }
             else
@@ -31,11 +29,11 @@ namespace Player
 
                 if (choice == "2")
                 {
-                    return new DelayGuardAction(player);
+                    return new Action.DelayGuardAction(player);
                 }
             }
 
-            return new IdleAction(player);
+            return new Action.IdleAction(player);
         }
     }
 }
