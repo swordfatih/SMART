@@ -1,5 +1,3 @@
-using Action;
-
 namespace Player
 {
     public class SafeState : IPlayerState
@@ -13,7 +11,7 @@ namespace Player
 
             if(choice == "1")
             {
-                return new DigAction(player);
+                return new Action.DigAction(player);
             }
             else if(choice == "2")
             {
@@ -28,10 +26,10 @@ namespace Player
                 Console.WriteLine("Demander à partager son avancement (les 2 se le disent ou personne ne dit rien)");
 
                 // TO-DO : gérer communications
-                return new IdleAction(player);
+                return new Action.IdleAction(player);
             }
 
-            return new IdleAction(player);
+            return new Action.IdleAction(player);
         }
     }
 }
