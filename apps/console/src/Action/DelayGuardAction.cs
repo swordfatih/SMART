@@ -1,13 +1,8 @@
-namespace Action
+namespace Player
 {
-    public class DelayGuardAction : Action
+    public class DelayGuardAction(Player player) : Action(player)
     {
-        public DelayGuardAction(Player.Player player) : base(player)
-        {
-
-        }
-
-        public override void Run(Game game)
+        public override void Run(Game.Game game)
         {
 
         }

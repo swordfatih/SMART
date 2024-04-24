@@ -1,13 +1,8 @@
-namespace Action
+namespace Player
 {
-    public class IdleAction : Action
+    public class IdleAction(Player player) : Action(player)
     {
-        public IdleAction(Player.Player player) : base(player)
-        {
-
-        }
-
-        public override void Run(Game game)
+        public override void Run(Game.Game game)
         {
 
         }
