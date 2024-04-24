@@ -1,4 +1,4 @@
-namespace Item
+namespace Player
 {
     public class Item(string name)
     {

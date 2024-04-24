@@ -1,5 +1,6 @@
-﻿var game = new Game(); 
-game.AddPlayer("oggy");
-game.AddPlayer("garfield");
+﻿var game = new Game.Game(["oggy", "garfield"]); 
 game.Init();
+
+Console.WriteLine(game);
+
 game.Run();

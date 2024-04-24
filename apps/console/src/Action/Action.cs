@@ -1,10 +1,10 @@
-namespace Action
+namespace Player
 {
-    public abstract class Action(Player.Player player)
+    public abstract class Action(Player player)
     {
-        protected Player.Player Player { get; init; } = player;
+        protected Player Player { get; } = player;
 
-        public abstract void Run(Game game);
+        public abstract void Run(Game.Game game);
 
         public abstract override string ToString();
     }
