@@ -1,10 +1,9 @@
 namespace Player
 {
-    public abstract class Communication(Player origin, Direction direction)
+    public abstract class Communication(Player origin, Direction direction, Request request)
     {
-        public Player Origin { get; } = origin;
-        public Direction Direction { get; } = direction;
-
-        public abstract Question Tree(Player player);
+        public readonly Player Origin = origin;
+        public readonly Direction Direction = direction;
+        public readonly Request Request = request;
     }
 }
