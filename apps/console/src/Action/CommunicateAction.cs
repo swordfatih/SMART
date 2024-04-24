@@ -16,7 +16,7 @@ namespace Player
 
         public override string ToString()
         {
-            return Player.Name + " communicates to the " + Communication.Direction.ToString() + " (" + Communication.Question + ")";
+            return Player.Name + " communicates to the " + Communication.Direction.ToString() + " (" + Communication.Tree(Player).Value + ")";
         }
     }
 }

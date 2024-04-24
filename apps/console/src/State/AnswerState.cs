@@ -13,20 +13,27 @@ namespace Player
 
             if (accept == "Y")
             {
-                Console.WriteLine(Communication.Question);
+                var tree = Communication.Tree(player);
+                Console.WriteLine(tree);
 
-                for (var i = 0; i < Communication.Answers.Count; ++i)
+                while (tree.Answers.Count != 0)
                 {
-                    Console.WriteLine(i + ". " + Communication.Answers[i]);
+                    var choice = Convert.ToInt32(Console.ReadLine());
+                    var instruction = tree.Answers[choice];
+
+                    if (instruction is Question question)
+                    {
+                        tree = question;
+                    }
+                    else if (instruction is Answer answer)
+                    {
+                        return answer.Action;
+                    }
                 }
-
-                var choice = Convert.ToInt32(Console.ReadLine());
-
-                Console.WriteLine("Answer: " + Communication.Answers[choice]);
 
                 return new IdleAction(player);
             }
-            
+
             return new PropagateAction(player, Communication);
         }
     }
