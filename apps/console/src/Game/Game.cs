@@ -67,9 +67,11 @@ namespace Game
 
         public Player.Player AdjacentPlayer(Player.Player current, Player.Direction direction)
         {
-            foreach(var player in Players)
+            static int mod(int x, int m) => (x % m + m) % m;
+
+            foreach (var player in Players)
             {
-                if(player.Position == (current.Position + (direction == Player.Direction.Right ? 1 : -1)) % Players.Count)
+                if (player.Position == mod(current.Position + (direction == Player.Direction.Right ? 1 : -1), Players.Count))
                 {
                     return player;
                 }
@@ -82,7 +84,7 @@ namespace Game
         {
             var output = "";
 
-            for(var i = 0; i < Players.Count; ++i)
+            for (var i = 0; i < Players.Count; ++i)
             {
                 output += i + ". " + Players[i].Name + Environment.NewLine;
             }

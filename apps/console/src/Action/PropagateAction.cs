@@ -6,12 +6,17 @@ namespace Player
 
         public override void Run(Game.Game game)
         {
-            game.AdjacentPlayer(Player, Communication.Direction).State.Push(new AnswerState(Communication));
+            var target = game.AdjacentPlayer(Player, Communication.Direction);
+
+            if (target != Communication.Origin)
+            {
+                target.State.Push(new AnswerState(Communication));
+            }
         }
 
         public override string ToString()
         {
-            return Player.Name + " propagates communication (" + Communication + ")";
+            return Player.Name + " propagates communication to the " + Communication.Direction.ToString() + " (" + Communication.Tree(Player).Value + ")";
         }
     }
 }

@@ -2,7 +2,12 @@ namespace Player
 {
     public class GuardCommunication(Player origin, Direction direction) : Communication(origin, direction)
     {
-        public override string Question { get; init; } = "Avez-vous le gardien devant vous ?";
-        public override List<string> Answers { get; init; } = ["Oui", "Non"];
+        public override Question Tree(Player player)
+        {
+            return new("Avez-vous le gardien devant vous ?", [
+                new Answer("Oui", new IdleAction(player)),
+                new Answer("Non", new IdleAction(player)),
+            ]);
+        }
     }
 }
