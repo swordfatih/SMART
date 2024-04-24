@@ -7,6 +7,7 @@ namespace Player
         public int Position { get; } = position;
         public Stack<IState> State { get; set; } = [];
         public int Progression { get; set; }
+        public List<Item> Items { get; set; } = [];
 
         public override string ToString()
         {

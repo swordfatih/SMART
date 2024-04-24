@@ -13,22 +13,19 @@ namespace Player
 
             if (accept == "Y")
             {
-                var tree = Communication.Tree(player);
-                Console.WriteLine(tree);
+                Console.WriteLine(Communication.Request);
 
-                while (tree.Answers.Count != 0)
+                if (Communication is MessageCommunication c1)
                 {
-                    var choice = Convert.ToInt32(Console.ReadLine());
-                    var instruction = tree.Answers[choice];
-
-                    if (instruction is Question question)
-                    {
-                        tree = question;
-                    }
-                    else if (instruction is Answer answer)
-                    {
-                        return answer.Action;
-                    }
+                    Console.WriteLine(c1.Message);
+                }
+                else if (Communication is ItemCommunication c2)
+                {
+                    return new ReceiveDonationAction(player, c2);
+                }
+                else if (Communication is ChoiceCommunication c3)
+                {
+                    Console.WriteLine(c3.Question);
                 }
 
                 return new IdleAction(player);
