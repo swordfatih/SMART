@@ -26,6 +26,18 @@ namespace Board
                 foreach (var player in Players)
                 {
                     player.State.Clear();
+
+                    IState state = new SafeState();
+
+                    if(GuardPosition == player.Position)
+                    {
+                        state = new GuardState();   
+                    }
+                    else if(player.Status == Status.Confined)
+                    {
+                        state = new ConfinedState();
+                    }
+
                     player.State.Push(GuardPosition == player.Position ? new GuardState() : new SafeState());
                     player.Status = Status.Alive;
                 }
