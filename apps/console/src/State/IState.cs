@@ -1,7 +1,7 @@
-namespace Player
+namespace Board
 {
     public interface IState
     {
-        public Action Action(Player player);
+        public Action Action(Game game, Player player);
     }
 }

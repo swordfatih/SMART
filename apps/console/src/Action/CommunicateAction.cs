@@ -1,10 +1,10 @@
-namespace Player
+namespace Board
 {
     public class CommunicateAction(Player player, Communication communication) : Action(player)
     {
         private Communication Communication { get; } = communication;
 
-        public override void Run(Game.Game game)
+        public override void Run(Game game)
         {
             var target = game.AdjacentPlayer(Player, Communication.Direction);
             target.State.Push(new AnswerState(Communication));
@@ -12,7 +12,7 @@ namespace Player
 
         public override string ToString()
         {
-            return Player.Name + " communicates to the " + Communication.Direction.ToString() + " (" + Communication.Request + ")";
+            return $"{Player} communicates to the {Communication.Direction}";
         }
     }
 }

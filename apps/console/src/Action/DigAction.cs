@@ -1,15 +1,22 @@
-namespace Player
+namespace Board
 {
     public class DigAction(Player player) : Action(player)
     {
-        public override void Run(Game.Game game)
+        public override void Run(Game game)
         {
-            Player.Progression++;
+            if (game.GuardPosition == Player.Position)
+            {
+                Player.Status = Status.Dead;
+            }
+            else
+            {
+                Player.Progression++;
+            }
         }
 
         public override string ToString()
         {
-            return Player.Name + " digs (" + Player.Progression + ")";
+            return $"{Player} digs ({Player.Progression})";
         }
     }
 }

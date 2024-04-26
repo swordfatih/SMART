@@ -1,57 +1,51 @@
-namespace Player
+namespace Board
 {
     public class SafeState : IState
     {
-        public Action Action(Player player)
+        public Action Action(Game game, Player player)
         {
-            Console.WriteLine("1. Creuser");
-            Console.WriteLine("2. Communiquer avec un voisin");
+            var choice = player.Client.AskChoice(new("Choisissez l'action du jour", ["Creuser", "Communiquer avec un voisin"]));
 
-            var choice = Console.ReadLine();
-
-            if (choice == "1")
+            if (choice == 0)
             {
                 return new DigAction(player);
             }
-            else if (choice == "2")
+            else if (choice == 1)
             {
-                Console.WriteLine("Communiquer avec le prisonnier de gauche ou de droite ? (G/D)");
+                var direction = player.Client.AskChoice(new("Communiquer avec le voisin de", ["Gauche", "Droite"])) == 0 ? Direction.Left : Direction.Right;
 
-                var direction = Console.ReadLine() == "G" ? Direction.Left : Direction.Right;
+                var question = new Question("Que voulez-vous communiquer ?", [
+                    "Gardien",
+                    "Opinion",
+                    "Progression",
+                    "Message"
+                ]);
 
-                var requests = (Request[])Enum.GetValues(typeof(Request));
-                for (var i = 0; i < requests.Length; ++i)
+                if(player.Items.Count > 0)
                 {
-                    Console.WriteLine(i + ". " + requests[i].ToString());
+                    question.Answers.Add("Donation");
                 }
 
-                var request = requests[Convert.ToInt32(Console.ReadLine())];
+                choice = player.Client.AskChoice(question);
 
                 Communication? communication = null;
-
-                switch (request)
+                switch (question.Answers[choice])
                 {
-                    case Request.Donate:
-                        for (var i = 0; i < player.Items.Count; ++i)
-                        {
-                            Console.WriteLine(i + ". " + player.Items[i]);
-                        }
-
-                        var item = player.Items[Convert.ToInt32(Console.ReadLine())];
-                        communication = new ItemCommunication(player, direction, request, item);
-
+                    case "Donation":
+                        var item = player.Items[player.Client.AskChoice(new("Choisissez votre objet", new(player.Items.Select(x => x.Name))))];
+                        communication = new ItemCommunication(player, direction, item);
                         break;
-                    case Request.Message:
-                        communication = new MessageCommunication(player, direction, request, Console.ReadLine() ?? "");
+                    case "Message":
+                        communication = new MessageCommunication(player, direction, player.Client.AskInput("Entrez votre message"));
                         break;
-                    case Request.Guard:
-                        communication = new ChoiceCommunication(player, direction, request, new Question("Le gardien est-il devant toi ?", ["Oui", "Non"]));
+                    case "Guard":
+                        communication = new ChoiceCommunication(player, direction, new("Le gardien est-il devant toi ?", ["Oui", "Non"]));
                         break;
-                    case Request.Progression:
-                        communication = new ChoiceCommunication(player, direction, request, new Question("Veux-tu partager ta progression ?", ["Oui", "Non"]));
+                    case "Progression":
+                        communication = new ChoiceCommunication(player, direction, new("Veux-tu partager ta progression ?", ["Oui", "Non"]));
                         break;
-                    case Request.Opinion:
-                        communication = new ChoiceCommunication(player, direction, request, new Question("Ton avis sur ton autre voisin ?", ["Malveillance max", "Un bon", "Je ne sais pas"]));
+                    case "Opinion":
+                        communication = new ChoiceCommunication(player, direction, new("Ton avis sur ton autre voisin ?", ["Malveillance max", "Un bon", "Je ne sais pas"]));
                         break;
                     default:
                         break;
