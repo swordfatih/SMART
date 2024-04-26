@@ -1,22 +1,11 @@
-﻿using Board;
-using Client;
+﻿using Interface;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
-        List<IClient> clients = [
-            new ConsoleClient("oussama"),
-            new ConsoleClient("sarah"),
-            new ConsoleClient("diland"),
-            new ConsoleClient("daniel"),
-        ];
-
-        var game = new Game(clients);
-        game.Init();
-        game.GuardPosition = 0;
-
-        Console.WriteLine(game);
-        game.Run();
+        Console.WriteLine("Quel est votre pseudo ?");
+        var name = Console.ReadLine() ?? Guid.NewGuid().ToString();
+        var client = await Client.Create(name);   
     }
 }
