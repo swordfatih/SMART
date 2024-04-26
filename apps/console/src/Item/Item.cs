@@ -1,4 +1,4 @@
-namespace Player
+namespace Board
 {
     public class Item(string name)
     {

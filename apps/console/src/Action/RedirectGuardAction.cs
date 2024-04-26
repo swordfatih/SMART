@@ -1,17 +1,15 @@
-namespace Player
+namespace Board
 {
-    public class RedirectGuardAction(Player player, int next) : Action(player)
+    public class RedirectGuardAction(Player player, Player target) : Action(player)
     {
-        private int NextPosition { get; init; } = next;
-
-        public override void Run(Game.Game game)
+        public override void Run(Game game)
         {
-            game.NextGuardPosition = NextPosition;
+            game.NextGuardPosition = target.Position;
         }
 
         public override string ToString()
         {
-            return Player.Name + " redirects the guard to " + NextPosition;
+            return $"{Player} redirects the guard to {target.Position}";
         }
     }
 }

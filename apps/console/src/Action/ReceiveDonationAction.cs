@@ -1,10 +1,10 @@
-namespace Player
+namespace Board
 {
     public class ReceiveDonationAction(Player player, ItemCommunication communication) : Action(player)
     {
         private ItemCommunication Communication { get; } = communication;
 
-        public override void Run(Game.Game game)
+        public override void Run(Game game)
         {
             Communication.Origin.Items.Remove(Communication.Item);
             Player.Items.Add(Communication.Item);
@@ -12,7 +12,7 @@ namespace Player
 
         public override string ToString()
         {
-            return Player.Name + " receives a donation";
+            return $"{Player} receives a donation";
         }
     }
 }

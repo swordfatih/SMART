@@ -1,6 +1,6 @@
-namespace Player
+namespace Board
 {
-    public class ChoiceCommunication(Player origin, Direction direction, Request request, Question question) : Communication(origin, direction, request)
+    public class ChoiceCommunication(Player origin, Direction direction, Question question) : Communication(origin, direction)
     {
         public readonly Question Question = question;
     }

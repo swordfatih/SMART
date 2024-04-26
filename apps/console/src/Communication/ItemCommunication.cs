@@ -1,6 +1,6 @@
-namespace Player
+namespace Board
 {
-    public class ItemCommunication(Player origin, Direction direction, Request request, Item item) : Communication(origin, direction, request)
+    public class ItemCommunication(Player origin, Direction direction, Item item) : Communication(origin, direction)
     {
         public readonly Item Item = item;
     }
