@@ -5,6 +5,7 @@ namespace Board
         public override void Run(Game game)
         {
             game.NextGuardPosition = target.Position;
+            target.Status = Status.Confined;
         }
 
         public override string ToString()

@@ -4,6 +4,7 @@ namespace Board
     {
         Alive,
         Dead,
+        Confined,
     }
 
     public class Player(IClient client, int position, Role role)
