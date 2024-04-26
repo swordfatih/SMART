@@ -1,6 +1,6 @@
 using Board;
 
-namespace Client
+namespace Interface
 {
     public class ConsoleClient(string name) : IClient
     {
