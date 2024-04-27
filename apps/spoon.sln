@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "server", "server\server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console", "console\console.csproj", "{F4826CDF-5D0B-4E83-99F5-6ED849FB6E75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "board", "board\board.csproj", "{FBC26D87-75CA-4EE6-972B-054126A1B19F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "network", "network\network.csproj", "{3F98EB76-B271-47FC-B0B7-2CA7055F5DB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{F4826CDF-5D0B-4E83-99F5-6ED849FB6E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4826CDF-5D0B-4E83-99F5-6ED849FB6E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4826CDF-5D0B-4E83-99F5-6ED849FB6E75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBC26D87-75CA-4EE6-972B-054126A1B19F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBC26D87-75CA-4EE6-972B-054126A1B19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBC26D87-75CA-4EE6-972B-054126A1B19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBC26D87-75CA-4EE6-972B-054126A1B19F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F98EB76-B271-47FC-B0B7-2CA7055F5DB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F98EB76-B271-47FC-B0B7-2CA7055F5DB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F98EB76-B271-47FC-B0B7-2CA7055F5DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F98EB76-B271-47FC-B0B7-2CA7055F5DB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
