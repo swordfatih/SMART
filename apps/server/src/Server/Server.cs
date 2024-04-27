@@ -1,6 +1,4 @@
-using System.Collections.Concurrent;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using Network;
 
 namespace Interface
@@ -10,7 +8,7 @@ namespace Interface
         public Node Node { get; } = node;
         public Dictionary<Socket, NetworkClient> Clients { get; } = [];
 
-        public async Task Run()
+        public void Accept()
         {
             Node.Socket.Listen(100);
 
@@ -26,9 +24,9 @@ namespace Interface
 
                     if (socket == Node.Socket)
                     {
-                        var client = await socket.AcceptAsync();
+                        var client = socket.Accept();
                         var handler = new Node(client);
-                        var name = await handler.ReceiveMessage();
+                        var name = handler.ReceiveMessage()[0];
 
                         Clients[client] = new NetworkClient(name, handler);
                     }
@@ -38,8 +36,12 @@ namespace Interface
 
                         if (client.Node.Connected())
                         {
-                            var message = await client.Node.ReceiveMessage();
-                            Console.WriteLine(client.Name + ": " + message);
+                            var request = client.Node.ReceiveMessage();
+                            
+                            if(request[0] == RequestType.Start.ToString())
+                            {
+                                break;
+                            }
                         }
                         else
                         {

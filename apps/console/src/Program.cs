@@ -1,4 +1,6 @@
-﻿using Interface;
+﻿using System.Net.Sockets;
+using System.Text;
+using Interface;
 using Network;
 
 internal class Program
@@ -8,18 +10,34 @@ internal class Program
         // dotnet run --project=console <ip> <port> <name> 
         // ex: dotnet run --project=console 192.168.1.39 11000 fatih
         var node = await Node.Create(args[0], int.Parse(args[1]), NodeType.Connect);
-        var client = await Client.Create(node, args[2]);
+        var client = new Client(node, args[2]);
+
+        Console.WriteLine("Press 'start' to start the game.");
 
         while (true)
         {
-            var message = Console.ReadLine();
-
-            if (message == null)
+            if (client.Node.Socket.Poll(0, SelectMode.SelectRead))
             {
-                break;
+                if (!client.Node.Connected())
+                {
+                    Console.WriteLine("Server closed.");
+                    break;
+                }
+
+                client.Handle();
             }
 
-            await client.Node.SendMessage(message);
+            if (Console.KeyAvailable)
+            {
+                string input = Console.ReadLine() ?? "";
+
+                if (input.Contains("start"))
+                {
+                    client.Node.SendMessage(RequestType.Start.ToString());
+                }
+            }
+
+            Thread.Sleep(100);
         }
     }
 }

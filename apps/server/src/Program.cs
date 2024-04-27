@@ -10,16 +10,13 @@ internal class Program
         // ex: dotnet run --project=server 192.168.1.39 11000
         var node = await Node.Create(args[0], int.Parse(args[1]), NodeType.Bind);
         var server = new Server(node);
-        await server.Run();
+        server.Accept();
 
-        List<IClient> clients = [
-            new ConsoleClient("oussama"),
-            new ConsoleClient("sarah"),
-            new ConsoleClient("diland"),
-            new ConsoleClient("daniel"),
-        ];
+        Console.WriteLine("Game is starting.");
 
+        var clients = new List<IClient>(server.Clients.Select(x => x.Value));
         var board = new Board(clients);
+
         board.Init();
         board.GuardPosition = 0;
 

@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using Network;
 
 namespace Interface
@@ -7,16 +8,35 @@ namespace Interface
         public string Name { get; }
         public Node Node { get; }
 
-        private Client(Node node, string name)
+        public Client(Node node, string name)
         {
             Name = name;
             Node = node;
+            node.SendMessage(name);
         }
 
-        public static async Task<Client> Create(Node node, string name)
+        public void Handle()
         {
-            await node.SendMessage(name);
-            return new Client(node, name);
+            var request = Node.ReceiveMessage();
+
+            if (request[0] == RequestType.Message.ToString())
+            {
+                Console.WriteLine(request[1]);
+            }
+            else if (request[0] == RequestType.Input.ToString())
+            {
+                Console.WriteLine(request[1]);
+
+                var input = Console.ReadLine() ?? "";
+                Node.SendMessage(input);
+            }
+            else if (request[0] == RequestType.Choice.ToString())
+            {
+                Console.WriteLine(request[1]);
+
+                var input = Console.ReadLine() ?? "";
+                Node.SendMessage(input);
+            }
         }
     }
 }
