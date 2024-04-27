@@ -1,4 +1,4 @@
-using Board;
+using Game;
 
 namespace Interface
 {

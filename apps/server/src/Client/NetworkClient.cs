@@ -1,13 +1,12 @@
-using System.Net;
-using System.Net.Sockets;
-using Board;
+using Network;
+using Game;
 
 namespace Interface
 {
-    public class NetworkClient(string name, Socket socket) : IClient
+    public class NetworkClient(string name, Node node) : IClient
     {
         public string Name { get; } = name;
-        public Socket Socket { get; } = socket;
+        public Node Node { get; } = node;
 
         public int AskChoice(Question question)
         {
@@ -19,9 +18,10 @@ namespace Interface
             throw new NotImplementedException();
         }
 
-        public void SendMessage(string message)
+        public async void SendMessage(string message)
         {
-            throw new NotImplementedException();
+            await Node.SendMessage("Message");
+            await Node.SendMessage(message);
         }
 
         public override string ToString()
