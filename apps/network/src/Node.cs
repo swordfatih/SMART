@@ -4,15 +4,10 @@ using System.Text;
 
 namespace Network
 {
-    public enum NodeType
-    {
-        Connect,
-        Bind
-    }
-
     public class Node(Socket socket)
     {
         public Socket Socket { get; } = socket;
+        public static string EOM = "<|EOM|>";
 
         public static async Task<Node> Create(string host, int port, NodeType type)
         {
@@ -31,18 +26,18 @@ namespace Network
             return new Node(socket);
         }
 
-        public async Task SendMessage(string message)
+        public void SendMessage(string message)
         {
-            var messageBytes = Encoding.UTF8.GetBytes(message + "<|EOM|>");
-            _ = await Socket.SendAsync(messageBytes, SocketFlags.None);
+            var messageBytes = Encoding.UTF8.GetBytes(message + EOM);
+            Socket.Send(messageBytes, SocketFlags.None);
         }
 
-        public async Task<string> ReceiveMessage()
+        public string[] ReceiveMessage()
         {
             var buffer = new byte[1024];
-            var received = await Socket.ReceiveAsync(buffer, SocketFlags.None);
+            var received = Socket.Receive(buffer, SocketFlags.None);
             var response = Encoding.UTF8.GetString(buffer, 0, received);
-            return response.Replace("<|EOM|>", "");
+            return response.Split(EOM);
         }
 
         public static async Task<IPEndPoint> GetEndpoint(string host, int port)

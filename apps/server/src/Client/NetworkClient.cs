@@ -10,18 +10,21 @@ namespace Interface
 
         public int AskChoice(Question question)
         {
-            throw new NotImplementedException();
+            Node.SendMessage(RequestType.Choice.ToString());
+            Node.SendMessage(question.ToString());
+            var choice = Node.ReceiveMessage();
+            return Convert.ToInt32(choice[0]);
         }
 
         public string AskInput(string instruction)
         {
-            throw new NotImplementedException();
+            Node.SendMessage(RequestType.Input.ToString() + Node.EOM + instruction);
+            return Node.ReceiveMessage()[0];
         }
 
-        public async void SendMessage(string message)
-        {
-            await Node.SendMessage("Message");
-            await Node.SendMessage(message);
+        public void SendMessage(string message)
+        { 
+            Node.SendMessage(RequestType.Message.ToString() + Node.EOM + message);
         }
 
         public override string ToString()

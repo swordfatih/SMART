@@ -26,3 +26,14 @@ Students: **[To be assigned]**
 * Add an open-source license, e.g., Apache 2.0;
 * README is automatically converted into pdf
 
+## Getting started
+
+In apps folder.
+
+To build :
+`dotnet build server`
+`dotnet build console`
+
+To run :
+`.\server\bin\Debug\net8.0\server.exe 192.168.1.39 11000`
+`.\console\bin\Debug\net8.0\console.exe 192.168.1.39 11000 fatih`
