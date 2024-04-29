@@ -5,6 +5,8 @@ namespace Network
         Start,
         Message,
         Choice,
-        Input
+        Input,
+        NotifyPlayer,
+        NotifyBoard
     }
 }
