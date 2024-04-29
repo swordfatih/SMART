@@ -17,6 +17,7 @@ internal class Program
         var server = new Server(node);
 
         Console.WriteLine("Starting server on " + host + " (" + port + ")");
+        
         server.Accept();
 
         Console.WriteLine("Game is starting.");
