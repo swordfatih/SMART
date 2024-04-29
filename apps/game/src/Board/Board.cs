@@ -1,11 +1,13 @@
 namespace Game
 {
-    public class Board(List<IClient> clients)
+    public class Board(List<Client> clients) : IObservable<BoardData>
     {
-        private readonly List<IClient> Clients = clients;
+        private readonly List<IObserver<BoardData>> Observers = [];
+        private readonly List<Client> Clients = clients;
         public readonly List<Player> Players = [];
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
+        public int Day { get; set; } = 0;
 
         public void Init()
         {
@@ -29,11 +31,11 @@ namespace Game
 
                     IState state = new SafeState();
 
-                    if(GuardPosition == player.Position)
+                    if (GuardPosition == player.Position)
                     {
-                        state = new GuardState();   
+                        state = new GuardState();
                     }
-                    else if(player.Status == Status.Confined)
+                    else if (player.Status == Status.Confined)
                     {
                         state = new ConfinedState();
                     }
@@ -42,8 +44,20 @@ namespace Game
                     player.Status = Status.Alive;
                 }
 
+                Day++;
+
+                // Notify subscribers
+                Observers.ForEach(x => x.Notify(new BoardData(
+                    new List<string>(GetAlivePlayers().Select(x => x.Client.Name)),
+                    Day
+                )));
+
+                Players.ForEach(x => x.Update(this));
+
+                // Run day
                 Tour();
 
+                // Update guard position
                 GuardPosition = NextGuardPosition ?? AdjacentPlayer(GetPlayerByPosition(GuardPosition), Direction.Right).Position;
             }
         }
@@ -114,6 +128,11 @@ namespace Game
             }
 
             return current;
+        }
+
+        public void Subscribe(IObserver<BoardData> observer)
+        {
+            Observers.Add(observer);
         }
 
         override public string ToString()
