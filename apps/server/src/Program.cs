@@ -25,7 +25,9 @@ internal class Program
         var board = new Board(clients);
 
         board.Init();
-        board.GuardPosition = 0;
+       
+        clients.ForEach(board.Subscribe);
+        clients.ForEach(client => board.Players.Find(x => x.Client == client)?.Subscribe(client));
 
         Console.WriteLine(board);
         board.Run();
