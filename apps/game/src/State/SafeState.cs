@@ -21,7 +21,7 @@ namespace Game
                     "Message"
                 ]);
 
-                if(player.Items.Count > 0)
+                if (player.Items.Count > 0)
                 {
                     question.Answers.Add("Donation");
                 }
@@ -38,7 +38,7 @@ namespace Game
                     case "Message":
                         communication = new MessageCommunication(player, direction, player.Client.AskInput("Entrez votre message"));
                         break;
-                    case "Guard":
+                    case "Gardien":
                         communication = new ChoiceCommunication(player, direction, new("Le gardien est-il devant toi ?", ["Oui", "Non"]));
                         break;
                     case "Progression":

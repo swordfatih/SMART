@@ -10,8 +10,7 @@ namespace Interface
 
         public int AskChoice(Question question)
         {
-            Node.SendMessage(RequestType.Choice.ToString());
-            Node.SendMessage(question.ToString());
+            Node.SendMessage(RequestType.Choice.ToString() + Node.EOM + question.ToString());
             var choice = Node.ReceiveMessage();
             return Convert.ToInt32(choice[0]);
         }
