@@ -9,20 +9,33 @@ namespace Interface
 
         public override int AskChoice(Question question)
         {
-            Node.SendMessage(RequestType.Choice.ToString() + Node.EOM + question.ToString());
-            var choice = Node.ReceiveMessage();
-            return Convert.ToInt32(choice[0]);
+            Node.Send(RequestType.Choice, question.ToString());
+
+            while (true)
+            {
+                if (Node.Packets.TryDequeue(out var packet) && packet.Request == RequestType.Choice)
+                {
+                    return Convert.ToInt32(packet.Content[0]);
+                }
+            }
         }
 
         public override string AskInput(string instruction)
         {
-            Node.SendMessage(RequestType.Input.ToString() + Node.EOM + instruction);
-            return Node.ReceiveMessage()[0];
+            Node.Send(RequestType.Input, instruction);
+
+            while (true)
+            {
+                if (Node.Packets.TryDequeue(out var packet) && packet.Request == RequestType.Input)
+                {
+                    return packet.Content[0];
+                }
+            }
         }
 
         public override void SendMessage(string message)
         {
-            Node.SendMessage(RequestType.Message.ToString() + Node.EOM + message);
+            Node.Send(RequestType.Message, message);
         }
 
         public override void Notify(BoardData value)
@@ -43,7 +56,7 @@ namespace Interface
 
             output += Environment.NewLine;
 
-            Node.SendMessage(RequestType.Message + Node.EOM + output);
+            Node.Send(RequestType.Message, output);
         }
 
         public override void Notify(PlayerData value)
@@ -59,7 +72,7 @@ namespace Interface
                 value.Player?.Items.ForEach(x => output += x + Environment.NewLine);
             }
 
-            Node.SendMessage(RequestType.Message + Node.EOM + output);
+            Node.Send(RequestType.Message, output);
         }
 
         public override string ToString()

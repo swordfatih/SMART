@@ -5,20 +5,28 @@ using Network;
 
 internal class Program
 {
-    private static async Task Main(string[] args)
+    private static void Main(string[] args)
     {
         // dotnet run --project=console <ip> <port> <name> 
         // ex: dotnet run --project=console 192.168.1.39 11000 fatih
-        var node = await Node.Create(args[0], int.Parse(args[1]), NodeType.Connect);
+        var node = new Node(args[0], int.Parse(args[1]));
         var client = new Client(node, args[2]);
 
         Console.WriteLine("Press 'start' to start the game.");
 
         while (true)
         {
-            if (client.Node.Socket.Poll(0, SelectMode.SelectRead))
+            if (client.Node.Client.Client.Poll(0, SelectMode.SelectRead))
             {
-                client.Handle();
+                if (!client.Node.Connected())
+                {
+                    Console.WriteLine("Connection lost.");
+                    break;
+                }
+                else
+                {
+                    client.Handle();
+                }
             }
 
             if (Console.KeyAvailable)
@@ -27,7 +35,7 @@ internal class Program
 
                 if (input.Contains("start"))
                 {
-                    client.Node.SendMessage(RequestType.Start.ToString());
+                    client.Node.Send(RequestType.Start);
                 }
             }
 
