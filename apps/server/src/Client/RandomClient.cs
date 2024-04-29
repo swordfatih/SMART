@@ -2,27 +2,35 @@ using Game;
 
 namespace Interface
 {
-    public class RandomClient() : IClient
+    public class RandomClient() : Client(Guid.NewGuid().ToString())
     {
-        public string Name { get; } = Guid.NewGuid().ToString();
-
-        public int AskChoice(Question question)
+        public override int AskChoice(Question question)
         {
             return new Random().Next(0, question.Answers.Count);
         }
 
-        public string AskInput(string instruction)
+        public override string AskInput(string instruction)
         {
             return "Random message";
         }
 
-        public void SendMessage(string message)
+        public override void SendMessage(string message)
         {
-            
+
+        }
+
+        public override void Notify(BoardData value)
+        {
+
+        }
+
+        public override void Notify(PlayerData value)
+        {
+
         }
 
         public override string ToString()
-        {   
+        {
             return Name;
         }
     }
