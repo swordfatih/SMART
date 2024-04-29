@@ -18,12 +18,6 @@ internal class Program
         {
             if (client.Node.Socket.Poll(0, SelectMode.SelectRead))
             {
-                if (!client.Node.Connected())
-                {
-                    Console.WriteLine("Server closed.");
-                    break;
-                }
-
                 client.Handle();
             }
 
