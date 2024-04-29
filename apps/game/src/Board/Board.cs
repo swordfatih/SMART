@@ -38,7 +38,7 @@ namespace Game
                         state = new ConfinedState();
                     }
 
-                    player.State.Push(GuardPosition == player.Position ? new GuardState() : new SafeState());
+                    player.State.Push(state);
                     player.Status = Status.Alive;
                 }
 
