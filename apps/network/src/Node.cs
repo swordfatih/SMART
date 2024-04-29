@@ -42,9 +42,15 @@ namespace Network
 
         public static async Task<IPEndPoint> GetEndpoint(string host, int port)
         {
-            IPHostEntry ipHostInfo = await Dns.GetHostEntryAsync(host);
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
-            return new(ipAddress, port);
+            // IPHostEntry ipHostInfo = await Dns.GetHostEntryAsync(host);
+            // IPAddress ipAddress = ipHostInfo.AddressList[0];
+            // return new(ipAddress, port);
+            var hostName = Dns.GetHostName();
+            IPHostEntry localhost = await Dns.GetHostEntryAsync(hostName);
+            // This is the IP address of the local machine
+            IPAddress localIpAddress = localhost.AddressList[0];
+            IPEndPoint ipEndPoint = new(localIpAddress, port);
+            return ipEndPoint;
         }
 
         public bool Connected()
