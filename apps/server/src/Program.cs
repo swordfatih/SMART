@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Game;
+﻿using Game;
 using Interface;
 using Network;
 
@@ -17,12 +16,12 @@ internal class Program
         var server = new Server(node);
 
         Console.WriteLine("Starting server on " + host + " (" + port + ")");
-        
+
         server.Accept();
 
         Console.WriteLine("Game is starting.");
 
-        var clients = new List<IClient>(server.Clients.Select(x => x.Value));
+        var clients = new List<Client>(server.Clients.Select(x => x.Value));
         var board = new Board(clients);
 
         board.Init();
