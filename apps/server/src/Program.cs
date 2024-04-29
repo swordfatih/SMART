@@ -4,32 +4,18 @@ using Network;
 
 internal class Program
 {
-    private static async Task Main(string[] args)
+    private static void Main(string[] args)
     {
         // dotnet run --project=server <port>
         // ex: dotnet run --project=server 11000
-        
-        var host = (await Node.GetLocalAddress()).ToString();
-        var port = int.Parse(args[0]);
+        var server = new Server(args[0], Convert.ToInt32(args[1]));
 
-        var node = await Node.Create(host, port, NodeType.Bind);
-        var server = new Server(node);
+        Console.WriteLine("Starting server on " + args[0] + " (" + args[1] + ")");
 
-        Console.WriteLine("Starting server on " + host + " (" + port + ")");
+        var listener = Task.Run(server.Listen);
+        var receiver = Task.Run(server.Receive); 
 
-        server.Accept();
-
-        Console.WriteLine("Game is starting.");
-
-        var clients = new List<Client>(server.Clients.Select(x => x.Value));
-        var board = new Board(clients);
-
-        board.Init();
-       
-        clients.ForEach(board.Subscribe);
-        clients.ForEach(client => board.Players.Find(x => x.Client == client)?.Subscribe(client));
-
-        Console.WriteLine(board);
-        board.Run();
+        listener.Wait();
+        receiver.Wait();
     }
 }
