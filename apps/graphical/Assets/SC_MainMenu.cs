@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class SC_MainMenu : MonoBehaviour
 {
-    public GameObject MainMenu;
-    public GameObject JoinMenu;
+    public GameObject mainMenu;
+    public GameObject joinMenu;
+    public GameObject startGameMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -16,20 +17,25 @@ public class SC_MainMenu : MonoBehaviour
     public void LaunchButton()
     {
         // Play Now Button has been pressed, here you can initialize your game (For example Load a Scene called GameLevel etc.)
-        UnityEngine.SceneManagement.SceneManager.LoadScene("startScene");
+        //UnityEngine.SceneManagement.SceneManager.LoadScene("startScene");
+        mainMenu.SetActive(false);
+        joinMenu.SetActive(false);
+        startGameMenu.SetActive(true);
     }
 
     public void MainMenuButton()
     {
         // Show Main Menu
-        MainMenu.SetActive(true);
-        JoinMenu.SetActive(false);
+        mainMenu.SetActive(true);
+        joinMenu.SetActive(false);
+        startGameMenu.SetActive(false);
     }
 
     public void JoinButton()
     {
-        MainMenu.SetActive(false);
-        JoinMenu.SetActive(true);
+        mainMenu.SetActive(false);
+        joinMenu.SetActive(true);
+        startGameMenu.SetActive(false);
     }
 
     public void QuitButton()
