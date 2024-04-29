@@ -17,24 +17,26 @@ namespace Interface
 
         public void Handle()
         {
-            var requests = Node.ReceiveMessage();
+            var requests = new Stack<string>(Node.ReceiveMessage());
 
-            foreach(var request in requests)
+            while (requests.Count > 0)
             {
+                var request = requests.Pop();
+
                 if (request == RequestType.Message.ToString())
                 {
-                    Console.WriteLine(request);
+                    Console.WriteLine(requests.Pop());
                 }
                 else if (request == RequestType.Input.ToString())
                 {
-                    Console.WriteLine(request);
+                    Console.WriteLine(requests.Pop());
 
                     var input = Console.ReadLine() ?? "";
                     Node.SendMessage(input);
                 }
                 else if (request == RequestType.Choice.ToString())
                 {
-                    Console.WriteLine(request);
+                    Console.WriteLine(requests.Pop());
 
                     var input = Console.ReadLine() ?? "";
                     Node.SendMessage(input);
