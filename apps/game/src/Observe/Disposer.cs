@@ -3,11 +3,20 @@ using System.Collections.Generic;
 
 namespace Game
 {
-    public class Disposer<T>(List<IObserver<T>> observers, IObserver<T> observer) : IDisposable
+    public class Disposer<T> : IDisposable
     {
+        public List<IObserver<T>> Observers { get; }
+        public IObserver<T> Observer { get; }
+
+        public Disposer(List<IObserver<T>> observers, IObserver<T> observer)
+        {
+            Observers = observers;
+            Observer = observer;
+        }
+
         public void Dispose()
         {
-            observers.Remove(observer);
+            Observers.Remove(Observer);
         }
     }
 }

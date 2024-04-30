@@ -1,12 +1,17 @@
 namespace Game
 {
-    public class AnswerState(Communication communication) : IState
+    public class AnswerState : IState
     {
-        private Communication Communication { get; } = communication;
+        private Communication Communication { get; }
+
+        public AnswerState(Communication communication) 
+        {
+            Communication = communication;
+        }
 
         public Action Action(Board board, Player player)
         {
-            if (player.Client.AskChoice(new("You received a message from " + Communication.Origin, new(["Accept", "Propagate"]))) == 1)
+            if (player.Client.AskChoice(new("You received a message from " + Communication.Origin, new(){"Accept", "Propagate"})) == 1)
             {
                 return new PropagateAction(player, Communication);
             }
@@ -22,7 +27,7 @@ namespace Game
             else if (Communication is ChoiceCommunication c3)
             {
                 var choice = player.Client.AskChoice(c3.Question);
-                c3.Origin.Client.SendMessage($"{player.Client.Name} answers " + c3.Question.Answers[choice]);
+                c3.Origin.Client.SendMessage($"{player.Client.Name} answers {c3.Question.Answers[choice]}");
             }
 
             return new IdleAction(player);

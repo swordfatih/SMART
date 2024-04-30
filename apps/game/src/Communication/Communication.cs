@@ -1,8 +1,14 @@
 namespace Game
 {
-    public abstract class Communication(Player origin, Direction direction)
+    public abstract class Communication
     {
-        public readonly Player Origin = origin;
-        public readonly Direction Direction = direction;
+        public readonly Player Origin;
+        public readonly Direction Direction;
+
+        public Communication(Player origin, Direction direction)
+        {
+            Origin = origin;
+            Direction = direction;
+        }
     }
 }

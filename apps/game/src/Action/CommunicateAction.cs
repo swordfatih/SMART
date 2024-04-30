@@ -1,13 +1,18 @@
 namespace Game
 {
-    public class CommunicateAction(Player player, Communication communication) : Action(player)
+    public class CommunicateAction : Action
     {
-        private Communication Communication { get; } = communication;
+        private Communication Communication { get; }
+
+        public CommunicateAction(Player player, Communication communication) : base(player)
+        {
+            Communication = communication;
+        }   
 
         public override void Run(Board board)
         {
             var target = board.AdjacentPlayer(Player, Communication.Direction);
-            target.State.Push(new AnswerState(Communication));
+            target.States.Push(new AnswerState(Communication));
         }
 
         public override string ToString()

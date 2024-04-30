@@ -9,16 +9,26 @@ namespace Game
         Confined,
     }
 
-    public class Player(Client client, int position, Role role) : IObservable<PlayerData>
+    public class Player : IObservable<PlayerData>
     {
-        private readonly List<IObserver<PlayerData>> Observers = [];
-        public Client Client { get; } = client;
-        public Role Role { get; } = role;
-        public int Position { get; } = position;
-        public Stack<IState> State { get; set; } = [];
+        private readonly List<IObserver<PlayerData>> Observers;
+        public Client Client { get; }
+        public Role Role { get; }
+        public int Position { get; }
+        public Stack<IState> States { get; set; }
         public Status Status { get; set; } = Status.Alive;
         public int Progression { get; set; }
-        public List<Item> Items { get; set; } = [];
+        public List<Item> Items { get; set; }
+
+        public Player(Client client, int position, Role role)
+        {
+            Client = client;
+            Position = position;
+            Role = role;
+            Items = new();
+            Observers = new();
+            States = new();
+        }
 
         public void Update(Board board)
         {

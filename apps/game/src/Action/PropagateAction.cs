@@ -1,8 +1,13 @@
 namespace Game
 {
-    public class PropagateAction(Player player, Communication communication) : Action(player)
+    public class PropagateAction : Action
     {
-        private Communication Communication { get; } = communication;
+        private Communication Communication { get; }
+
+        public PropagateAction(Player player, Communication communication) : base(player)
+        {
+            Communication = communication;
+        }
 
         public override void Run(Board board)
         {
@@ -10,7 +15,7 @@ namespace Game
 
             if (target != Communication.Origin)
             {
-                target.State.Push(new AnswerState(Communication));
+                target.States.Push(new AnswerState(Communication));
             }
         }
 
