@@ -1,25 +1,27 @@
+using System.Linq;
+
 namespace Game
 {
     public class SafeState : IState
     {
         public Action Action(Board board, Player player)
         {
-            var choice = player.Client.AskChoice(new("Choisissez l'action du jour", ["Creuser", "Communiquer avec un voisin"]));
+            var choice = player.Client.AskChoice(new("Choisissez l'action du jour", new(["Creuser", "Communiquer avec un voisin"])));
 
             if (choice == 0)
             {
-                return new DigAction(player);
+                return board.GuardPosition == player.Position ? new DieAction(player) : new DigAction(player);
             }
             else if (choice == 1)
             {
-                var direction = player.Client.AskChoice(new("Communiquer avec le voisin de", ["Gauche", "Droite"])) == 0 ? Direction.Left : Direction.Right;
+                var direction = player.Client.AskChoice(new("Communiquer avec le voisin de", new(["Gauche", "Droite"]))) == 0 ? Direction.Left : Direction.Right;
 
-                var question = new Question("Que voulez-vous communiquer ?", [
+                var question = new Question("Que voulez-vous communiquer ?", new([
                     "Gardien",
                     "Opinion",
                     "Progression",
                     "Message"
-                ]);
+                ]));
 
                 if (player.Items.Count > 0)
                 {
@@ -39,13 +41,13 @@ namespace Game
                         communication = new MessageCommunication(player, direction, player.Client.AskInput("Entrez votre message"));
                         break;
                     case "Gardien":
-                        communication = new ChoiceCommunication(player, direction, new("Le gardien est-il devant toi ?", ["Oui", "Non"]));
+                        communication = new ChoiceCommunication(player, direction, new("Le gardien est-il devant toi ?", new(["Oui", "Non"])));
                         break;
                     case "Progression":
-                        communication = new ChoiceCommunication(player, direction, new("Veux-tu partager ta progression ?", ["Oui", "Non"]));
+                        communication = new ChoiceCommunication(player, direction, new("Veux-tu partager ta progression ?", new(["Oui", "Non"])));
                         break;
                     case "Opinion":
-                        communication = new ChoiceCommunication(player, direction, new("Ton avis sur ton autre voisin ?", ["Malveillance max", "Un bon", "Je ne sais pas"]));
+                        communication = new ChoiceCommunication(player, direction, new("Ton avis sur ton autre voisin ?", new(["Malveillance max", "Un bon", "Je ne sais pas"])));
                         break;
                     default:
                         break;

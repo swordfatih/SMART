@@ -6,7 +6,7 @@ namespace Game
 
         public Action Action(Board board, Player player)
         {
-            if (player.Client.AskChoice(new("You received a message from " + Communication.Origin, ["Accept", "Reject"])) == 1)
+            if (player.Client.AskChoice(new("You received a message from " + Communication.Origin, new(["Accept", "Propagate"]))) == 1)
             {
                 return new PropagateAction(player, Communication);
             }
