@@ -1,16 +1,26 @@
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Game;
 using Network;
 
 namespace Interface
 {
-    public class Server(string host, int port)
+    public class Server
     {
-        public TcpListener Listener { get; } = new TcpListener(IPAddress.Parse(host), port);
-        public ConcurrentDictionary<TcpClient, NetworkClient?> Clients { get; } = [];
+        public TcpListener Listener { get; init; }
+        public ConcurrentDictionary<TcpClient, NetworkClient?> Clients { get; init; }
         public bool Running { get; set; } = true;
+
+        public Server(string host, int port)
+        {
+            Listener = new TcpListener(IPAddress.Parse(host), port);
+            Clients = new ConcurrentDictionary<TcpClient, NetworkClient?>();
+        }
 
         public void Listen()
         {
@@ -106,7 +116,7 @@ namespace Interface
 
         public void Start()
         {
-            List<Client> clients = [];
+            var clients = new List<Client>();
 
             Clients.Values.ToList().ForEach(client =>
             {

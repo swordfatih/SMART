@@ -1,9 +1,15 @@
+using System;
 using Game;
 
 namespace Interface
 {
-    public class ConsoleClient(string name) : Client(name)
+    public class ConsoleClient : Client
     {
+        public ConsoleClient(string name) : base(name)
+        {
+
+        }
+
         public override int AskChoice(Question question)
         {
             int choice;

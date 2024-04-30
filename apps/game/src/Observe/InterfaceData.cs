@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Game
 {
     public class BoardData(List<string> names, int day)
