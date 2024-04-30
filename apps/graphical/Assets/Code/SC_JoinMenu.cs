@@ -31,8 +31,8 @@ public class SC_JoinMenu : MonoBehaviour
         //portField.interactable = false;
         //joinButton.SetActive(false);
         var node = new Node(addressField.text, int.Parse(portField.text));
-        //var client = new Client(node, pseudoField.text);
-        //gameManager.client = client;
+        var client = new Client(node, pseudoField.text);
+        gameManager.client = client;
 
     }
 }
