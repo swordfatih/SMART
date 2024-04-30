@@ -1,7 +1,11 @@
 namespace Game
 {
-    public class DelayGuardAction(Player player) : Action(player)
+    public class DelayGuardAction : Action
     {
+        public DelayGuardAction(Player player) : base(player)
+        {
+        }
+
         public override void Run(Board board)
         {
 

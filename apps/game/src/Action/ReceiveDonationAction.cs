@@ -1,8 +1,13 @@
 namespace Game
 {
-    public class ReceiveDonationAction(Player player, ItemCommunication communication) : Action(player)
+    public class ReceiveDonationAction : Action
     {
-        private ItemCommunication Communication { get; } = communication;
+        private ItemCommunication Communication { get; }
+
+        public ReceiveDonationAction(Player player, ItemCommunication communication) : base(player)
+        {
+            Communication = communication;
+        }
 
         public override void Run(Board board)
         {

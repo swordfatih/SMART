@@ -1,8 +1,13 @@
 namespace Game
 {
-    public abstract class Action(Player player)
+    public abstract class Action
     {
-        public Player Player { get; } = player;
+        public Player Player { get; init; }
+
+        public Action(Player player)
+        {
+            Player = player;
+        } 
 
         public abstract void Run(Board board);
 
