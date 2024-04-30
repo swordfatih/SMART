@@ -10,7 +10,6 @@ namespace Game
         private readonly List<IObserver<BoardData>> Observers;
         private readonly List<Client> Clients;
         public readonly List<Player> Players;
-        //public System.IO.StreamWriter? file;
         public StreamWriter? file;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
@@ -28,10 +27,9 @@ namespace Game
             var randomizer = new Random();
             var associate = randomizer.Next(0, Clients.Count);
             GuardPosition = randomizer.Next(0, Clients.Count);
-            
+
             // create a file a start writing on it ;
             file = new StreamWriter("game/logs/log.txt");
-           
 
             for (var i = 0; i < Clients.Count; ++i)
             {
@@ -40,8 +38,6 @@ namespace Game
                 file.WriteLine(player.ToString());
                 file.Flush();
             }
-               
-            
         }
 
         public void Run()
@@ -68,8 +64,9 @@ namespace Game
                 }
 
                 Day++;
-                file.WriteLine($"day:{Day}");
-                file.Flush();
+                
+                file?.WriteLine($"day:{Day}");
+                file?.Flush();
 
                 // Notify subscribers
                 Observers.ForEach(x => x.Notify(new BoardData(
@@ -109,8 +106,8 @@ namespace Game
                 foreach (var action in actions)
                 {
                     action.Run(this);
-                    file.WriteLine(action.ToString());
-                    file.Flush();
+                    file?.WriteLine(action.ToString());
+                    file?.Flush();
                 }
             }
         }
