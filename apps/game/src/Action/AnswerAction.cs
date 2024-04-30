@@ -16,7 +16,8 @@ namespace Game
 
         public override string ToString()
         {
-            return $"{Player} answers a communication";
+            // return $"{Player} answers a communication";
+            return $"answer_Action:{Player.Client.Name},";
         }
     }
 }

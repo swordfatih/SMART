@@ -17,7 +17,8 @@ namespace Game
 
         public override string ToString()
         {
-            return $"{Player} redirects the guard to {Target.Position}";
+            // return $"{Player} redirects the guard to {Target.Position}";
+            return $"redirect_action:{Player.Client.Name},{Target.Client.Name}";
         }
     }
 }

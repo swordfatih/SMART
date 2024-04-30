@@ -21,7 +21,8 @@ namespace Game
 
         public override string ToString()
         {
-            return $"{Player} propagates communication to the {Communication.Direction}";
+            // return $"{Player} propagates communication to the {Communication.Direction}";
+            return $"propagate_action:{Player.Client.Name},";
         }
     }
 }
