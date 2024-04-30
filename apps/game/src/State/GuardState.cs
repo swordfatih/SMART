@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Game
 {
     public class GuardState : IState
