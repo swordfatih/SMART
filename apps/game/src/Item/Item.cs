@@ -1,7 +1,12 @@
 namespace Game
 {
-    public class Item(string name)
+    public class Item
     {
-        public string Name { get; set; } = name;
+        public string Name { get; set; }
+
+        public Item(string name)
+        {
+            Name = name;
+        }
     }
 }

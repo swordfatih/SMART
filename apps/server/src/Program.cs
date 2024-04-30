@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Game;
 using Interface;
-using Network;
 
 internal class Program
 {

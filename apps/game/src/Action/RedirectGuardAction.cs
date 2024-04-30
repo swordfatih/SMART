@@ -1,16 +1,23 @@
 namespace Game
 {
-    public class RedirectGuardAction(Player player, Player target) : Action(player)
+    public class RedirectGuardAction : Action
     {
+        private readonly Player Target;
+
+        public RedirectGuardAction(Player player, Player target) : base(player)
+        {
+            Target = target;
+        }
+
         public override void Run(Board board)
         {
-            board.NextGuardPosition = target.Position;
-            target.Status = Status.Confined;
+            board.NextGuardPosition = Target.Position;
+            Target.Status = Status.Confined;
         }
 
         public override string ToString()
         {
-            return $"{Player} redirects the guard to {target.Position}";
+            return $"{Player} redirects the guard to {Target.Position}";
         }
     }
 }

@@ -1,7 +1,11 @@
 namespace Game
 {
-    public class DigAction(Player player) : Action(player)
+    public class DigAction : Action
     {
+        public DigAction(Player player) : base(player)
+        {
+        }
+
         public override void Run(Board board)
         {
             Player.Progression++;

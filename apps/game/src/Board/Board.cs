@@ -4,14 +4,21 @@ using System.Linq;
 
 namespace Game
 {
-    public class Board(List<Client> clients) : IObservable<BoardData>
+    public class Board : IObservable<BoardData>
     {
-        private readonly List<IObserver<BoardData>> Observers = [];
-        private readonly List<Client> Clients = clients;
-        public readonly List<Player> Players = [];
+        private readonly List<IObserver<BoardData>> Observers;
+        private readonly List<Client> Clients;
+        public readonly List<Player> Players;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
+
+        public Board(List<Client> clients)
+        {
+            Clients = clients;
+            Players = new();
+            Observers = new();
+        }
 
         public void Init()
         {
@@ -31,7 +38,7 @@ namespace Game
             {
                 foreach (var player in Players)
                 {
-                    player.State.Clear();
+                    player.States.Clear();
 
                     IState state = new SafeState();
 
@@ -44,7 +51,7 @@ namespace Game
                         state = new ConfinedState();
                     }
 
-                    player.State.Push(state);
+                    player.States.Push(state);
                     player.Status = Status.Alive;
                 }
 
@@ -71,14 +78,14 @@ namespace Game
         {
             while (!StatesEmpty())
             {
-                List<Action> actions = [];
+                var actions = new List<Action>();
 
                 // récupérer les actions
                 foreach (var player in Players)
                 {
-                    if (player.State.Count > 0)
+                    if (player.States.Count > 0)
                     {
-                        var state = player.State.Pop();
+                        var state = player.States.Pop();
                         var action = state.Action(this, player);
                         actions.Add(action);
                     }
@@ -111,7 +118,7 @@ namespace Game
         {
             foreach (var player in Players)
             {
-                if (player.State.Count > 0)
+                if (player.States.Count > 0)
                 {
                     return false;
                 }
