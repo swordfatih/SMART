@@ -13,7 +13,8 @@ namespace Game
 
         public override string ToString()
         {
-            return $"{Player} digs ({Player.Progression})";
+            //return $"{Player} digs ({Player.Progression})";
+            return $"dig_action:,{Player.Client.Name}";
         }
     }
 }
