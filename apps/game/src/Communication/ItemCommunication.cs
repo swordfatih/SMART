@@ -1,7 +1,12 @@
 namespace Game
 {
-    public class ItemCommunication(Player origin, Direction direction, Item item) : Communication(origin, direction)
+    public class ItemCommunication : Communication
     {
-        public readonly Item Item = item;
+        public readonly Item Item;
+
+        public ItemCommunication(Player origin, Direction direction, Item item) : base(origin, direction)
+        {
+            Item = item;
+        }
     }
 }

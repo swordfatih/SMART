@@ -1,7 +1,11 @@
 namespace Game
 {
-    public class IdleAction(Player player) : Action(player)
+    public class IdleAction : Action
     {
+        public IdleAction(Player player) : base(player)
+        {
+        }
+
         public override void Run(Board board)
         {
 
