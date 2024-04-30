@@ -7,11 +7,14 @@ public class SC_MainMenu : MonoBehaviour
     public GameObject mainMenu;
     public GameObject joinMenu;
     public GameObject startGameMenu;
+    private GameManager gameManager;
+
 
     // Start is called before the first frame update
     void Start()
     {
         MainMenuButton();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     public void LaunchButton()
@@ -36,6 +39,10 @@ public class SC_MainMenu : MonoBehaviour
         mainMenu.SetActive(false);
         joinMenu.SetActive(true);
         startGameMenu.SetActive(false);
+        Debug.Log("Bouton cliqué!");
+        gameManager.globalScore += 1;
+        Debug.Log(gameManager.globalScore);
+
     }
 
     public void QuitButton()
