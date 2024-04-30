@@ -13,7 +13,8 @@ namespace Game
 
         public override string ToString()
         {
-            return $"{Player} does nothing";
+            // return $"{Player} does nothing";
+            return $"idle_action:{Player.Client.Name}";
         }
     }
 }

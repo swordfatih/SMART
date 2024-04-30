@@ -1,0 +1,20 @@
+ouss:Criminal
+ouss3:Criminal
+ouss2:Associate
+day:1
+idle_action:ouss
+dig_action:ouss3
+dig_action:ouss2
+day:2
+dig_action:ouss
+idle_action:ouss3
+dig_action:ouss2
+day:3
+dig_action:ouss
+dig_action:ouss3
+redirect_action:ouss2,ouss3
+day:4
+ouss:Criminal communicates to the Left
+idle_action:ouss3
+dig_action:ouss2
+idle_action:ouss2

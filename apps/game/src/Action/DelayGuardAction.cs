@@ -13,7 +13,8 @@ namespace Game
 
         public override string ToString()
         {
-            return $"{Player} delays the guard";
+            // return $"{Player} delays the guard";
+            return $"delay_action:{Player.Client.Name},";
         }
     }
 }
