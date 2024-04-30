@@ -59,6 +59,7 @@ namespace Game
 
                 // Update guard position
                 GuardPosition = NextGuardPosition ?? AdjacentPlayer(GetPlayerByPosition(GuardPosition), Direction.Right).Position;
+                NextGuardPosition = null;
             }
         }
 
