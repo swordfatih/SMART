@@ -12,34 +12,33 @@ namespace Interface
         {
             Name = name;
             Node = node;
-            node.SendMessage(name);
+
+            node.Send(RequestType.Connect, name);
         }
 
         public void Handle()
         {
-            var requests = new Stack<string>(Node.ReceiveMessage());
+            var packets = Node.Receive();
 
-            while (requests.Count > 0)
+            foreach (var packet in packets)
             {
-                var request = requests.Pop();
-
-                if (request == RequestType.Message.ToString())
+                if (packet.Request == RequestType.Message)
                 {
-                    Console.WriteLine(requests.Pop());
+                    Console.WriteLine(packet.Content[0]);
                 }
-                else if (request == RequestType.Input.ToString())
+                else if (packet.Request == RequestType.Input)
                 {
-                    Console.WriteLine(requests.Pop());
+                    Console.WriteLine(packet.Content[0]);
 
                     var input = Console.ReadLine() ?? "";
-                    Node.SendMessage(input);
+                    Node.Send(RequestType.Message, input);
                 }
-                else if (request == RequestType.Choice.ToString())
+                else if (packet.Request == RequestType.Choice)
                 {
-                    Console.WriteLine(requests.Pop());
+                    Console.WriteLine(packet.Content[0]);
 
                     var input = Console.ReadLine() ?? "";
-                    Node.SendMessage(input);
+                    Node.Send(RequestType.Choice, input);
                 }
             }
         }
