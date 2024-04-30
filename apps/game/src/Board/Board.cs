@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Game
@@ -9,6 +10,7 @@ namespace Game
         private readonly List<IObserver<BoardData>> Observers;
         private readonly List<Client> Clients;
         public readonly List<Player> Players;
+        public StreamWriter? file;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
@@ -26,9 +28,15 @@ namespace Game
             var associate = randomizer.Next(0, Clients.Count);
             GuardPosition = randomizer.Next(0, Clients.Count);
 
+            // create a file a start writing on it ;
+            file = new StreamWriter("game/logs/log.txt");
+
             for (var i = 0; i < Clients.Count; ++i)
             {
-                Players.Add(new(Clients[i], i, associate == i ? new AssociateRole() : new CriminalRole()));
+                var player = new Player(Clients[i], i, associate == i ? new AssociateRole() : new CriminalRole());
+                Players.Add(player);
+                file.WriteLine(player.ToString());
+                file.Flush();
             }
         }
 
@@ -56,6 +64,9 @@ namespace Game
                 }
 
                 Day++;
+                
+                file?.WriteLine($"day:{Day}");
+                file?.Flush();
 
                 // Notify subscribers
                 Observers.ForEach(x => x.Notify(new BoardData(
@@ -95,6 +106,8 @@ namespace Game
                 foreach (var action in actions)
                 {
                     action.Run(this);
+                    file?.WriteLine(action.ToString());
+                    file?.Flush();
                 }
             }
         }
