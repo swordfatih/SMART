@@ -10,7 +10,8 @@ namespace Game
         private readonly List<IObserver<BoardData>> Observers;
         private readonly List<Client> Clients;
         public readonly List<Player> Players;
-        public StreamWriter? file;
+        public StreamWriter file;
+        // public int[]? votes;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
@@ -44,29 +45,45 @@ namespace Game
         {
             while (!HasEnded())
             {
-                foreach (var player in Players)
-                {
-                    player.States.Clear();
-
-                    IState state = new SafeState();
-
-                    if (GuardPosition == player.Position)
+                // shower day
+                // if (Day+1 % 4 == 0)
+                // {
+                //     votes = new int[Players.Count];
+                //     foreach (var player in Players)
+                //     {
+                //         player.States.Clear();
+                //         IState state = new ShowerState();
+                //         player.States.Push(state);
+                //         player.Status = Status.Alive;
+                //     }
+                // }
+                // else
+                // { 
+                    foreach (var player in Players)
                     {
-                        state = new GuardState();
-                    }
-                    else if (player.Status == Status.Confined)
-                    {
-                        state = new ConfinedState();
-                    }
+                        player.States.Clear();
 
-                    player.States.Push(state);
-                    player.Status = Status.Alive;
-                }
+                        IState state = new SafeState();
+
+                        if (GuardPosition == player.Position)
+                        {
+                            state = new GuardState();
+                        }
+                        else if (player.Status == Status.Confined)
+                        {
+                            state = new ConfinedState();
+                        }
+
+                        player.States.Push(state);
+                        player.Status = Status.Alive;
+                    }
+                    
+                // } 
 
                 Day++;
                 
-                file?.WriteLine($"day:{Day}");
-                file?.Flush();
+                file.WriteLine($"day:{Day}");
+                file.Flush();
 
                 // Notify subscribers
                 Observers.ForEach(x => x.Notify(new BoardData(
@@ -83,6 +100,7 @@ namespace Game
                 GuardPosition = NextGuardPosition ?? AdjacentPlayer(GetPlayerByPosition(GuardPosition), Direction.Right).Position;
                 NextGuardPosition = null;
             }
+            
         }
 
         public void Tour()
@@ -106,9 +124,45 @@ namespace Game
                 foreach (var action in actions)
                 {
                     action.Run(this);
-                    file?.WriteLine(action.ToString());
-                    file?.Flush();
+                    file.WriteLine(action.ToString());
+                    file.Flush();
                 }
+                //traitement des votes le jour de douche
+                // if(Day%4 == 0)
+                // {
+                //     List<int> maxIndices = new List<int>(); 
+                //     int maxValue = votes[0];
+                //     
+                //     for (int i = 0; i < votes.Length; i++)
+                //     {
+                //         if (votes[i] > maxValue)
+                //         {
+                //             maxValue = votes[i];
+                //             maxIndices.Clear(); 
+                //             maxIndices.Add(i); 
+                //         }
+                //         else if (votes[i] == maxValue)
+                //         {
+                //             maxIndices.Add(i);
+                //         }
+                //     }
+                //     if (maxIndices.Count == 1 && maxValue> 0)
+                //     {
+                //         var player = Players[maxIndices[0]];
+                //         var action = new VoteAction(player, maxIndices[0]);
+                //         action.Run(this);
+                //         file?.WriteLine(action.ToString());
+                //         file?.Flush();
+                //     }
+                //     else if (maxIndices.Count > 1 && maxValue > 0)
+                //     {
+                //         var player = Players[maxIndices[0]];
+                //         var action = new DieAction(player);
+                //         action.Run(this);
+                //         file?.WriteLine(action.ToString());
+                //         file?.Flush();
+                //     }
+                // }
             }
         }
 
