@@ -1,11 +1,17 @@
 using Network;
 using Game;
+using System;
 
 namespace Interface
 {
-    public class NetworkClient(string name, Node node) : Client(name)
+    public class NetworkClient : Client
     {
-        public Node Node { get; } = node;
+        public Node Node { get; init; }
+
+        public NetworkClient(string name, Node node) : base(name)
+        {
+            Node = node;
+        }
 
         public override int AskChoice(Question question)
         {

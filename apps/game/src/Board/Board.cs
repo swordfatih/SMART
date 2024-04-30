@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Game
 {
     public class Board(List<Client> clients) : IObservable<BoardData>
@@ -59,6 +63,7 @@ namespace Game
 
                 // Update guard position
                 GuardPosition = NextGuardPosition ?? AdjacentPlayer(GetPlayerByPosition(GuardPosition), Direction.Right).Position;
+                NextGuardPosition = null;
             }
         }
 
