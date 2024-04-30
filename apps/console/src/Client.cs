@@ -30,7 +30,7 @@ namespace Interface
                     Console.WriteLine(packet.Content[0]);
 
                     var input = Console.ReadLine() ?? "";
-                    Node.Send(RequestType.Message, input);
+                    Node.Send(RequestType.Input, input);
                 }
                 else if (packet.Request == RequestType.Choice)
                 {
