@@ -35,5 +35,5 @@ To build :
 `dotnet build console`
 
 To run :
-`.\server\bin\Debug\net8.0\server.exe 11000`
-`.\console\bin\Debug\net8.0\console.exe 192.168.1.39 11000 fatih`
+`.\server\bin\Debug\net8.0\server.exe 127.0.0.1 11000`
+`.\console\bin\Debug\net8.0\console.exe 127.0.0.1 11000 fatih`
