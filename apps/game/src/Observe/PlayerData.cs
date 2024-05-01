@@ -2,8 +2,8 @@ namespace Game
 {
     public class PlayerData
     {
-        public readonly Player Player;
-        public readonly bool HasGuard;
+        public Player Player { get; set; }
+        public bool HasGuard { get; set; }
 
         public PlayerData(Player player, bool hasGuard)
         {

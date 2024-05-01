@@ -50,7 +50,7 @@ namespace Game
                 {
                     player.States.Clear();
 
-                    IState state = new SafeState();
+                    State state = new SafeState();
 
                     if (player.Status == Status.Dead)
                     {
@@ -120,7 +120,7 @@ namespace Game
                 }
 
                 // traitement des votes
-                if (Day % 4 == 0)
+                if (Day % SHOWER_RATE == 0)
                 {
                     var max = Votes.Max();
                     var indices = Votes.Select((x, i) => new { Index = i, Value = x }).Where(x => x.Value == max).Select(x => x.Index).ToList();

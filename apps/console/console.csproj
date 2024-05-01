@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\network\network.csproj" />
+    <ProjectReference Include="..\game\game.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

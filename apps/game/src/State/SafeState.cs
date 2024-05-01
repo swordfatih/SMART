@@ -2,9 +2,9 @@ using System.Linq;
 
 namespace Game
 {
-    public class SafeState : IState
+    public class SafeState : State
     {
-        public Action Action(Board board, Player player)
+        public override Action Action(Board board, Player player)
         {
             var choice = player.Client.AskChoice(new("Choisissez l'action du jour", new() { "Creuser", "Communiquer avec un voisin" }));
 

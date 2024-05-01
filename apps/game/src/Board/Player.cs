@@ -12,10 +12,10 @@ namespace Game
     public class Player : IObservable<PlayerData>
     {
         private readonly List<IObserver<PlayerData>> Observers;
-        public Client Client { get; }
-        public Role Role { get; }
-        public int Position { get; }
-        public Stack<IState> States { get; set; }
+        public Client Client { get; set; }
+        public Role Role { get; set; }
+        public int Position { get; set; }
+        public Stack<State> States { get; set; }
         public Status Status { get; set; } = Status.Alive;
         public int Progression { get; set; }
         public List<Item> Items { get; set; }
