@@ -40,6 +40,11 @@ namespace Interface
                     var input = Console.ReadLine() ?? "";
                     Node.Send(RequestType.Choice, input);
                 }
+                else if (packet.Request == RequestType.Error)
+                {
+                    Console.WriteLine(packet.Content[0]);
+                    Environment.Exit(1);
+                }
             }
         }
     }

@@ -2,24 +2,22 @@ namespace Game
 {
     public class VoteAction : Action
     {
-        private readonly int Choice;
-        private string? Name;
+        private readonly Player Target;
 
-        public VoteAction(Player player, int choice) : base(player)
+        public VoteAction(Player player, Player target) : base(player)
         {
-            Choice = choice;
+            Target = target;
         }
-
+        
         public override void Run(Board board)
         {
-           // board.votes[Choice]++;
-            Name = board.Players[Choice].Client.Name;
+            board.votes[Target.Position]++;
         }
 
         public override string ToString()
         {
             // return $"{Player} redirects the guard to {Target.Position}";
-            return $"vote_action:{Player.Client.Name},{Name}";
+            return $"vote_action:{Player.Client.Name},{Target.Client.Name}";
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Game
         private readonly List<Client> Clients;
         public readonly List<Player> Players;
         public StreamWriter file;
-        // public int[]? votes;
+        public int[]? votes;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
@@ -45,21 +45,22 @@ namespace Game
         {
             while (!HasEnded())
             {
-                // shower day
-                // if (Day+1 % 4 == 0)
-                // {
-                //     votes = new int[Players.Count];
-                //     foreach (var player in Players)
-                //     {
-                //         player.States.Clear();
-                //         IState state = new ShowerState();
-                //         player.States.Push(state);
-                //         player.Status = Status.Alive;
-                //     }
-                // }
-                // else
-                // { 
-                    foreach (var player in Players)
+                Day++;
+                //shower day
+                if (Day % 4 == 0)
+                {
+                    votes = new int[GetAlivePlayers().Count];
+                    foreach (var player in GetAlivePlayers())
+                    {
+                        player.States.Clear();
+                        IState state = new ShowerState();
+                        player.States.Push(state);
+                        //player.Status = Status.Alive;
+                    }
+                }
+                else
+                { 
+                    foreach (var player in GetAlivePlayers())
                     {
                         player.States.Clear();
 
@@ -78,10 +79,7 @@ namespace Game
                         player.Status = Status.Alive;
                     }
                     
-                // } 
-
-                Day++;
-                
+                } 
                 file.WriteLine($"day:{Day}");
                 file.Flush();
 
@@ -110,7 +108,7 @@ namespace Game
                 var actions = new List<Action>();
 
                 // récupérer les actions
-                foreach (var player in Players)
+                foreach (var player in GetAlivePlayers())
                 {
                     if (player.States.Count > 0)
                     {
@@ -128,41 +126,37 @@ namespace Game
                     file.Flush();
                 }
                 //traitement des votes le jour de douche
-                // if(Day%4 == 0)
-                // {
-                //     List<int> maxIndices = new List<int>(); 
-                //     int maxValue = votes[0];
-                //     
-                //     for (int i = 0; i < votes.Length; i++)
-                //     {
-                //         if (votes[i] > maxValue)
-                //         {
-                //             maxValue = votes[i];
-                //             maxIndices.Clear(); 
-                //             maxIndices.Add(i); 
-                //         }
-                //         else if (votes[i] == maxValue)
-                //         {
-                //             maxIndices.Add(i);
-                //         }
-                //     }
-                //     if (maxIndices.Count == 1 && maxValue> 0)
-                //     {
-                //         var player = Players[maxIndices[0]];
-                //         var action = new VoteAction(player, maxIndices[0]);
-                //         action.Run(this);
-                //         file?.WriteLine(action.ToString());
-                //         file?.Flush();
-                //     }
-                //     else if (maxIndices.Count > 1 && maxValue > 0)
-                //     {
-                //         var player = Players[maxIndices[0]];
-                //         var action = new DieAction(player);
-                //         action.Run(this);
-                //         file?.WriteLine(action.ToString());
-                //         file?.Flush();
-                //     }
-                // }
+                if(Day%4 == 0)
+                {
+                    // for(int i = 0; i < votes.Length; i++)
+                    // {
+                    //     Console.WriteLine(votes[i]);
+                    // }
+                    List<int> maxIndices = new List<int>(); 
+                    int maxValue = votes[0];
+                    
+                    for (int i = 0; i < votes.Length; i++)
+                    {
+                        if (votes[i] > maxValue)
+                        {
+                            maxValue = votes[i];
+                            maxIndices.Clear(); 
+                            maxIndices.Add(i); 
+                        }
+                        else if (votes[i] == maxValue)
+                        {
+                            maxIndices.Add(i);
+                        }
+                    }
+                    if (maxIndices.Count == 1 && maxValue > 0)
+                    {
+                        var player = Players[maxIndices[0]];
+                        var action = new DieAction(player);
+                        action.Run(this);
+                        file?.WriteLine(action.ToString());
+                        file?.Flush();
+                    }
+                }
             }
         }
 
@@ -173,7 +167,7 @@ namespace Game
 
         public List<Player> GetAlivePlayers(Player? except = null)
         {
-            return new List<Player>(Players.Where(x => x.Status == Status.Alive && (except == null || x != except)));
+            return new List<Player>(Players.Where(x => x.Status != Status.Dead && (except == null || x != except)));
         }
 
         private bool HasEnded()
