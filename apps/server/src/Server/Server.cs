@@ -12,8 +12,8 @@ namespace Interface
 {
     public class Server
     {
-        public TcpListener Listener { get; init; }
-        public ConcurrentDictionary<TcpClient, NetworkClient?> Clients { get; init; }
+        public TcpListener Listener { get; }
+        public ConcurrentDictionary<TcpClient, NetworkClient?> Clients { get; }
         public bool Running { get; set; } = true;
 
         public Server(string host, int port)

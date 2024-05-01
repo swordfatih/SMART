@@ -6,7 +6,7 @@ namespace Interface
 {
     public class NetworkClient : Client
     {
-        public Node Node { get; init; }
+        public Node Node { get; }
 
         public NetworkClient(string name, Node node) : base(name)
         {
