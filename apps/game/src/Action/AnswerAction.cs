@@ -2,7 +2,7 @@ namespace Game
 {
     public class AnswerAction : Action
     {
-        public Communication Communication { get; init; }
+        public Communication Communication { get; }
 
         public AnswerAction(Player player, Communication communication) : base(player)
         {
