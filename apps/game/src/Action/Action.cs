@@ -2,7 +2,7 @@ namespace Game
 {
     public abstract class Action
     {
-        public Player Player { get; init; }
+        public Player Player { get; }
 
         public Action(Player player)
         {
