@@ -10,17 +10,19 @@ namespace Game
         private readonly List<IObserver<BoardData>> Observers;
         private readonly List<Client> Clients;
         public readonly List<Player> Players;
-        public StreamWriter file;
-        public int[]? votes;
+        public StreamWriter Logger { get; set; }
+        public int[]? Votes;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
+        public readonly static int SHOWER_RATE = 2;
 
-        public Board(List<Client> clients)
+        public Board(List<Client> clients, Stream logger)
         {
             Clients = clients;
             Players = new();
             Observers = new();
+            Logger = new(logger);
         }
 
         public void Init()
@@ -29,15 +31,12 @@ namespace Game
             var associate = randomizer.Next(0, Clients.Count);
             GuardPosition = randomizer.Next(0, Clients.Count);
 
-            // create a file a start writing on it ;
-            file = new StreamWriter("game/logs/log.txt");
-
             for (var i = 0; i < Clients.Count; ++i)
             {
                 var player = new Player(Clients[i], i, associate == i ? new AssociateRole() : new CriminalRole());
                 Players.Add(player);
-                file.WriteLine(player.ToString());
-                file.Flush();
+
+                Logger.WriteLine(player.ToString());
             }
         }
 
@@ -46,42 +45,35 @@ namespace Game
             while (!HasEnded())
             {
                 Day++;
-                //shower day
-                if (Day % 4 == 0)
+
+                foreach (var player in Players)
                 {
-                    votes = new int[GetAlivePlayers().Count];
-                    foreach (var player in GetAlivePlayers())
+                    player.States.Clear();
+
+                    IState state = new SafeState();
+
+                    if (player.Status == Status.Dead)
                     {
-                        player.States.Clear();
-                        IState state = new ShowerState();
-                        player.States.Push(state);
-                        //player.Status = Status.Alive;
+                        continue;
                     }
+                    else if (Day % SHOWER_RATE == 0)
+                    {
+                        state = new ShowerState();
+                    }
+                    else if (GuardPosition == player.Position)
+                    {
+                        state = new GuardState();
+                    }
+                    else if (player.Status == Status.Confined)
+                    {
+                        state = new ConfinedState();
+                    }
+
+                    player.States.Push(state);
+                    player.Status = Status.Alive;
                 }
-                else
-                { 
-                    foreach (var player in GetAlivePlayers())
-                    {
-                        player.States.Clear();
 
-                        IState state = new SafeState();
-
-                        if (GuardPosition == player.Position)
-                        {
-                            state = new GuardState();
-                        }
-                        else if (player.Status == Status.Confined)
-                        {
-                            state = new ConfinedState();
-                        }
-
-                        player.States.Push(state);
-                        player.Status = Status.Alive;
-                    }
-                    
-                } 
-                file.WriteLine($"day:{Day}");
-                file.Flush();
+                Logger.WriteLine($"day:{Day}");
 
                 // Notify subscribers
                 Observers.ForEach(x => x.Notify(new BoardData(
@@ -98,7 +90,6 @@ namespace Game
                 GuardPosition = NextGuardPosition ?? AdjacentPlayer(GetPlayerByPosition(GuardPosition), Direction.Right).Position;
                 NextGuardPosition = null;
             }
-            
         }
 
         public void Tour()
@@ -118,43 +109,29 @@ namespace Game
                     }
                 }
 
+                Votes = new int[GetAlivePlayers().Count];
+
                 // executer les actions
                 foreach (var action in actions)
                 {
                     action.Run(this);
-                    file.WriteLine(action.ToString());
-                    file.Flush();
+
+                    Logger.WriteLine(action.ToString());
                 }
-                //traitement des votes le jour de douche
-                if(Day%4 == 0)
+
+                // traitement des votes
+                if (Day % 4 == 0)
                 {
-                    // for(int i = 0; i < votes.Length; i++)
-                    // {
-                    //     Console.WriteLine(votes[i]);
-                    // }
-                    List<int> maxIndices = new List<int>(); 
-                    int maxValue = votes[0];
-                    
-                    for (int i = 0; i < votes.Length; i++)
+                    var max = Votes.Max();
+                    var indices = Votes.Select((x, i) => new { Index = i, Value = x }).Where(x => x.Value == max).Select(x => x.Index).ToList();
+
+                    if (indices.Count == 1 && max > 0)
                     {
-                        if (votes[i] > maxValue)
-                        {
-                            maxValue = votes[i];
-                            maxIndices.Clear(); 
-                            maxIndices.Add(i); 
-                        }
-                        else if (votes[i] == maxValue)
-                        {
-                            maxIndices.Add(i);
-                        }
-                    }
-                    if (maxIndices.Count == 1 && maxValue > 0)
-                    {
-                        var player = Players[maxIndices[0]];
+                        var player = Players[indices[0]];
                         var action = new DieAction(player);
                         action.Run(this);
-                        file?.WriteLine(action.ToString());
-                        file?.Flush();
+
+                        Logger.WriteLine(action.ToString());
                     }
                 }
             }

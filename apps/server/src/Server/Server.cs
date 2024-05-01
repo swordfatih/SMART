@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -104,7 +105,6 @@ namespace Interface
                 switch (packet.Request)
                 {
                     case RequestType.Start:
-                        Broadcast(RequestType.Message, "Game starting.");
                         Task.Run(Start);
                         break;
                     default:
@@ -126,7 +126,10 @@ namespace Interface
                 }
             });
 
-            var board = new Board(clients);
+            var file = File.Open("logs.txt", FileMode.Append, FileAccess.Write, FileShare.Write);
+            var board = new Board(clients, file);
+
+            Broadcast(RequestType.Message, "Initializing game..");
 
             board.Init();
 
@@ -134,9 +137,8 @@ namespace Interface
             clients.ForEach(client => board.Players.Find(x => x.Client == client)?.Subscribe(client));
 
             Console.WriteLine(board);
-            board.Run();
 
-            Broadcast(RequestType.Message, "Game over.");
+            board.Run();
         }
 
         public void Broadcast(RequestType request, params string[] content)
