@@ -11,7 +11,7 @@ namespace Game
         
         public override void Run(Board board)
         {
-            board.votes[Target.Position]++;
+            board.Votes![Target.Position]++;
         }
 
         public override string ToString()
