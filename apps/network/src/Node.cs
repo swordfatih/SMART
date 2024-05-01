@@ -35,7 +35,7 @@ namespace Network
         {
             var buffer = new byte[1024];
             var received = Client.GetStream().Read(buffer, 0, buffer.Length);
-            var packets = Encoding.UTF8.GetString(buffer[..received]).Split(Packet.EOP);
+            var packets = Encoding.UTF8.GetString(buffer, 0, received).Split(new string[] { Packet.EOP }, System.StringSplitOptions.None);
 
             var results = new List<Packet>();
             foreach (var packet in packets)

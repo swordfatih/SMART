@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Network
 {
@@ -32,9 +33,9 @@ namespace Network
 
     public static Packet FromString(string packet)
     {
-      var parts = packet.Split(CS);
+      var parts = packet.Split(new string[] { CS }, StringSplitOptions.None);
       var request = parts[0];
-      var content = parts.Length > 1 ? parts[1..] : Array.Empty<string>();
+      var content = parts.Length > 1 ? parts.Skip(1).ToArray() : new string[0];
 
       return new Packet((RequestType)Enum.Parse(typeof(RequestType), request), content);
     }
