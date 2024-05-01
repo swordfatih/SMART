@@ -1,15 +1,14 @@
 using System;
-using System.Net.Sockets;
 using Network;
 
 namespace Interface
 {
-    public class Client
+    public class ClientInterface
     {
         public string Name { get; }
         public Node Node { get; }
 
-        public Client(Node node, string name)
+        public ClientInterface(Node node, string name)
         {
             Name = name;
             Node = node;
