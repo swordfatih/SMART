@@ -1,6 +1,6 @@
 namespace Game
 {
-    public class AnswerState : IState
+    public class AnswerState : State
     {
         private Communication Communication { get; }
 
@@ -9,7 +9,7 @@ namespace Game
             Communication = communication;
         }
 
-        public Action Action(Board board, Player player)
+        public override Action Action(Board board, Player player)
         {
             if (player.Client.AskChoice(new("You received a message from " + Communication.Origin, new(){"Accept", "Propagate"})) == 1)
             {

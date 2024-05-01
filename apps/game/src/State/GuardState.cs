@@ -2,9 +2,9 @@ using System.Linq;
 
 namespace Game
 {
-    public class GuardState : IState
+    public class GuardState : State
     {
-        public Action Action(Board board, Player player)
+        public override Action Action(Board board, Player player)
         {
             if (player.Role.Team == Team.Associate)
             {

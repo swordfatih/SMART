@@ -1,8 +1,8 @@
 namespace Game
 {
-    public class ConfinedState : IState
+    public class ConfinedState : State
     {
-        public Action Action(Board board, Player player)
+        public override Action Action(Board board, Player player)
         {
             return new IdleAction(player);
         }

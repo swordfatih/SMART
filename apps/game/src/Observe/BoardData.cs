@@ -4,8 +4,8 @@ namespace Game
 {
     public class BoardData
     {
-        public readonly List<string> Names;
-        public int Day;
+        public List<string> Names { get; set; }
+        public int Day { get; set; }
 
         public BoardData(List<string> names, int day)
         {

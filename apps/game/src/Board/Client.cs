@@ -1,18 +1,37 @@
 namespace Game
 {
-    public abstract class Client : IObserver<BoardData>, IObserver<PlayerData>
+    public class Client : IObserver<BoardData>, IObserver<PlayerData>
     {
-        public string Name { get; }
+        public string Name { get; set; }
 
         public Client(string name)
         {
             Name = name;
         }
 
-        public abstract int AskChoice(Question question);
-        public abstract string AskInput(string instruction);
-        public abstract void SendMessage(string message);
-        public abstract void Notify(BoardData value);
-        public abstract void Notify(PlayerData value);
+        public virtual int AskChoice(Question question)
+        {
+            return 0;
+        }
+
+        public virtual string AskInput(string instruction)
+        {
+            return "";
+        }
+
+        public virtual void SendMessage(string message)
+        {
+
+        }
+
+        public virtual void Notify(BoardData value)
+        {
+
+        }
+
+        public virtual void Notify(PlayerData value)
+        {
+
+        }
     }
 }

@@ -2,7 +2,9 @@ namespace Game
 {
     public class CriminalRole : Role
     {
-        public override Team Team { get; set; } = Team.Criminal;
+        public CriminalRole() : base(Team.Criminal)
+        {
+        }
 
         public override string ToString()
         {

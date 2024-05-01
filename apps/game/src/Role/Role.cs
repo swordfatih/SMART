@@ -7,8 +7,13 @@ namespace Game
         Associate
     }
 
-    public abstract class Role
+    public class Role
     {
-        public abstract Team Team { get; set; }
+        public Team Team { get; set; }
+
+        public Role(Team team)
+        {
+            Team = team;
+        }
     }
 }
