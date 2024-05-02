@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Game;
 
 namespace Interface
@@ -17,6 +18,7 @@ namespace Interface
         
         public override int AskChoice(Question question)
         {
+            Console.WriteLine("Random: " + question.ToString());
             return new Random().Next(0, question.Answers.Count);
         }
 
@@ -27,7 +29,7 @@ namespace Interface
 
         public override void SendMessage(string message)
         {
-
+            Console.WriteLine("Random: " + message);
         }
 
         public override void Notify(BoardData value)

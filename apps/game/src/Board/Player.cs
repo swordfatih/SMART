@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Game
 {
@@ -22,23 +21,23 @@ namespace Game
         public Status Status { get; set; } = Status.Alive;
         public int Progression { get; set; }
         public List<Item> Items { get; set; }
-        private Func<Action>? CurrentAction;
-        private CancellationTokenSource Source;
+        [JsonIgnore]
+        public Func<Action>? CurrentState;
 
         public Player(Client client, int position, Role role)
         {
-            Client = client;
             Position = position;
             Role = role;
             Items = new();
             Observers = new();
             States = new();
-            Source = new();
+            Client = client;
+            Subscribe(Client);
         }
 
-        public void Update(Board board)
+        public void Notify(IObserver<PlayerData> observer, Board board)
         {
-            Observers.ForEach(x => x.Notify(new PlayerData(this, board.GuardPosition == Position)));
+            observer.Notify(new PlayerData(this, board.GuardPosition == Position));
         }
 
         public void Subscribe(IObserver<PlayerData> observer)
@@ -46,25 +45,11 @@ namespace Game
             Observers.Add(observer);
         }
 
-        public void SetCurrentAction(Func<Action> action)
+        public void SetClient(Client client)
         {
-            CurrentAction = action;
-        }
-
-        public Func<Action>? GetCurrentAction()
-        {
-            return CurrentAction;
-        }
-
-        public void RestartAction()
-        {
-            Source.Cancel();
-            Task.Run(CurrentAction, GetCancelToken());
-        }
-
-        public CancellationToken GetCancelToken()
-        {
-            return Source.Token;
+            Observers.Remove(Client);
+            Client = client;
+            Subscribe(client);
         }
 
         public override string ToString()

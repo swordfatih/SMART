@@ -20,9 +20,16 @@ namespace Interface
 
             while (true)
             {
-                if (Node.Packets.TryDequeue(out var packet) && packet.Request == RequestType.Choice)
+                Node.Packets.TryDequeue(out var packet);
+
+                if (packet?.Request == RequestType.Choice)
                 {
                     return Convert.ToInt32(packet.Content[0]);
+                }
+                else if (packet?.Request == RequestType.Disconnect)
+                {
+                    Console.WriteLine("Disconnected from server");
+                    throw new Exception("Disconnected from server");
                 }
             }
         }
@@ -33,9 +40,15 @@ namespace Interface
 
             while (true)
             {
-                if (Node.Packets.TryDequeue(out var packet) && packet.Request == RequestType.Input)
+                Node.Packets.TryDequeue(out var packet);
+
+                if (packet?.Request == RequestType.Input)
                 {
                     return packet.Content[0];
+                }
+                else if (packet?.Request == RequestType.Disconnect)
+                {
+                    throw new Exception("Disconnected from server");
                 }
             }
         }

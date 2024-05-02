@@ -11,8 +11,8 @@ namespace Game
 
         public override void Run(Board board)
         {
-            board.Votes.TryGetValue(Player, out var count);
-            board.Votes[Player] = count + 1;
+            board.Votes.TryGetValue(Target, out var count);
+            board.Votes[Target] = count + 1;
         }
 
         public override string ToString()

@@ -4,6 +4,7 @@ namespace Network
     {
         Error,
         Connect,
+        Disconnect,
         Start,
         Message,
         Choice,
