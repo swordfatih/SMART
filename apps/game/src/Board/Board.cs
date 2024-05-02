@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Game
 {
@@ -96,7 +97,7 @@ namespace Game
         {
             while (!StatesEmpty())
             {
-                var actions = new List<Action>();
+                var actions = new List<Task<Action>>();
 
                 // récupérer les actions
                 foreach (var player in GetAlivePlayers())
@@ -104,7 +105,7 @@ namespace Game
                     if (player.States.Count > 0)
                     {
                         var state = player.States.Pop();
-                        var action = state.Action(this, player);
+                        var action = Task.Run(() => state.Action(this, player));
                         actions.Add(action);
                     }
                 }
@@ -114,9 +115,10 @@ namespace Game
                 // executer les actions
                 foreach (var action in actions)
                 {
-                    action.Run(this);
+                    action.Wait();
+                    action.Result.Run(this);
 
-                    Logger.WriteLine(action.ToString());
+                    Logger.WriteLine(action.Result.ToString());
                 }
 
                 // traitement des votes
