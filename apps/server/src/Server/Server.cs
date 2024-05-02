@@ -126,7 +126,7 @@ namespace Interface
                 }
             });
 
-            var file = File.Open("logs.txt", FileMode.Append, FileAccess.Write, FileShare.Write);
+            var file = File.Open("logs.txt", FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
             var board = new Board(clients, file);
 
             Broadcast(RequestType.Message, "Initializing game..");
@@ -138,7 +138,9 @@ namespace Interface
 
             Console.WriteLine(board);
 
+            Broadcast(RequestType.Message, "Game starting.");
             board.Run();
+            Broadcast(RequestType.Message, "Game over.");
         }
 
         public void Broadcast(RequestType request, params string[] content)
