@@ -8,36 +8,36 @@ namespace Game
 {
     public class Board : IObservable<BoardData>
     {
-        private readonly List<IObserver<BoardData>> Observers;
-        private readonly List<Client> Clients;
+        public readonly List<IObserver<BoardData>> Observers;
         public readonly List<Player> Players;
         public StreamWriter Logger { get; set; }
-        public int[]? Votes;
+        public Dictionary<Player, int> Votes;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
         public readonly static int SHOWER_RATE = 2;
 
-        public Board(List<Client> clients, Stream logger)
+        public Board(Stream logger)
         {
-            Clients = clients;
             Players = new();
             Observers = new();
-            Logger = new(logger);
+            Votes = new();
+            Logger = new(logger) { AutoFlush = true };
         }
 
-        public void Init()
+        public void Init(List<Client> clients)
         {
             var randomizer = new Random();
-            var associate = randomizer.Next(0, Clients.Count);
-            GuardPosition = randomizer.Next(0, Clients.Count);
+            var associate = randomizer.Next(0, clients.Count);
+            GuardPosition = randomizer.Next(0, clients.Count);
 
-            for (var i = 0; i < Clients.Count; ++i)
+            for (var i = 0; i < clients.Count; ++i)
             {
-                var player = new Player(Clients[i], i, associate == i ? new AssociateRole() : new CriminalRole());
+                var player = new Player(clients[i], i, associate == i ? new AssociateRole() : new CriminalRole());
                 Players.Add(player);
 
                 Logger.WriteLine(player.ToString());
+                Subscribe(player.Client);
             }
         }
 
@@ -77,12 +77,9 @@ namespace Game
                 Logger.WriteLine($"day:{Day}");
 
                 // Notify subscribers
-                Observers.ForEach(x => x.Notify(new BoardData(
-                    new List<string>(GetAlivePlayers().Select(x => x.Client.Name)),
-                    Day
-                )));
+                Observers.ForEach(Notify);
 
-                Players.ForEach(x => x.Update(this));
+                Players.ForEach(x => x.Notify(x.Client, this));
 
                 // Run day
                 Tour();
@@ -97,40 +94,56 @@ namespace Game
         {
             while (!StatesEmpty())
             {
-                var actions = new List<Task<Action>>();
+                var states = new List<(Task<Action>, Player)>();
+                var actions = new List<Action>();
 
-                // récupérer les actions
+                // récupérer les states
                 foreach (var player in GetAlivePlayers())
                 {
                     if (player.States.Count > 0)
                     {
                         var state = player.States.Pop();
-                        var action = Task.Run(() => state.Action(this, player));
-                        actions.Add(action);
+                        player.CurrentState = () => state.Action(this, player);
+                        states.Add((Task.Run(player.CurrentState), player));
                     }
                 }
 
-                Votes = new int[GetAlivePlayers().Count];
+                Votes.Clear();
+
+                // executer les states
+                foreach (var state in states)
+                {
+                    try
+                    {
+                        state.Item1.Wait();
+                        var result = state.Item1.Result;
+                        actions.Add(result);
+                    }
+                    catch (Exception)
+                    {
+                        var current = Task.Run(state.Item2.CurrentState);
+                        current.Wait();
+                        var result = current.Result;
+                        actions.Add(result);
+                    }
+                }
 
                 // executer les actions
                 foreach (var action in actions)
                 {
-                    action.Wait();
-                    action.Result.Run(this);
-
-                    Logger.WriteLine(action.Result.ToString());
+                    action.Run(this);
+                    Logger.WriteLine(action.ToString());
                 }
 
                 // traitement des votes
                 if (Day % SHOWER_RATE == 0)
                 {
-                    var max = Votes.Max();
-                    var indices = Votes.Select((x, i) => new { Index = i, Value = x }).Where(x => x.Value == max).Select(x => x.Index).ToList();
+                    var max = Votes.Values.Max();
+                    var players = Votes.Where(x => x.Value == max).Select(x => x.Key).ToList();
 
-                    if (indices.Count == 1 && max > 0)
+                    if (players.Count == 1 && max > 0)
                     {
-                        var player = Players[indices[0]];
-                        var action = new DieAction(player);
+                        var action = new DieAction(players.First());
                         action.Run(this);
 
                         Logger.WriteLine(action.ToString());
@@ -185,6 +198,14 @@ namespace Game
         public void Subscribe(IObserver<BoardData> observer)
         {
             Observers.Add(observer);
+        }
+
+        public void Notify(IObserver<BoardData> observer)
+        {
+            observer.Notify(new BoardData(
+                new List<string>(GetAlivePlayers().Select(x => x.Client.Name)),
+                Day
+            ));
         }
 
         override public string ToString()
