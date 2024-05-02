@@ -89,15 +89,23 @@ namespace Interface
 
                     if (value != null)
                     {
-                        Console.WriteLine($"------ Data for player {value.Player.Client.Name} ({value.Player.Role}) ------");
-                        Console.WriteLine(value.HasGuard ? "You have the guard" : "You don't have the guard");
+                        Console.WriteLine($"------ Data for player {value.Player.Client.Name} ({value.Player.Role.GetType().Name}) ------");
 
-                        if (value.Player.Items.Count > 0)
+                        if (value.Player.Status == Status.Dead)
                         {
-                            Console.WriteLine("You have the following items: ");
-                            foreach (var item in value.Player.Items)
+                            Console.WriteLine("You are dead");
+                        }
+                        else
+                        {
+                            Console.WriteLine(value.HasGuard ? "You have the guard" : "You don't have the guard");
+
+                            if (value.Player.Items.Count > 0)
                             {
-                                Console.WriteLine(item);
+                                Console.WriteLine("You have the following items: ");
+                                foreach (var item in value.Player.Items)
+                                {
+                                    Console.WriteLine(item);
+                                }
                             }
                         }
                     }

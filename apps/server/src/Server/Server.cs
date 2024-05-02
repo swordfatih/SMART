@@ -84,7 +84,7 @@ namespace Interface
 
                     var client = new NetworkClient(packet.Content[0], node);
                     Clients.TryUpdate(socket, client, null);
-                    // ReplaceClient(client.Name, client);
+                    ReplaceClient(client.Name, client);
 
                     Console.WriteLine($"{name} connected.");
                     Broadcast($"{name} connected.");
@@ -97,11 +97,9 @@ namespace Interface
             if (!client.Node.Connected())
             {
                 Clients.TryRemove(client.Node.Client, out _);
-                ReplaceClient(client.Name, new ConsoleClient(client.Name));
-
+                ReplaceClient(client.Name, new RandomClient(client.Name));
                 Console.WriteLine($"{client.Name} disconnected.");
                 Broadcast($"{client.Name} disconnected.");
-
                 return;
             }
 
@@ -138,9 +136,6 @@ namespace Interface
 
             Board.Init(clients);
 
-            clients.ForEach(Board.Subscribe);
-            clients.ForEach(client => Board.Players.Find(x => x.Client == client)?.Subscribe(client));
-
             Console.WriteLine(Board);
 
             Broadcast("Game starting.");
@@ -164,12 +159,16 @@ namespace Interface
 
                 if (player != null)
                 {
-                    player.Client = source;
-
-                    if (player.GetCurrentAction() is not null)
+                    if (player.Client is NetworkClient networkClient)
                     {
-                        player.RestartAction();
+                        networkClient.Node.Packets.Enqueue(new Packet(RequestType.Disconnect, new[] { "You have been disconnected." }));
                     }
+
+                    Board.Observers.Remove(player.Client);
+                    player.SetClient(source);
+                    Board.Subscribe(player.Client);
+                    Board.Notify(player.Client);
+                    Console.WriteLine($"{name} replaced by {source.GetType().Name}.");
                 }
             }
         }

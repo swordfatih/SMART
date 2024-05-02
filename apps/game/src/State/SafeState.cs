@@ -36,13 +36,13 @@ namespace Game
                         communication = new MessageCommunication(player, direction, player.Client.AskInput("Entrez votre message"));
                         break;
                     case "Gardien":
-                        communication = new ChoiceCommunication(player, direction, new("Le gardien est-il devant toi ?", new(){"Oui", "Non"}));
+                        communication = new ChoiceCommunication(player, direction, new("Le gardien est-il devant toi ?", new() { "Oui", "Non" }));
                         break;
                     case "Progression":
-                        communication = new ChoiceCommunication(player, direction, new("Veux-tu partager ta progression ?", new(){"Oui", "Non"}));
+                        communication = new ChoiceCommunication(player, direction, new("Veux-tu partager ta progression ?", new() { "Oui", "Non" }));
                         break;
                     case "Opinion":
-                        communication = new ChoiceCommunication(player, direction, new("Ton avis sur ton autre voisin ?", new(){"Malveillance max", "Un bon", "Je ne sais pas"}));
+                        communication = new ChoiceCommunication(player, direction, new("Ton avis sur ton autre voisin ?", new() { "Malveillance max", "Un bon", "Je ne sais pas" }));
                         break;
                     default:
                         break;
