@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Game
 {
@@ -19,6 +22,8 @@ namespace Game
         public Status Status { get; set; } = Status.Alive;
         public int Progression { get; set; }
         public List<Item> Items { get; set; }
+        private Func<Action>? CurrentAction;
+        private CancellationTokenSource Source;
 
         public Player(Client client, int position, Role role)
         {
@@ -28,6 +33,7 @@ namespace Game
             Items = new();
             Observers = new();
             States = new();
+            Source = new();
         }
 
         public void Update(Board board)
@@ -38,6 +44,27 @@ namespace Game
         public void Subscribe(IObserver<PlayerData> observer)
         {
             Observers.Add(observer);
+        }
+
+        public void SetCurrentAction(Func<Action> action)
+        {
+            CurrentAction = action;
+        }
+
+        public Func<Action>? GetCurrentAction()
+        {
+            return CurrentAction;
+        }
+
+        public void RestartAction()
+        {
+            Source.Cancel();
+            Task.Run(CurrentAction, GetCancelToken());
+        }
+
+        public CancellationToken GetCancelToken()
+        {
+            return Source.Token;
         }
 
         public override string ToString()

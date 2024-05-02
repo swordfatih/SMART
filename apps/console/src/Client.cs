@@ -89,7 +89,7 @@ namespace Interface
 
                     if (value != null)
                     {
-                        Console.WriteLine($"------ Data for player {value.Player.Client.Name} ------");
+                        Console.WriteLine($"------ Data for player {value.Player.Client.Name} ({value.Player.Role}) ------");
                         Console.WriteLine(value.HasGuard ? "You have the guard" : "You don't have the guard");
 
                         if (value.Player.Items.Count > 0)

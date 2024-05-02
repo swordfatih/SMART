@@ -9,7 +9,6 @@ namespace Game
     public class Board : IObservable<BoardData>
     {
         private readonly List<IObserver<BoardData>> Observers;
-        private readonly List<Client> Clients;
         public readonly List<Player> Players;
         public StreamWriter Logger { get; set; }
         public Dictionary<Player, int> Votes;
@@ -18,24 +17,23 @@ namespace Game
         public int Day { get; set; } = 0;
         public readonly static int SHOWER_RATE = 2;
 
-        public Board(List<Client> clients, Stream logger)
+        public Board(Stream logger)
         {
-            Clients = clients;
             Players = new();
             Observers = new();
             Votes = new();
             Logger = new(logger) { AutoFlush = true };
         }
 
-        public void Init()
+        public void Init(List<Client> clients)
         {
             var randomizer = new Random();
-            var associate = randomizer.Next(0, Clients.Count);
-            GuardPosition = randomizer.Next(0, Clients.Count);
+            var associate = randomizer.Next(0, clients.Count);
+            GuardPosition = randomizer.Next(0, clients.Count);
 
-            for (var i = 0; i < Clients.Count; ++i)
+            for (var i = 0; i < clients.Count; ++i)
             {
-                var player = new Player(Clients[i], i, associate == i ? new AssociateRole() : new CriminalRole());
+                var player = new Player(clients[i], i, associate == i ? new AssociateRole() : new CriminalRole());
                 Players.Add(player);
 
                 Logger.WriteLine(player.ToString());
@@ -106,8 +104,8 @@ namespace Game
                     if (player.States.Count > 0)
                     {
                         var state = player.States.Pop();
-                        var action = Task.Run(() => state.Action(this, player));
-                        actions.Add(action);
+                        player.SetCurrentAction(() => state.Action(this, player));
+                        actions.Add(Task.Run(player.GetCurrentAction(), player.GetCancelToken()));
                     }
                 }
 
@@ -116,10 +114,25 @@ namespace Game
                 // executer les actions
                 foreach (var action in actions)
                 {
-                    action.Wait();
-                    action.Result.Run(this);
+                    Action? result = null;
 
-                    Logger.WriteLine(action.Result.ToString());
+                    Console.WriteLine("test before");
+
+                    do
+                    {
+                        try
+                        {
+                            result = action.Result;
+                        }
+                        catch (TaskCanceledException) { 
+                            Console.WriteLine("Canceled action");
+                        }
+                    } while (result is null);
+
+                    Console.WriteLine("test after");
+
+                    Logger.WriteLine(result?.ToString());
+                    result?.Run(this);
                 }
 
                 // traitement des votes
