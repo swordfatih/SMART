@@ -5,11 +5,16 @@ namespace Interface
 {
     public class RandomClient : Client
     {
-        public RandomClient() : base(Guid.NewGuid().ToString())
+        public RandomClient(string name) : base(name)
         {
 
         }
 
+        public RandomClient() : base(Guid.NewGuid().ToString())
+        {
+
+        }
+        
         public override int AskChoice(Question question)
         {
             return new Random().Next(0, question.Answers.Count);

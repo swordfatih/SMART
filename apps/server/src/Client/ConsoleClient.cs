@@ -50,7 +50,6 @@ namespace Interface
             }
 
             Console.WriteLine(Environment.NewLine);
-
         }
 
         public override void Notify(PlayerData value)
