@@ -8,10 +8,11 @@ namespace Game
         {
             Target = target;
         }
-        
+
         public override void Run(Board board)
         {
-            board.Votes![Target.Position]++;
+            board.Votes.TryGetValue(Target, out var count);
+            board.Votes[Target] = count + 1;
         }
 
         public override string ToString()

@@ -16,6 +16,7 @@ namespace Interface
         public TcpListener Listener { get; }
         public ConcurrentDictionary<TcpClient, NetworkClient?> Clients { get; }
         public bool Running { get; set; } = true;
+        public Board? Board { get; set; }
 
         public Server(string host, int port)
         {
@@ -75,7 +76,7 @@ namespace Interface
                 {
                     var name = packet.Content[0];
 
-                    if (Clients.Values.Any(client => client?.Name == name))
+                    if (Clients.Values.Any(client => client is not null && client.Name == name && client is NetworkClient))
                     {
                         node.Send(RequestType.Error, "Name already taken.");
                         return;
@@ -83,8 +84,10 @@ namespace Interface
 
                     var client = new NetworkClient(packet.Content[0], node);
                     Clients.TryUpdate(socket, client, null);
+                    ReplaceClient(client.Name, client);
 
                     Console.WriteLine($"{name} connected.");
+                    Broadcast($"{name} connected.");
                 }
             }
         }
@@ -94,7 +97,9 @@ namespace Interface
             if (!client.Node.Connected())
             {
                 Clients.TryRemove(client.Node.Client, out _);
+                ReplaceClient(client.Name, new RandomClient(client.Name));
                 Console.WriteLine($"{client.Name} disconnected.");
+                Broadcast($"{client.Name} disconnected.");
                 return;
             }
 
@@ -126,27 +131,45 @@ namespace Interface
                 }
             });
 
-            var file = File.Open("logs.txt", FileMode.Append, FileAccess.Write, FileShare.Write);
-            var board = new Board(clients, file);
+            var file = File.Open("logs.txt", FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+            Board = new Board(file);
 
-            Broadcast(RequestType.Message, "Initializing game..");
+            Board.Init(clients);
 
-            board.Init();
+            Console.WriteLine(Board);
 
-            clients.ForEach(board.Subscribe);
-            clients.ForEach(client => board.Players.Find(x => x.Client == client)?.Subscribe(client));
-
-            Console.WriteLine(board);
-
-            board.Run();
+            Broadcast("Game starting.");
+            Board.Run();
+            Broadcast("Game over.");
         }
 
-        public void Broadcast(RequestType request, params string[] content)
+        public void Broadcast(string message)
         {
-            var packet = new Packet(request, content);
             foreach (var client in Clients.Values)
             {
-                client?.Node.Send(packet);
+                client?.SendMessage(message);
+            }
+        }
+
+        private void ReplaceClient(string name, Client source)
+        {
+            if (Board != null)
+            {
+                var player = Board.Players.Find(x => x.Client.Name == name);
+
+                if (player != null)
+                {
+                    if (player.Client is NetworkClient networkClient)
+                    {
+                        networkClient.Node.Packets.Enqueue(new Packet(RequestType.Disconnect, new[] { "You have been disconnected." }));
+                    }
+
+                    Board.Observers.Remove(player.Client);
+                    player.SetClient(source);
+                    Board.Subscribe(player.Client);
+                    Board.Notify(player.Client);
+                    Console.WriteLine($"{name} replaced by {source.GetType().Name}.");
+                }
             }
         }
     }
