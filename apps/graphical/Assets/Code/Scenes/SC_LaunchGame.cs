@@ -3,6 +3,9 @@ using Interface;
 using TMPro;
 using UnityEngine;
 using System.Threading.Tasks;
+using System;
+using System.Net.Sockets;
+using System.Threading;
 
 public class SC_LaunchGame : MonoBehaviour
 {
@@ -30,5 +33,22 @@ public class SC_LaunchGame : MonoBehaviour
 
         var node = new Node(host, port);
         GameManager.Client = new ClientInterface(node, pseudoField.text);
+        Task.Run(() =>{
+            while (true)
+            {
+                if (GameManager.Client.Node.Client.Client.Poll(0, SelectMode.SelectRead))
+                {
+                    if (!GameManager.Client.Node.Connected())
+                    {
+                        Console.WriteLine("Connection lost.");
+                        break;
+                    }
+                    else
+                    {
+                        GameManager.Client.Handle();
+                    }
+                }
+            }
+        });
     }
 }
