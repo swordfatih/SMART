@@ -17,6 +17,7 @@ namespace Interface
         public override int AskChoice(Question question)
         {
             Node.Send(RequestType.Choice, JsonSerializer.Serialize(question));
+
             while (true)
             {
                 if (Node.Packets.TryDequeue(out var packet) && packet.Request == RequestType.Choice)

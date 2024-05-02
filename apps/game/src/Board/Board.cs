@@ -12,7 +12,7 @@ namespace Game
         private readonly List<Client> Clients;
         public readonly List<Player> Players;
         public StreamWriter Logger { get; set; }
-        public int[]? Votes;
+        public Dictionary<Player, int> Votes;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
@@ -23,7 +23,8 @@ namespace Game
             Clients = clients;
             Players = new();
             Observers = new();
-            Logger = new(logger);
+            Votes = new();
+            Logger = new(logger) { AutoFlush = true };
         }
 
         public void Init()
@@ -110,7 +111,7 @@ namespace Game
                     }
                 }
 
-                Votes = new int[GetAlivePlayers().Count];
+                Votes.Clear();
 
                 // executer les actions
                 foreach (var action in actions)
@@ -124,13 +125,12 @@ namespace Game
                 // traitement des votes
                 if (Day % SHOWER_RATE == 0)
                 {
-                    var max = Votes.Max();
-                    var indices = Votes.Select((x, i) => new { Index = i, Value = x }).Where(x => x.Value == max).Select(x => x.Index).ToList();
+                    var max = Votes.Values.Max();
+                    var players = Votes.Where(x => x.Value == max).Select(x => x.Key).ToList();
 
-                    if (indices.Count == 1 && max > 0)
+                    if (players.Count == 1 && max > 0)
                     {
-                        var player = Players[indices[0]];
-                        var action = new DieAction(player);
+                        var action = new DieAction(players.First());
                         action.Run(this);
 
                         Logger.WriteLine(action.ToString());
