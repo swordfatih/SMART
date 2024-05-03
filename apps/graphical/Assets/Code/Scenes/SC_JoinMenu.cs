@@ -1,7 +1,8 @@
+using Network;
+using Interface;
 using TMPro;
 using UnityEngine;
-using Interface;
-using Network;
+using UnityEngine.SceneManagement;
 
 public class SC_JoinMenu : MonoBehaviour
 {
@@ -9,16 +10,16 @@ public class SC_JoinMenu : MonoBehaviour
     public TMP_InputField addressField;
     public TMP_InputField portField;
     public GameObject joinButton;
-    private GameManager GameManager;
-
-    void Start()
-    {
-        GameManager = FindObjectOfType<GameManager>();
-    }
 
     public void ClickJoinButton()
     {
-        var node = new Node(addressField.text, int.Parse(portField.text));
-        GameManager.Client = new ClientInterface(node, pseudoField.text);
+        var host = addressField.text;
+        var port = int.Parse(portField.text);
+
+        SceneManager.LoadScene("GameInterface", LoadSceneMode.Additive);
+
+        var node = new Node(host, port);
+        var client = new ClientInterface(node, pseudoField.text);
+        GameManager.Instance.Client = client;
     }
 }

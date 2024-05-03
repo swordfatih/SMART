@@ -1,6 +1,8 @@
 using Network;
 using Game;
 using System;
+using UnityEngine;
+using System.Text.Json;
 
 namespace Interface
 {
@@ -15,13 +17,19 @@ namespace Interface
 
         public override int AskChoice(Question question)
         {
-            Node.Send(RequestType.Choice, question.ToString());
+            Node.Send(RequestType.Choice, JsonSerializer.Serialize(question));
 
             while (true)
             {
-                if (Node.Packets.TryDequeue(out var packet) && packet.Request == RequestType.Choice)
+                Node.Packets.TryDequeue(out var packet);
+
+                if (packet?.Request == RequestType.Choice)
                 {
                     return Convert.ToInt32(packet.Content[0]);
+                }
+                else if (packet?.Request == RequestType.Disconnect)
+                {
+                    throw new Exception("Disconnected from server");
                 }
             }
         }
@@ -32,9 +40,15 @@ namespace Interface
 
             while (true)
             {
-                if (Node.Packets.TryDequeue(out var packet) && packet.Request == RequestType.Input)
+                Node.Packets.TryDequeue(out var packet);
+
+                if (packet?.Request == RequestType.Input)
                 {
                     return packet.Content[0];
+                }
+                else if (packet?.Request == RequestType.Disconnect)
+                {
+                    throw new Exception("Disconnected from server");
                 }
             }
         }
@@ -46,39 +60,12 @@ namespace Interface
 
         public override void Notify(BoardData value)
         {
-            var output = "";
-            output += $"------ Données pour le jour {value.Day} ------";
-            output += "Joueurs en vie (gauche à droite, circulaire): ";
-
-            for (var i = 0; i < value.Names.Count; ++i)
-            {
-                if (i != 0)
-                {
-                    output += " -> ";
-                }
-
-                output += value.Names[i];
-            }
-
-            output += Environment.NewLine;
-
-            Node.Send(RequestType.Message, output);
+            Node.Send(RequestType.NotifyBoard, JsonSerializer.Serialize(value));
         }
 
         public override void Notify(PlayerData value)
         {
-            var output = "";
-            output += $"------ Données pour le joueur {value.Player.Client.Name} ({value.Player.Role}) ------";
-            output += Environment.NewLine;
-            output += value.HasGuard ? "You have the guard" : "You don't have the guard";
-
-            if (value.Player?.Items.Count > 0)
-            {
-                output += "Vous objets: ";
-                value.Player?.Items.ForEach(x => output += x + Environment.NewLine);
-            }
-
-            Node.Send(RequestType.Message, output);
+            Node.Send(RequestType.NotifyPlayer, JsonSerializer.Serialize(value));
         }
 
         public override string ToString()
