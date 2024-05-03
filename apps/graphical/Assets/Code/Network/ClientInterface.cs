@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using Network;
 using System.Net.Sockets;
 using Game;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Interface
 {
@@ -94,7 +94,10 @@ namespace Interface
                         {
                             Debug.Log("Choice packet...");
                             var data = packet.Content[0];
-                            var value = JsonSerializer.Deserialize<Question>(data);
+                            var value = JsonConvert.DeserializeObject<Question>(data, new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.Auto
+                            });
 
                             foreach (Transform child in controls.transform)
                             {
@@ -134,6 +137,13 @@ namespace Interface
                             }
 
                             Debug.Log("End choice packet...");
+                        }
+                        else if (packet.Request == RequestType.End)
+                        {
+                            var team = packet.Content[0];
+                            var winner = team == "null" ? "there is no winner" : $"the winners are the {team} team";
+
+                            Debug.Log($"The game is over, {winner}");
                         }
 
                         Debug.Log("End choice packet...");

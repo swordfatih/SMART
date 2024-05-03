@@ -3,7 +3,7 @@ namespace Game
     public enum Team
     {
         Solo,
-        Criminal,
+        Inmate,
         Associate
     }
 
