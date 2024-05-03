@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.1341472, b: 0.121078566, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -693,7 +693,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 147, y: 162}
+  m_AnchoredPosition: {x: 147, y: 193}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &424807898
@@ -1181,10 +1181,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iaNb: 0
   yValue: 0
+  spacing: 38
   canvas: {fileID: 637743762}
   iaPrefab: {fileID: 6639356660650300486, guid: b033e8b631b09aa4c97bee0da175e4ae, type: 3}
   addButton: {fileID: 782741079}
   iaPanel: {fileID: 15274496}
+  playerPanel: {fileID: 1669563189}
+  playerPrefab: {fileID: 5807415738531992301, guid: 4c169055613b71a45aee1828f698f41a, type: 3}
 --- !u!1 &724403479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,7 +1392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &896012420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2306,7 +2309,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 637743764}
         m_TargetAssemblyTypeName: SC_Lobby, Assembly-CSharp
-        m_MethodName: AddIAButton
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
