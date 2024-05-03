@@ -1,7 +1,7 @@
 using System;
-using System.Text.Json;
 using Network;
 using Game;
+using Newtonsoft.Json;
 
 namespace Interface
 {
@@ -38,7 +38,10 @@ namespace Interface
                 else if (packet.Request == RequestType.Choice)
                 {
                     var data = packet.Content[0];
-                    var value = JsonSerializer.Deserialize<Question>(data);
+                    var value = JsonConvert.DeserializeObject<Question>(data, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
 
                     if (value != null)
                     {
@@ -62,7 +65,10 @@ namespace Interface
                 else if (packet.Request == RequestType.NotifyBoard)
                 {
                     var data = packet.Content[0];
-                    var value = JsonSerializer.Deserialize<BoardData>(data);
+                    var value = JsonConvert.DeserializeObject<BoardData>(data, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
 
                     if (value != null)
                     {
@@ -85,11 +91,14 @@ namespace Interface
                 else if (packet.Request == RequestType.NotifyPlayer)
                 {
                     var data = packet.Content[0];
-                    var value = JsonSerializer.Deserialize<PlayerData>(data);
+                    var value = JsonConvert.DeserializeObject<PlayerData>(data, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
 
                     if (value != null)
                     {
-                        Console.WriteLine($"------ Data for player {value.Player.Client.Name} ({value.Player.Role.GetType().Name}) ------");
+                        Console.WriteLine($"------ Data for player {value.Player.Client.Name} ({value.Player.Role.ToString()}) ------");
 
                         if (value.Player.Status == Status.Dead)
                         {
@@ -109,6 +118,13 @@ namespace Interface
                             }
                         }
                     }
+                }
+                else if(packet.Request == RequestType.End)
+                {
+                    var team = packet.Content[0];
+                    var winner = team == "null" ? "there is no winner" : $"the winners are the {team} team";
+                    
+                    Console.WriteLine($"The game is over, {winner}");
                 }
             }
         }
