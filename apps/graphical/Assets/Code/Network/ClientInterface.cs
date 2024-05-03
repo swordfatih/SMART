@@ -96,41 +96,15 @@ namespace Interface
                             var data = packet.Content[0];
                             var value = JsonSerializer.Deserialize<Question>(data);
 
-                            foreach (Transform child in controls.transform)
+                            GameObject popMessageObject = GameObject.Find("message");
+
+                            // Récupérer le composant popMessage attaché à l'objet
+                            popMessage popMessageScript = popMessageObject.GetComponent<popMessage>();
+
+                            // Vérifier si le composant a été trouvé
+                            if (popMessageScript != null)
                             {
-                                GameObject.Destroy(child.gameObject);
-                            }
-
-                            var instruction = new GameObject("Instruction", typeof(Text));
-                            instruction.transform.SetParent(controls.transform);
-                            instruction.GetComponent<Text>().text = value.Value;
-                            instruction.GetComponent<Text>().font = Resources.GetBuiltinResource(typeof(Font), "LegacyRuntime.ttf") as Font;
-                            var instructionRect = instruction.GetComponent<RectTransform>();
-                            instructionRect.position = new Vector3(0, 0, 0);
-                            instruction.transform.localPosition = Vector3.zero;
-
-                            for (var i = 0; i < value.Answers.Count; ++i)
-                            {
-                                var choice = new GameObject("Choice", typeof(Button));
-                                choice.transform.SetParent(controls.transform);
-                                choice.GetComponent<Button>().onClick.AddListener(() =>
-                                {
-                                    Node.Send(RequestType.Choice, i.ToString());
-                                });
-
-                                // add text to button
-                                var choiceText = new GameObject("Text", typeof(Text));
-                                choiceText.transform.SetParent(choice.transform);
-                                choiceText.GetComponent<Text>().text = value.Answers[i];
-                                choiceText.GetComponent<Text>().font = Resources.GetBuiltinResource(typeof(Font), "LegacyRuntime.ttf") as Font;
-                                choiceText.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
-
-                                var choiceRect = choice.AddComponent<RectTransform>();
-                                choiceRect.position = new Vector3(0, 0, 0);
-                                choice.transform.localPosition = new Vector3(0, -50 * i, 0);
-
-                                // height of button 50
-                                choiceRect.sizeDelta = new Vector2(200, 50);
+                                popMessageScript.SetMessage(value);
                             }
 
                             Debug.Log("End choice packet...");
