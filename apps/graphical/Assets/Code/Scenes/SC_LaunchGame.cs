@@ -18,12 +18,14 @@ public class SC_LaunchGame : MonoBehaviour
         var port = int.Parse(portField.text);
         GameManager.Instance.Server = new Server(host, port);
 
+        GameManager.Instance.Admin=true;
+
         Debug.Log("Starting server on " + host + " (" + port + ")");
 
         var listener = Task.Run(GameManager.Instance.Server.Listen);
         var receiver = Task.Run(GameManager.Instance.Server.Receive);
 
-        SceneManager.LoadScene("GameInterface", LoadSceneMode.Additive);
+        SceneManager.LoadScene("GameLobby", LoadSceneMode.Additive);
 
         var node = new Node(host, port);
         GameManager.Instance.Client = new ClientInterface(node, pseudoField.text);
