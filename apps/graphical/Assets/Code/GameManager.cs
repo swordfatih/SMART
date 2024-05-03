@@ -3,17 +3,27 @@ using Interface;
 
 public class GameManager : MonoBehaviour
 {
-    public ClientInterface Client;
-    public ServerInterface Server;
+    public ClientInterface Client { get; set; }
+    public ServerInterface Server { get; set; }
 
-    void Start()
+    public static GameManager Instance { get; private set; }
+
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            Instance = this;
+        }
 
-    }
+        DontDestroyOnLoad(gameObject);
 
-    // Update is called once per frame
-    void Update()
-    {
-
+        // Initialisation du Game Manager...
+        Client = null;
+        Server = null;
     }
 }
