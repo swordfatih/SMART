@@ -8,14 +8,14 @@ namespace Game
 {
     public class Board : IObservable<BoardData>
     {
-        public readonly List<IObserver<BoardData>> Observers;
-        public readonly List<Player> Players;
+        public List<IObserver<BoardData>> Observers;
+        public PlayerList Players;
         public StreamWriter Logger { get; set; }
         public Dictionary<Player, int> Votes;
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
-        public readonly static int SHOWER_RATE = 2;
+        public static int SHOWER_RATE = 2;
 
         public Board(Stream logger)
         {
@@ -33,7 +33,7 @@ namespace Game
 
             for (var i = 0; i < clients.Count; ++i)
             {
-                var player = new Player(clients[i], i, associate == i ? new AssociateRole() : new CriminalRole());
+                var player = new Player(clients[i], i, associate == i ? new AssociateRole() : new InmateRole());
                 Players.Add(player);
 
                 Logger.WriteLine(player.ToString());
@@ -43,62 +43,66 @@ namespace Game
 
         public void Run()
         {
-            while (!HasEnded())
+            while (GetWinner() == null)
             {
                 Day++;
+                Logger.WriteLine($"day:{Day}");
 
-                foreach (var player in Players)
+                foreach (var player in Players.Except(Status.Dead))
                 {
+                    // new state
                     player.States.Clear();
-
-                    State state = new SafeState();
-
-                    if (player.Status == Status.Dead)
+                    if (Day % SHOWER_RATE == 0)
                     {
-                        continue;
-                    }
-                    else if (Day % SHOWER_RATE == 0)
-                    {
-                        state = new ShowerState();
+                        player.States.Push(new ShowerState());
                     }
                     else if (GuardPosition == player.Position)
                     {
-                        state = new GuardState();
+                        player.States.Push(new GuardState());
                     }
                     else if (player.Status == Status.Confined)
                     {
-                        state = new ConfinedState();
+                        player.States.Push(new ConfinedState());
+                    }
+                    else
+                    {
+                        player.States.Push(new SafeState());
                     }
 
-                    player.States.Push(state);
-                    player.Status = Status.Alive;
+                    // new status
+                    if (player.Progression == Player.MAX_PROGRESSION && Day % SHOWER_RATE != 0)
+                    {
+                        player.Status = Status.Escaped;
+                    }
+                    else
+                    {
+                        player.Status = Status.Alive;
+                    }
                 }
-
-                Logger.WriteLine($"day:{Day}");
 
                 // Notify subscribers
                 Observers.ForEach(Notify);
 
-                Players.ForEach(x => x.Notify(x.Client, this));
+                foreach (var player in Players)
+                {
+                    player.Notify(player.Client, this);
+                }
 
                 // Run day
                 Tour();
-
-                // Update guard position
-                GuardPosition = NextGuardPosition ?? AdjacentPlayer(GetPlayerByPosition(GuardPosition), Direction.Right).Position;
-                NextGuardPosition = null;
+                UpdateGuard();
             }
         }
 
         public void Tour()
         {
-            while (!StatesEmpty())
+            while (!Players.StatesEmpty())
             {
                 var states = new List<(Task<Action>, Player)>();
                 var actions = new List<Action>();
 
                 // récupérer les states
-                foreach (var player in GetAlivePlayers())
+                foreach (var player in Players.Except(Status.Dead))
                 {
                     if (player.States.Count > 0)
                     {
@@ -152,47 +156,43 @@ namespace Game
             }
         }
 
-        public Player GetPlayerByPosition(int position)
+        public void UpdateGuard()
         {
-            return Players.Find(x => x.Position == position) ?? Players.First();
-        }
-
-        public List<Player> GetAlivePlayers(Player? except = null)
-        {
-            return new List<Player>(Players.Where(x => x.Status != Status.Dead && (except == null || x != except)));
-        }
-
-        private bool HasEnded()
-        {
-            return GetAlivePlayers().Find(x => x.Progression == 3) != null || GetAlivePlayers().Find(x => x.Role.Team == Team.Criminal) == null;
-        }
-
-        private bool StatesEmpty()
-        {
-            foreach (var player in Players)
-            {
-                if (player.States.Count > 0)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public Player AdjacentPlayer(Player current, Direction direction)
-        {
-            static int mod(int x, int m) => (x % m + m) % m;
+            GuardPosition = NextGuardPosition ?? Players.AdjacentPosition(GuardPosition, Direction.Right);
+            NextGuardPosition = null;
 
             foreach (var player in Players)
             {
-                if (player.Position == mod(current.Position + (direction == Direction.Right ? 1 : -1), Players.Count))
+                if (player.Position == GuardPosition && player.HasDug)
                 {
-                    return player;
+                    player.Status = Status.Dead;
                 }
+
+                player.HasDug = false;
             }
 
-            return current;
+            Logger.WriteLine($"guard:{GuardPosition}");
+        }
+
+        public Team? GetWinner()
+        {
+            var inmates = Players.Only(Team.Inmate);
+            var associates = Players.Only(Team.Associate);
+            var alive_inmates = inmates.Except(Status.Dead);
+            var alive_associates = associates.Except(Status.Dead);
+            var escaped_inmates = inmates.Only(Status.Escaped);
+
+            if (escaped_inmates.Count() > alive_inmates.Count())
+            {
+                return Team.Inmate;
+            }
+
+            if (alive_associates.Count() > alive_inmates.Count())
+            {
+                return Team.Associate;
+            }
+
+            return null;
         }
 
         public void Subscribe(IObserver<BoardData> observer)
@@ -203,7 +203,7 @@ namespace Game
         public void Notify(IObserver<BoardData> observer)
         {
             observer.Notify(new BoardData(
-                new List<string>(GetAlivePlayers().Select(x => x.Client.Name)),
+                new List<string>(Players.Except(Status.Dead).Select(x => x.Client.Name)),
                 Day
             ));
         }
@@ -211,7 +211,12 @@ namespace Game
         override public string ToString()
         {
             var output = "";
-            Players.ForEach(x => output += x + Environment.NewLine);
+
+            foreach (var player in Players)
+            {
+                output += player.ToString() + Environment.NewLine;
+            }
+
             return output;
         }
     }

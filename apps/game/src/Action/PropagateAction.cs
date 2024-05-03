@@ -11,7 +11,7 @@ namespace Game
 
         public override void Run(Board board)
         {
-            var target = board.AdjacentPlayer(Player, Communication.Direction);
+            var target = board.Players.AdjacentPlayer(Player, Communication.Direction);
 
             if (target != Communication.Origin)
             {

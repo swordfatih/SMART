@@ -8,9 +8,8 @@ using Game;
 public class GameManager : MonoBehaviour
 {
     public ClientInterface Client { get; set; }
-    public ServerInterface Server { get; set; }
+    public Server Server { get; set; }
     public bool Admin {get; set; } = false;
-
     public List<Client> Bots;
 
 

@@ -6,8 +6,8 @@ namespace Game
     {
         public override Action Action(Board board, Player player)
         {
-            var targets = board.GetAlivePlayers(player);
-            return new VoteAction(player, targets[player.Client.AskChoice(new("Contre qui vous voulez voter ?", new(targets.Select(x => x.Client.Name))))]);
+            var targets = board.Players.Except(Status.Dead).Except(player);
+            return new VoteAction(player, targets.ElementAt(player.Client.AskChoice(new("Contre qui vous voulez voter ?", new(targets.Select(x => x.Client.Name))))));
         }
     }
 }
