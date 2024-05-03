@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Game
 {
@@ -9,12 +9,15 @@ namespace Game
         Alive,
         Dead,
         Confined,
+        Escaped
     }
 
     public class Player : IObservable<PlayerData>
     {
+        public static int MAX_PROGRESSION = 3;
         private readonly List<IObserver<PlayerData>> Observers;
         public Client Client { get; set; }
+        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
         public Role Role { get; set; }
         public int Position { get; set; }
         public Stack<State> States { get; set; }
@@ -23,6 +26,7 @@ namespace Game
         public List<Item> Items { get; set; }
         [JsonIgnore]
         public Func<Action>? CurrentState;
+        public bool HasDug { get; set; } = false;
 
         public Player(Client client, int position, Role role)
         {

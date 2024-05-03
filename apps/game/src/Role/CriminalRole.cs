@@ -1,14 +1,14 @@
 namespace Game
 {
-    public class CriminalRole : Role
+    public class InmateRole : Role
     {
-        public CriminalRole() : base(Team.Criminal)
+        public InmateRole() : base(Team.Inmate)
         {
         }
 
         public override string ToString()
         {
-            return "Criminal";
+            return "Inmate";
         }
     }
 }

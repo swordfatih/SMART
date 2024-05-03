@@ -4,7 +4,7 @@ using Interface;
 public class GameManager : MonoBehaviour
 {
     public ClientInterface Client { get; set; }
-    public ServerInterface Server { get; set; }
+    public Server Server { get; set; }
 
     public static GameManager Instance { get; private set; }
 

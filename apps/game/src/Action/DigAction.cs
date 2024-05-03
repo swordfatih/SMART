@@ -9,6 +9,7 @@ namespace Game
         public override void Run(Board board)
         {
             Player.Progression++;
+            Player.HasDug = true;
         }
 
         public override string ToString()
