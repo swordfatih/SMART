@@ -1,10 +1,18 @@
 using UnityEngine;
 using Interface;
+using System.Collections;
+using System.Collections.Generic;
+using Network;
+using Game;
 
 public class GameManager : MonoBehaviour
 {
     public ClientInterface Client { get; set; }
     public ServerInterface Server { get; set; }
+    public bool Admin {get; set; } = false;
+
+    public List<Client> Bots;
+
 
     public static GameManager Instance { get; private set; }
 
@@ -25,5 +33,6 @@ public class GameManager : MonoBehaviour
         // Initialisation du Game Manager...
         Client = null;
         Server = null;
+        Bots= new();
     }
 }
