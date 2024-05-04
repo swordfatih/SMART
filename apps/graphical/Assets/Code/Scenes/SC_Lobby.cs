@@ -32,7 +32,7 @@ public class SC_Lobby : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ConcurrentDictionary<TcpClient, NetworkClient?>  clientList =GameManager.Instance.Server.Clients;
+        ConcurrentDictionary<TcpClient, NetworkClient?> clientList = GameManager.Instance.Server.Clients;
 
 
         GameObject[] playerPrefabs = GameObject.FindGameObjectsWithTag("Pseudo");
@@ -45,10 +45,10 @@ public class SC_Lobby : MonoBehaviour
 
         var element_object = GameObject.Find("Element");
 
-         foreach (var client in clientList)
+        foreach (var client in clientList)
         {
             GameObject newPlayer = Instantiate(playerPrefab);
-            
+
 
             newPlayer.transform.SetParent(element_object.transform);
 
@@ -81,12 +81,12 @@ public class SC_Lobby : MonoBehaviour
                 TMP_Text iaName = newIA.GetComponentInChildren<TMP_Text>();
 
                 removeButton.onClick.AddListener(() => removeIAButton(newIA));
-                var name= "IA " + (iaNb).ToString();
+                var name = "IA " + (iaNb).ToString();
                 iaName.text = name;
 
                 iaMembers.Add(newIA);
 
-                GameManager.Instance.Bots.Add(new RandomClient(name));
+                GameManager.Instance.Server.Bots.Add(new RandomClient(name));
 
 
             }
@@ -104,8 +104,8 @@ public class SC_Lobby : MonoBehaviour
             iaMembers.RemoveAt(index);
 
             var name=iaToRemove.GetComponentInChildren<TMP_Text>();
-            var bot=GameManager.Instance.Bots.Find(x=> x.Name==name.text);
-            GameManager.Instance.Bots.Remove(bot);
+            var bot=GameManager.Instance.Server.Bots.Find(x=> x.Name==name.text);
+            GameManager.Instance.Server.Bots.Remove(bot);
 
             Destroy(iaToRemove);
         }
@@ -113,7 +113,37 @@ public class SC_Lobby : MonoBehaviour
 
     public void removePlayerButton(GameObject playerToRemove)
     {
-        //GameManager.Instance.Server.Clients.Remove();
+        TMP_Text pseudoText = playerToRemove.GetComponentInChildren<TMP_Text>();
+        if (pseudoText == null)
+        {
+            Debug.LogError("TMP_Text component not found on playerToRemove");
+            return;
+        }
+
+        string playerName = pseudoText.text;
+
+        TcpClient keyToRemove = null;
+
+        foreach (var entry in GameManager.Instance.Server.Clients)
+        {
+            NetworkClient? networkClient = entry.Value;
+            if (networkClient != null && networkClient.Name == playerName)
+            {
+                keyToRemove = entry.Key;
+                break;
+            }
+        }
+
+        if (keyToRemove != null)
+        {
+            GameManager.Instance.Server.Clients.TryRemove(keyToRemove, out _);
+            Debug.Log($"Removed player {playerName}");
+        }
+        else
+        {
+            Debug.Log($"Player {playerName} not found");
+        }
+
         Destroy(playerToRemove);
     }
 

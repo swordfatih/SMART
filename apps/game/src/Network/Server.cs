@@ -14,6 +14,7 @@ namespace Interface
     {
         public TcpListener Listener { get; }
         public ConcurrentDictionary<TcpClient, NetworkClient?> Clients { get; }
+        public List<Client> Bots { get; }
         public bool Running { get; set; } = true;
         public Board? Board { get; set; }
 
@@ -21,6 +22,7 @@ namespace Interface
         {
             Listener = new TcpListener(IPAddress.Parse(host), port);
             Clients = new ConcurrentDictionary<TcpClient, NetworkClient?>();
+            Bots = new();
         }
 
         public void Listen()
@@ -134,6 +136,8 @@ namespace Interface
                 }
             });
 
+            Bots.ForEach(bot => clients.Add(bot));
+
             var file = File.Open("logs.txt", FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
             Board = new Board(file);
 
@@ -151,7 +155,7 @@ namespace Interface
         {
             foreach (var client in Clients.Values)
             {
-                if(client is NetworkClient network)
+                if (client is NetworkClient network)
                 {
                     network.Node.Send(packet);
                 }
