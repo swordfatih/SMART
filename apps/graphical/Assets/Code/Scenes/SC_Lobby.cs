@@ -150,7 +150,9 @@ public class SC_Lobby : MonoBehaviour
     public void clickStartButton()
     {
         GameManager.Instance.Client.Node.Send(RequestType.Start);
-        SceneManager.LoadScene("Prison - intérieur", LoadSceneMode.Additive);
+        Debug.Log("Before Load");
+        SceneManager.LoadScene("SC_Prison_Inside");
+        Debug.Log("After Load");
     }
 }
 
