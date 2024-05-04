@@ -117,6 +117,9 @@ namespace Interface
 
                         Task.Run(Start);
                         break;
+                    case RequestType.NotifyServer:
+                        Notify();
+                        break;
                     default:
                         client.Node.Packets.Enqueue(packet);
                         break;
