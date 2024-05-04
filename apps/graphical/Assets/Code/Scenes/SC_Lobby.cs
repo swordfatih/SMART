@@ -49,10 +49,16 @@ public class SC_Lobby : MonoBehaviour
             Destroy(playerPrefab);
         }
 
+        var element_object = GameObject.Find("Element");
+
          foreach (var client in clientList)
         {
-            GameObject newPlayer = Instantiate(playerPrefab, new Vector3(195, yValuePlayer, 0), Quaternion.identity,playerPanel);
-            newPlayer.transform.localScale=new Vector3(5.134977f, 1.499191f, 0.9741842f);
+            GameObject newPlayer = Instantiate(playerPrefab);
+            
+
+            newPlayer.transform.SetParent(element_object.transform);
+            
+            //newPlayer.transform.localScale=new Vector3(5.134977f, 1.499191f, 0.9741842f);
 
             //TO DO : modifications dans le server : kick le joueur
             Button removePlayer = newPlayer.GetComponentInChildren<Button>();
