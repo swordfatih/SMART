@@ -10,17 +10,17 @@ namespace Interface
 
         }
 
-        public override int AskChoice(Question question)
+        public override int SendChoice(Choice choice)
         {
-            int choice;
+            int answer;
 
             do
             {
-                Console.WriteLine("[" + Name + "] " + question);
+                Console.WriteLine("[" + Name + "] " + choice);
             }
-            while (!int.TryParse(Console.ReadLine(), out choice));
+            while (!int.TryParse(Console.ReadLine(), out answer));
 
-            return choice;
+            return answer;
         }
 
         public override string AskInput(string instruction)
@@ -39,9 +39,9 @@ namespace Interface
             Console.WriteLine("[Board] " + message);
         }
 
-        public override void SendChoiceAnswer(int position, Question question, int choice)
+        public override void SendChoiceAnswer(int position, Choice choice, int answer)
         {
-            Console.WriteLine($"[Answer from {position} to ${question.Value}] {question.Answers[choice]}");
+            Console.WriteLine($"[Answer from {position} to ${choice.Value}] {choice.Answers[answer]}");
         }
 
         public override void Notify(BoardData value)

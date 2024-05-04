@@ -6,30 +6,30 @@ namespace Game
     {
         public override Action Action(Board board, Player player)
         {
-            var choice = player.Client.AskChoice(new("Choisissez l'action du jour", new() { "Creuser", "Communiquer avec un voisin" }));
+            var action = player.Client.SendChoice(new("Choisissez l'action du jour", new() { "Creuser", "Communiquer avec un voisin" }));
 
-            if (choice == 0)
+            if (action == 0)
             {
                 return board.GuardPosition == player.Position ? new DieAction(player) : new DigAction(player);
             }
-            else if (choice == 1)
+            else if (action == 1)
             {
-                var direction = player.Client.AskChoice(new("Communiquer avec le voisin de", new() { "Gauche", "Droite" })) == 0 ? Direction.Left : Direction.Right;
+                var direction = player.Client.SendChoice(new("Communiquer avec le voisin de", new() { "Gauche", "Droite" })) == 0 ? Direction.Left : Direction.Right;
 
-                var question = new Question("Que voulez-vous communiquer ?", new() { "Gardien", "Opinion", "Progression", "Message" });
+                var choice = new Choice("Que voulez-vous communiquer ?", new() { "Gardien", "Opinion", "Progression", "Message" });
 
                 if (player.Items.Count > 0)
                 {
-                    question.Answers.Add("Donation");
+                    choice.Answers.Add("Donation");
                 }
 
-                choice = player.Client.AskChoice(question);
+                var answer = player.Client.SendChoice(choice);
 
                 Communication? communication = null;
-                switch (question.Answers[choice])
+                switch (choice.Answers[answer])
                 {
                     case "Donation":
-                        var item = player.Items[player.Client.AskChoice(new("Choisissez votre objet", new(player.Items.Select(x => x.Name))))];
+                        var item = player.Items[player.Client.SendChoice(new("Choisissez votre objet", new(player.Items.Select(x => x.Name))))];
                         communication = new ItemCommunication(player, direction, item);
                         break;
                     case "Message":

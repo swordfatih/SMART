@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SC_ChoiceBlock : MonoBehaviour, IObserver<Question>
+public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
 {
     public Button PF_Answer;
     public GameObject PF_Choice;
@@ -23,12 +23,11 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Question>
 
     public void OnAnswerButtonClicked(int answerIndex)
     {
-        Debug.Log("Réponse choisie : " + answerIndex);
         GameManager.Instance.Client.Node.Send(RequestType.Choice, answerIndex.ToString());
         GameObject.Destroy(Block);
     }
 
-    public void SetMessage(Question question)
+    public void SetChoice(Choice choice)
     {
         if (Block != null)
         {
@@ -38,27 +37,26 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Question>
         Block = Instantiate(PF_Choice, IT_Canvas.transform);
 
         var titleMessage = Block.GetComponentInChildren<TMP_Text>();
-        titleMessage.text = question.Value;
+        titleMessage.text = choice.Value;
 
         var choix_object = GameObject.Find("Choix");
 
-        for (int i = 0; i < question.Answers.Count; ++i)
+        for (int i = 0; i < choice.Answers.Count; ++i)
         {
-            var choice = Instantiate(PF_Answer);
-            choice.transform.SetParent(choix_object.transform);
-            choice.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, 0f);
-            choice.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-            choice.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
-            choice.GetComponentInChildren<TMP_Text>().text = question.Answers[i];
+            var answer = Instantiate(PF_Answer);
+            answer.transform.SetParent(choix_object.transform);
+            answer.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, 0f);
+            answer.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            answer.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+            answer.GetComponentInChildren<TMP_Text>().text = choice.Answers[i];
 
-            // Ajout de l'événement OnClick
             int index = i;
-            choice.onClick.AddListener(() => OnAnswerButtonClicked(index));
+            answer.onClick.AddListener(() => OnAnswerButtonClicked(index));
         }
     }
 
-    public void Notify(Question question)
+    public void Notify(Choice choice)
     {
-        SetMessage(question);
+        SetChoice(choice);
     }
 }

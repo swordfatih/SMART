@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5866681652818721032}
   - component: {fileID: 2420049041675902274}
   m_Layer: 5
-  m_Name: Message
+  m_Name: PF_Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

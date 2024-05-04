@@ -4,6 +4,7 @@ using Network;
 using System.Net.Sockets;
 using Game;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 
 namespace Interface
 {
@@ -27,6 +28,7 @@ namespace Interface
                 if (!Node.Connected())
                 {
                     Debug.Log("Connection lost.");
+                    SceneManager.LoadScene("GameMenu");
                     return;
                 }
                 else
@@ -39,21 +41,19 @@ namespace Interface
                     {
                         if (packet.Request == RequestType.PlayerMessage)
                         {
+                            var origin = packet.Content[0];
+                            var message = packet.Content[1];
+                            GameManager.Instance.Notify(new Message(origin, message));
+                        }
+                        else if (packet.Request == RequestType.ServerMessage)
+                        {
                             var message = packet.Content[0];
-
-                            var controls = GameObject.Find("Controls");
-                            foreach (Transform child in controls.transform)
-                            {
-                                GameObject.Destroy(child.gameObject);
-                            }
-
-                            var text = new GameObject("Text", typeof(Text));
-                            text.transform.SetParent(controls.transform);
-                            text.GetComponent<Text>().text = message;
-                            text.GetComponent<Text>().font = Resources.GetBuiltinResource(typeof(Font), "LegacyRuntime.ttf") as Font;
-                            text.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
-                            text.GetComponent<RectTransform>().position = new Vector3(0, 0, 0);
-                            text.transform.localPosition = Vector3.zero;
+                            GameManager.Instance.Notify(new Message("Server", message));
+                        }
+                        else if (packet.Request == RequestType.BoardMessage)
+                        {
+                            var message = packet.Content[0];
+                            GameManager.Instance.Notify(new Message("Board", message));
                         }
                         else if (packet.Request == RequestType.Input)
                         {
@@ -84,11 +84,10 @@ namespace Interface
                             var inputRect = input.GetComponent<RectTransform>();
                             inputRect.position = new Vector3(0, 0, 0);
                             input.transform.localPosition = new Vector3(0, -50, 0);
-                        } 
+                        }
                         else if (packet.Request == RequestType.Choice)
                         {
-                            var data = packet.Content[0];
-                            var value = JsonConvert.DeserializeObject<Question>(data, new JsonSerializerSettings
+                            var value = JsonConvert.DeserializeObject<Choice>(packet.Content[0], new JsonSerializerSettings
                             {
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
@@ -101,6 +100,7 @@ namespace Interface
                             var winner = team == "null" ? "there is no winner" : $"the winners are the {team} team";
 
                             Debug.Log($"The game is over, {winner}");
+                            SceneManager.LoadScene("GameMenu");
                         }
                         else if (packet.Request == RequestType.Error)
                         {

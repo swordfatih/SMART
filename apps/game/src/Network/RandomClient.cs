@@ -13,9 +13,9 @@ namespace Interface
         {
         }
 
-        public override int AskChoice(Question question)
+        public override int SendChoice(Choice choice)
         {
-            return new Random().Next(0, question.Answers.Count);
+            return new Random().Next(0, choice.Answers.Count);
         }
 
         public override string AskInput(string instruction)
@@ -31,7 +31,7 @@ namespace Interface
         {
         }
 
-        public override void SendChoiceAnswer(int position, Question question, int choice)
+        public override void SendChoiceAnswer(int position, Choice choice, int answer)
         {
         }
 

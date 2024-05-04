@@ -9,7 +9,7 @@ namespace Game
             Name = name;
         }
 
-        public virtual int AskChoice(Question question)
+        public virtual int SendChoice(Choice choice)
         {
             return 0;
         }
@@ -29,7 +29,7 @@ namespace Game
 
         }
 
-        public virtual void SendChoiceAnswer(int position, Question question, int choice)
+        public virtual void SendChoiceAnswer(int position, Choice choice, int answer)
         {
             
         }

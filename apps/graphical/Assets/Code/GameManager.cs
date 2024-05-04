@@ -3,14 +3,15 @@ using Interface;
 using Game;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Question>
+public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Choice>, IObservable<Message>
 {
     public ClientInterface Client { get; set; }
     public Server Server { get; set; }
     public bool Admin { get; set; } = false;
     public ServerData ServerData { get; set; }
     public List<IObserver<ServerData>> ServerObservers { get; set; }
-    public List<IObserver<Question>> QuestionObservers { get; set; }
+    public List<IObserver<Choice>> ChoiceObservers { get; set; }
+    public List<IObserver<Message>> MessageObservers { get; set; }
 
     public static GameManager Instance { get; private set; }
 
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Q
         Server = null;
         ServerData = null;
         ServerObservers = new();
-        QuestionObservers = new();
+        ChoiceObservers = new();
     }
 
     public void Update()
@@ -46,9 +47,14 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Q
         ServerObservers.Add(observer);
     }
 
-    public void Subscribe(IObserver<Question> observer)
+    public void Subscribe(IObserver<Choice> observer)
     {
-        QuestionObservers.Add(observer);
+        ChoiceObservers.Add(observer);
+    }
+
+    public void Subscribe(IObserver<Message> observer)
+    {
+        MessageObservers.Add(observer);
     }
 
     public void Unsubscribe(IObserver<ServerData> observer)
@@ -56,9 +62,14 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Q
         ServerObservers.Remove(observer);
     }
 
-    public void Unsubscribe(IObserver<Question> observer)
+    public void Unsubscribe(IObserver<Choice> observer)
     {
-        QuestionObservers.Remove(observer);
+        ChoiceObservers.Remove(observer);
+    }
+
+    public void Unsubscribe(IObserver<Message> observer)
+    {
+        MessageObservers.Remove(observer);
     }
 
     public void Notify(ServerData serverData)
@@ -70,11 +81,19 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Q
         }
     }
 
-    public void Notify(Question question)
+    public void Notify(Choice choice)
     {
-        foreach (var observer in QuestionObservers)
+        foreach (var observer in ChoiceObservers)
         {
-            observer.Notify(question);
+            observer.Notify(choice);
+        }
+    }
+
+    public void Notify(Message message)
+    {
+        foreach (var observer in MessageObservers)
+        {
+            observer.Notify(message);
         }
     }
 }
