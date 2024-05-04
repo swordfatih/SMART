@@ -27,7 +27,5 @@ public class SC_LaunchGame : MonoBehaviour
 
         var node = new Node(host, port);
         GameManager.Instance.Client = new ClientInterface(node, pseudoField.text);
-
-        SceneManager.LoadScene("GameLobby");
     }
 }

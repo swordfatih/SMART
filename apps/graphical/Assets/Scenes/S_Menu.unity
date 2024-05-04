@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 213773550}
   - component: {fileID: 213773549}
   m_Layer: 5
-  m_Name: lancer
+  m_Name: ServerButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -992,7 +992,7 @@ GameObject:
   - component: {fileID: 440359399}
   - component: {fileID: 440359398}
   m_Layer: 5
-  m_Name: Return_main_menu
+  m_Name: ReturnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1584,7 +1584,7 @@ GameObject:
   - component: {fileID: 747071460}
   - component: {fileID: 747071459}
   m_Layer: 5
-  m_Name: lancerRecherche
+  m_Name: JoinButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2560,6 +2560,7 @@ GameObject:
   - component: {fileID: 1324451389}
   - component: {fileID: 1324451388}
   - component: {fileID: 1324451390}
+  - component: {fileID: 1324451391}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2607,6 +2608,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PF_Message: {fileID: 1297349137987832124, guid: 49074f2ad20d627448ff18c42b39fce8, type: 3}
+--- !u!114 &1324451391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324451387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a8a8eb7b4036994f82fcd980d7bfa6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PF_Answer: {fileID: 4591411774747348852, guid: 7b743594301f6634eaee2e8c0da4a355, type: 3}
+  PF_Choice: {fileID: 1297349137987832124, guid: f73d0815c4dc807478705cc6752d2037, type: 3}
 --- !u!1 &1324977550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2619,7 +2634,7 @@ GameObject:
   - component: {fileID: 1324977553}
   - component: {fileID: 1324977552}
   m_Layer: 5
-  m_Name: gameTitle
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2664,7 +2679,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: JailBreak AI
+  m_text: 'Outbound
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5f13634ecd37245a1a2f2cfc29b6a812, type: 2}
   m_sharedMaterial: {fileID: 9168729205939192704, guid: 5f13634ecd37245a1a2f2cfc29b6a812, type: 2}
@@ -3407,7 +3424,7 @@ GameObject:
   - component: {fileID: 1528535443}
   - component: {fileID: 1528535442}
   m_Layer: 5
-  m_Name: lancerJeu
+  m_Name: JoinButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3540,7 +3557,7 @@ GameObject:
   - component: {fileID: 1569803108}
   - component: {fileID: 1569803107}
   m_Layer: 5
-  m_Name: Return_main_menu
+  m_Name: ReturnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3807,7 +3824,7 @@ GameObject:
   - component: {fileID: 1656571553}
   - component: {fileID: 1656571552}
   m_Layer: 5
-  m_Name: rejoindre
+  m_Name: ClientButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

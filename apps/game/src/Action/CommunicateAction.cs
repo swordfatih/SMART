@@ -11,8 +11,8 @@ namespace Game
 
         public override void Run(Board board)
         {
-            var target = board.Players.AdjacentPlayer(Player, Communication.Direction);
-            target.States.Push(new AnswerState(Communication));
+            var target = board.Players.Only(Status.Alive).AdjacentPlayer(Player, Communication.Direction);
+            target?.States.Push(new AnswerState(Communication));
         }
 
         public override string ToString()

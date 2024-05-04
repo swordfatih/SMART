@@ -6,14 +6,28 @@ using UnityEngine.UI;
 
 public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
 {
-    public Button PF_Answer;
+    public GameObject PF_Answer;
     public GameObject PF_Choice;
-    public GameObject IT_Canvas;
+    public GameObject Canvas { get; set; } = null;
     public GameObject Block { get; set; } = null;
+    public Choice LastChoice { get; set; } = null;
 
     public void Start()
     {
         GameManager.Instance.Subscribe(this);
+    }
+
+    public void Update()
+    {
+        if (Canvas == null)
+        {
+            Canvas = GameObject.Find("Canvas");
+
+            if (LastChoice != null)
+            {
+                SetChoice(LastChoice);
+            }
+        }
     }
 
     public void OnDestroy()
@@ -21,20 +35,24 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
         GameManager.Instance.Unsubscribe(this);
     }
 
-    public void OnAnswerButtonClicked(int answerIndex)
+    public void OnAnswered(int answerIndex)
     {
         GameManager.Instance.Client.Node.Send(RequestType.Choice, answerIndex.ToString());
         GameObject.Destroy(Block);
+        LastChoice = null;
+        Block = null;
     }
 
     public void SetChoice(Choice choice)
     {
+        LastChoice = choice;
+
         if (Block != null)
         {
             GameObject.Destroy(Block);
         }
 
-        Block = Instantiate(PF_Choice, IT_Canvas.transform);
+        Block = Instantiate(PF_Choice, Canvas.transform);
 
         var titleMessage = Block.GetComponentInChildren<TMP_Text>();
         titleMessage.text = choice.Value;
@@ -51,7 +69,7 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
             answer.GetComponentInChildren<TMP_Text>().text = choice.Answers[i];
 
             int index = i;
-            answer.onClick.AddListener(() => OnAnswerButtonClicked(index));
+            answer.GetComponent<Button>().onClick.AddListener(() => OnAnswered(index));
         }
     }
 

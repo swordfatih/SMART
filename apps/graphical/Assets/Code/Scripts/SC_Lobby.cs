@@ -116,7 +116,6 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
     public void ClickStartButton()
     {
         GameManager.Instance.Client.Node.Send(RequestType.Start);
-        SceneManager.LoadScene("SC_Prison_Inside");
     }
 
     public void Notify(ServerData value)
