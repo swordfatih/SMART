@@ -5,12 +5,17 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Interface;
+using System.Collections.Concurrent;
+using System.Net.Sockets;
+using Network;
 
 public class SC_Lobby : MonoBehaviour
 {
     public int iaNb;
     public int yValue;
+    public int yValuePlayer;
     public int spacing = 38;
+    public int playerSpacing = 32;
     public Canvas canvas; // Le Canvas où ajouter le prefab
     public GameObject iaPrefab; // Le prefab à ajouter au Canvas
     public GameObject addButton;
@@ -25,16 +30,40 @@ public class SC_Lobby : MonoBehaviour
     {
         iaNb = 0;
         yValue = 400;
+        yValuePlayer= 400;
 
-        //test affichage joueur
-
-         GameObject player = Instantiate(playerPrefab, new Vector3(188, yValue, 0), Quaternion.identity, iaPanel);
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        ConcurrentDictionary<TcpClient, NetworkClient?>  clientList =GameManager.Instance.Server.Clients;
+
+
+        GameObject[] playerPrefabs = GameObject.FindGameObjectsWithTag("Pseudo");
+
+        // Destroy each player prefab found
+        foreach (GameObject playerPrefab in playerPrefabs)
+        {
+            Destroy(playerPrefab);
+        }
+
+         foreach (var client in clientList)
+        {
+            GameObject newPlayer = Instantiate(playerPrefab, new Vector3(195, yValuePlayer, 0), Quaternion.identity,playerPanel);
+            newPlayer.transform.localScale=new Vector3(5.134977f, 1.499191f, 0.9741842f);
+
+            //TO DO : modifications dans le server : kick le joueur
+            Button removePlayer = newPlayer.GetComponentInChildren<Button>();
+            removePlayer.onClick.AddListener(() => removePlayerButton(newPlayer));
+
+            NetworkClient? networkClient = client.Value;
+            TMP_Text pseudo = newPlayer.GetComponentInChildren<TMP_Text>();
+            pseudo.text = networkClient.Name;
+            //Debug.Log(networkClient.Name);
+
+        }
 
 
     }
@@ -67,9 +96,6 @@ public class SC_Lobby : MonoBehaviour
                 Debug.Log("You can't add more than 8 IA.");
             }
         }
-        //TO DO : CONNEXION D'UNE IA BACK
-
-
     }
     public void removeIAButton(GameObject iaToRemove)
     {
@@ -79,12 +105,11 @@ public class SC_Lobby : MonoBehaviour
             iaMembers.RemoveAt(index);
             yValue -= spacing;
 
-            // Update positions of all subsequent IAMembers
             for (int i = index; i < iaMembers.Count; i++)
             {
                 GameObject iaMember = iaMembers[i];
                 Vector3 newPosition = iaMember.transform.position;
-                newPosition.y += spacing; // Move up by the spacing
+                newPosition.y += spacing; 
                 iaMember.transform.position = newPosition;
 
                 /*
@@ -101,6 +126,12 @@ public class SC_Lobby : MonoBehaviour
 
             Destroy(iaToRemove);
         }
+    }
+
+    public void removePlayerButton(GameObject playerToRemove)
+    {
+        //GameManager.Instance.Server.Clients.Remove();
+        Destroy(playerToRemove);
     }
 }
 
