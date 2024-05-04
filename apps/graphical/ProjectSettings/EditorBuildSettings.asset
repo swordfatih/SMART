@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ShowerScene.unity
     guid: 96872c196a06045e3b2743fd6e6e215f
+  - enabled: 1
+    path: "Assets/Scenes/Prison - int\xE9rieur.unity"
+    guid: 1b7fbf3393961df448d2515df1520683
+  - enabled: 1
+    path: "Assets/Scenes/Prison - ext\xE9rieur.unity"
+    guid: 249b72225994fb643bae2c00e0989003
   m_configObjects: {}
