@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Interface;
-using System.Collections.Concurrent;
 using System.Net.Sockets;
 using Network;
 using UnityEngine.SceneManagement;
@@ -27,6 +26,11 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
 
         GameManager.Instance.Subscribe(this);
         GameManager.Instance.Client.Node.Send(RequestType.NotifyServer);
+    }
+
+    public void OnDestroy()
+    {
+        GameManager.Instance.Unsubscribe(this);
     }
 
     public void AddIAButton()
@@ -127,7 +131,7 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
 
         var element_object = GameObject.Find("Element");
 
-        if(element_object is null)
+        if (element_object is null)
         {
             return;
         }
