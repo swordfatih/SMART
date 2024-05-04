@@ -8,6 +8,7 @@ using Interface;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
 using Network;
+using UnityEngine.SceneManagement;
 
 public class SC_Lobby : MonoBehaviour
 {
@@ -144,6 +145,12 @@ public class SC_Lobby : MonoBehaviour
         }
 
         Destroy(playerToRemove);
+    }
+
+    public void clickStartButton(GameObject playerToRemove)
+    {
+        GameManager.Instance.Client.Node.Send(RequestType.Start);
+        SceneManager.LoadScene("prison - intérieur", LoadSceneMode.Additive);
     }
 }
 
