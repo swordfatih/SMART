@@ -11,7 +11,7 @@ namespace Game
 
         public override Action Action(Board board, Player player)
         {
-            if (player.Client.AskChoice(new("You received a message from " + Communication.Origin.Client.Name, new(){"Accept", "Propagate"})) == 1)
+            if (player.Client.SendChoice(new("You received a message from " + Communication.Origin.Client.Name, new(){"Accept", "Propagate"})) == 1)
             {
                 return new PropagateAction(player, Communication);
             }
@@ -26,8 +26,8 @@ namespace Game
             }
             else if (Communication is ChoiceCommunication c3)
             {
-                var choice = player.Client.AskChoice(c3.Question);
-                c3.Origin.Client.SendChoiceAnswer(player.Position, c3.Question, choice);
+                var choice = player.Client.SendChoice(c3.Choice);
+                c3.Origin.Client.SendChoiceAnswer(player.Position, c3.Choice, choice);
             }
 
             return new IdleAction(player);

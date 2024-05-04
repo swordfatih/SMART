@@ -15,9 +15,9 @@ namespace Interface
             Node = node;
         }
 
-        public override int AskChoice(Question question)
+        public override int SendChoice(Choice choice)
         {
-            Node.Send(RequestType.Choice, JsonConvert.SerializeObject(question, new JsonSerializerSettings
+            Node.Send(RequestType.Choice, JsonConvert.SerializeObject(choice, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
             }));
@@ -66,9 +66,9 @@ namespace Interface
             Node.Send(RequestType.BoardMessage, message);
         }
 
-        public override void SendChoiceAnswer(int position, Question question, int choice)
+        public override void SendChoiceAnswer(int position, Choice choice, int answer)
         {
-            Node.Send(RequestType.ChoiceAnswer, new string[]{position.ToString(), JsonConvert.SerializeObject(question), choice.ToString()});
+            Node.Send(RequestType.ChoiceAnswer, new string[]{position.ToString(), JsonConvert.SerializeObject(choice), answer.ToString()});
         }
 
         public override void Notify(BoardData value)

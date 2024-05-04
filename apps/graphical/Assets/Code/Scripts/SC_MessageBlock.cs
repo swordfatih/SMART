@@ -1,17 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Game;
 using TMPro;
-using System;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class PopUp_Message : MonoBehaviour
+public class SC_MessageBlock : MonoBehaviour, IObserver<Choice>
 {
-    public TMP_Text message_containt;
-    public void AfficheMessage(string msg)
-    {
-        GameObject canvas = GameObject.Find("Message");
-        canvas.SetActive(true);
-        message_containt.text = msg;
+    public GameObject PF_Message;
+    public GameObject IT_Canvas;
+    public GameObject Block { get; set; } = null;
 
+    public void Start()
+    {
+        GameManager.Instance.Subscribe(this);
+    }
+
+    public void OnDestroy()
+    {
+        GameManager.Instance.Unsubscribe(this);
+    }
+
+    public void SetMessage(Choice choice)
+    {
+        if (Block != null)
+        {
+            GameObject.Destroy(Block);
+        }
+
+        Block = Instantiate(PF_Message, IT_Canvas.transform);
+
+        var message = Block.GetComponentInChildren<TMP_Text>();
+        message.text = choice.Value;
+
+        var button = Block.GetComponentInChildren<Button>();
+        button.onClick.AddListener(() => GameObject.Destroy(Block));
+    }
+
+    public void Notify(Choice choice)
+    {
+        SetMessage(choice);
     }
 }

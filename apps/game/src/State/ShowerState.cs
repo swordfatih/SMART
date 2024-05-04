@@ -12,7 +12,7 @@ namespace Game
             }
 
             var targets = board.Players.Except(Status.Dead).Except(player);
-            return new VoteAction(player, targets.ElementAt(player.Client.AskChoice(new("Contre qui vous voulez voter ?", new(targets.Select(x => x.Client.Name))))));
+            return new VoteAction(player, targets.ElementAt(player.Client.SendChoice(new("Contre qui vous voulez voter ?", new(targets.Select(x => x.Client.Name))))));
         }
     }
 }

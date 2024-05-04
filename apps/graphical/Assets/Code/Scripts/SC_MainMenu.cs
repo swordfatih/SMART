@@ -2,43 +2,44 @@ using System.Net;
 using System.Net.Sockets;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SC_MainMenu : MonoBehaviour
 {
-    public GameObject inputField;
-    public GameObject mainMenu;
-    public GameObject joinMenu;
-    public GameObject startGameMenu;
-    public TMP_Text Text_ip;
+    public GameObject IT_Form;
+    public GameObject IT_MainMenu;
+    public GameObject IT_ClientMenu;
+    public GameObject IT_ServerMenu;
+    public TMP_InputField IT_HostInput;
 
     public void Start()
     {
         MainMenuButton();
-        Text_ip.text = GetLocalIPAddress();
+        IT_HostInput.text = GetLocalIPAddress();
     }
 
-    public void StartGameMenuButton()
+    public void ServerMenuButton()
     {
-        inputField.SetActive(true);
-        mainMenu.SetActive(false);
-        joinMenu.SetActive(false);
-        startGameMenu.SetActive(true);
+        IT_Form.SetActive(true);
+        IT_MainMenu.SetActive(false);
+        IT_ClientMenu.SetActive(false);
+        IT_ServerMenu.SetActive(true);
     }
 
     public void MainMenuButton()
     {
-        inputField.SetActive(false);
-        mainMenu.SetActive(true);
-        joinMenu.SetActive(false);
-        startGameMenu.SetActive(false);
+        IT_Form.SetActive(false);
+        IT_MainMenu.SetActive(true);
+        IT_ClientMenu.SetActive(false);
+        IT_ServerMenu.SetActive(false);
     }
 
-    public void JoinMenuButton()
+    public void ClientMenuButton()
     {
-        inputField.SetActive(true);
-        mainMenu.SetActive(false);
-        joinMenu.SetActive(true);
-        startGameMenu.SetActive(false);
+        IT_Form.SetActive(true);
+        IT_MainMenu.SetActive(false);
+        IT_ClientMenu.SetActive(true);
+        IT_ServerMenu.SetActive(false);
     }
 
     public void QuitButton()

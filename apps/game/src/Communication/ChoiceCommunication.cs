@@ -2,11 +2,11 @@ namespace Game
 {
     public class ChoiceCommunication : Communication
     {
-        public readonly Question Question;
+        public readonly Choice Choice;
 
-        public ChoiceCommunication(Player origin, Direction direction, Question question) : base(origin, direction)
+        public ChoiceCommunication(Player origin, Direction direction, Choice choice) : base(origin, direction)
         {
-            Question = question;
+            Choice = choice;
         }
     }
 }
