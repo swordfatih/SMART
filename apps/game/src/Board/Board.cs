@@ -30,13 +30,26 @@ namespace Game
             var randomizer = new Random();
             GuardPosition = randomizer.Next(0, clients.Count);
 
-            var associate_count = Math.Ceiling((double) clients.Count / 4);
-            var associates = clients.OrderBy(x => randomizer.Next()).Take((int) associate_count).ToList();
+            var associate_count = Math.Ceiling((double)clients.Count / 4);
+            var associates = clients.OrderBy(x => randomizer.Next()).Take((int)associate_count).ToList();
+
+            var soap = randomizer.Next(0, clients.Count);
+            var poison = randomizer.Next(0, associates.Count);
 
             for (var i = 0; i < clients.Count; ++i)
             {
                 var player = new Player(clients[i], i, associates.Contains(clients[i]) ? new AssociateRole() : new InmateRole());
                 Players.Add(player);
+
+                if (i == soap)
+                {
+                    player.Items.Add(new SoapItem());
+                }
+
+                if (associates.IndexOf(clients[i]) == poison)
+                {
+                    player.Items.Add(new PoisonItem());
+                }
 
                 Logger.WriteLine(player.ToString());
                 Subscribe(player.Client);
@@ -134,6 +147,15 @@ namespace Game
                     }
                 }
 
+                // traitement des poisons
+                foreach (var player in Players.Except(Status.Dead).Only(Team.Inmate))
+                {
+                    if (player.Items.Any(x => x is PoisonItem))
+                    {
+                        actions.Add(new UsePoisonAction(player));
+                    }
+                }
+
                 // executer les actions
                 foreach (var action in actions)
                 {
@@ -184,7 +206,7 @@ namespace Game
             var alive_associates = associates.Except(Status.Dead);
             var escaped_inmates = inmates.Only(Status.Escaped);
 
-            if (escaped_inmates.Count() > alive_inmates.Count())
+            if (escaped_inmates.Count() > alive_inmates.Count() || alive_associates.Count() == 0)
             {
                 return Team.Inmate;
             }

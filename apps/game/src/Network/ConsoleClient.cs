@@ -70,8 +70,8 @@ namespace Interface
 
             if (value.Player?.Items.Count > 0)
             {
-                Console.WriteLine("Vous objets: ");
-                value.Player?.Items.ForEach(Console.WriteLine);
+                Console.WriteLine("Vos objets: ");
+                value.Player?.Items.ForEach(x => Console.WriteLine(x.Name));
             }
         }
 
