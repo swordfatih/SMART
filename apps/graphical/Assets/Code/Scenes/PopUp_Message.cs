@@ -7,7 +7,7 @@ using System;
 public class PopUp_Message : MonoBehaviour
 {
     public TMP_Text message_containt;
-    public void AfficheMessage(String msg)
+    public void AfficheMessage(string msg)
     {
         GameObject canvas = GameObject.Find("Message");
         canvas.SetActive(true);
