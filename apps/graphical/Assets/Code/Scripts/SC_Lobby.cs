@@ -28,6 +28,11 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
         GameManager.Instance.Client.Node.Send(RequestType.NotifyServer);
     }
 
+    public void OnDestroy()
+    {
+        GameManager.Instance.Unsubscribe(this);
+    }
+
     public void AddIAButton()
     {
         if (GameManager.Instance.Admin == true)
@@ -126,7 +131,7 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
 
         var element_object = GameObject.Find("Element");
 
-        if(element_object is null)
+        if (element_object is null)
         {
             return;
         }

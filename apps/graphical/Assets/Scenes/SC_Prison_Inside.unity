@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.5
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06365852, g: 0.067073636, b: 0.060539268, a: 0.5}
+  m_IndirectSpecularColor: {r: 0.063658744, g: 0.067073785, b: 0.06053935, a: 0.5}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -5040,8 +5040,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a8a8eb7b4036994f82fcd980d7bfa6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  answerPrefab: {fileID: 4253105579229598827, guid: 7b743594301f6634eaee2e8c0da4a355, type: 3}
-  choicePrefab: {fileID: 1297349137987832124, guid: f73d0815c4dc807478705cc6752d2037, type: 3}
+  PF_Answer: {fileID: 4253105579229598827, guid: 7b743594301f6634eaee2e8c0da4a355, type: 3}
+  PF_Choice: {fileID: 1297349137987832124, guid: f73d0815c4dc807478705cc6752d2037, type: 3}
+  IT_Canvas: {fileID: 1398858949}
+  Block: {fileID: 0}
 --- !u!1001 &1402322846
 PrefabInstance:
   m_ObjectHideFlags: 0

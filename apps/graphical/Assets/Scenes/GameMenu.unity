@@ -1934,6 +1934,7 @@ MonoBehaviour:
   mainMenu: {fileID: 992951001}
   joinMenu: {fileID: 843925539}
   startGameMenu: {fileID: 115453897}
+  Text_ip: {fileID: 1114932714}
 --- !u!1 &992951001
 GameObject:
   m_ObjectHideFlags: 0
