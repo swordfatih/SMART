@@ -22,13 +22,15 @@ public class popMessage : MonoBehaviour
         {
             GameObject.Destroy(child.gameObject);
         }
-        GameObject.Find("message").SetActive(false);
+        GameObject canvas = GameObject.Find("Demande_Choix");
+        canvas.SetActive(false);
     }
 
     public void SetMessage(Question question)
     {
-        GameObject.Find("message").SetActive(true);
-        
+        GameObject canvas = GameObject.Find("Demande_Choix");
+        canvas.SetActive(true);
+
         titleMessage.text = question.Value;
     
         var choix_object = GameObject.Find("Choix");
