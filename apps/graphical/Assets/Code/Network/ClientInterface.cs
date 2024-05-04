@@ -92,11 +92,8 @@ namespace Interface
                             {
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
-                            Debug.Log("affichage1");
-                            GameObject popMessageObject = GameObject.Find("Demande_Choix");
-                            popMessage popMessageScript = popMessageObject.GetComponent<popMessage>();
-                            popMessageScript?.SetMessage(value);
-                            Debug.Log("affichage2");
+
+                            GameManager.Instance.Notify(value);
                         }
                         else if (packet.Request == RequestType.End)
                         {
@@ -117,8 +114,7 @@ namespace Interface
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
 
-                            GameManager.Instance.ServerData = data;
-                            GameManager.Instance.Notify();
+                            GameManager.Instance.Notify(data);
                         }
                     }
 
