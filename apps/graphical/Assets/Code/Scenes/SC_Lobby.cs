@@ -147,10 +147,10 @@ public class SC_Lobby : MonoBehaviour
         Destroy(playerToRemove);
     }
 
-    public void clickStartButton(GameObject playerToRemove)
+    public void clickStartButton()
     {
         GameManager.Instance.Client.Node.Send(RequestType.Start);
-        SceneManager.LoadScene("prison - intérieur", LoadSceneMode.Additive);
+        SceneManager.LoadScene("Prison - intérieur", LoadSceneMode.Additive);
     }
 }
 
