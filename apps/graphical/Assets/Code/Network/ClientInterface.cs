@@ -22,8 +22,6 @@ namespace Interface
 
         public void Handle()
         {
-            var controls = GameObject.Find("Controls");
-
             if (Node.Client.Client.Poll(0, SelectMode.SelectRead))
             {
                 if (!Node.Connected())
@@ -39,12 +37,11 @@ namespace Interface
 
                     foreach (var packet in packets)
                     {
-                        Debug.Log("Handling packet...");
                         if (packet.Request == RequestType.PlayerMessage)
                         {
-                            Debug.Log("Message packet...");
                             var message = packet.Content[0];
 
+                            var controls = GameObject.Find("Controls");
                             foreach (Transform child in controls.transform)
                             {
                                 GameObject.Destroy(child.gameObject);
@@ -60,9 +57,9 @@ namespace Interface
                         }
                         else if (packet.Request == RequestType.Input)
                         {
-                            Debug.Log("Input packet...");
                             var instruction = packet.Content[0];
 
+                            var controls = GameObject.Find("Controls");
                             foreach (Transform child in controls.transform)
                             {
                                 GameObject.Destroy(child.gameObject);
@@ -87,30 +84,18 @@ namespace Interface
                             var inputRect = input.GetComponent<RectTransform>();
                             inputRect.position = new Vector3(0, 0, 0);
                             input.transform.localPosition = new Vector3(0, -50, 0);
-
-                            Debug.Log("End input packet...");
-                        }
+                        } 
                         else if (packet.Request == RequestType.Choice)
                         {
-                            Debug.Log("Choice packet...");
                             var data = packet.Content[0];
                             var value = JsonConvert.DeserializeObject<Question>(data, new JsonSerializerSettings
                             {
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
 
-                            GameObject popMessageObject = GameObject.Find("message");
-
-                            // Récupérer le composant popMessage attaché à l'objet
+                            GameObject popMessageObject = GameObject.Find("Demande_Choix");
                             popMessage popMessageScript = popMessageObject.GetComponent<popMessage>();
-
-                            // Vérifier si le composant a été trouvé
-                            if (popMessageScript != null)
-                            {
-                                popMessageScript.SetMessage(value);
-                            }
-
-                            Debug.Log("End choice packet...");
+                            popMessageScript?.SetMessage(value);
                         }
                         else if (packet.Request == RequestType.End)
                         {
@@ -119,8 +104,21 @@ namespace Interface
 
                             Debug.Log($"The game is over, {winner}");
                         }
+                        else if (packet.Request == RequestType.Error)
+                        {
+                            var error = packet.Content[0];
+                            Debug.Log($"Error: {error}");
+                        }
+                        else if (packet.Request == RequestType.NotifyServer)
+                        {
+                            var data = JsonConvert.DeserializeObject<ServerData>(packet.Content[0], new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.Auto
+                            });
 
-                        Debug.Log("End choice packet...");
+                            GameManager.Instance.ServerData = data;
+                            GameManager.Instance.Notify();
+                        }
                     }
 
                     Debug.Log("End packets...");

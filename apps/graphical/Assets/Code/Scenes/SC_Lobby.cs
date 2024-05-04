@@ -7,8 +7,9 @@ using System.Collections.Concurrent;
 using System.Net.Sockets;
 using Network;
 using UnityEngine.SceneManagement;
+using Game;
 
-public class SC_Lobby : MonoBehaviour
+public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
 {
     public int iaNb;
     public Canvas canvas; // Le Canvas où ajouter le prefab
@@ -23,34 +24,9 @@ public class SC_Lobby : MonoBehaviour
     public void Start()
     {
         iaNb = 0;
-    }
 
-    // Update is called once per frame
-    public void Update()
-    {
-        ConcurrentDictionary<TcpClient, NetworkClient> clientList = GameManager.Instance.Server.Clients;
-        GameObject[] playerPrefabs = GameObject.FindGameObjectsWithTag("Pseudo");
-
-        // Destroy each player prefab found
-        foreach (GameObject playerPrefab in playerPrefabs)
-        {
-            Destroy(playerPrefab);
-        }
-
-        var element_object = GameObject.Find("Element");
-
-        foreach (var client in clientList)
-        {
-            GameObject newPlayer = Instantiate(playerPrefab);
-            newPlayer.transform.SetParent(element_object.transform);
-
-            Button removePlayer = newPlayer.GetComponentInChildren<Button>();
-            removePlayer.onClick.AddListener(() => RemovePlayerButton(newPlayer));
-
-            NetworkClient networkClient = client.Value;
-            TMP_Text pseudo = newPlayer.GetComponentInChildren<TMP_Text>();
-            pseudo.text = networkClient.Name;
-        }
+        GameManager.Instance.Subscribe(this);
+        GameManager.Instance.Client.Node.Send(RequestType.NotifyServer);
     }
 
     public void AddIAButton()
@@ -89,8 +65,8 @@ public class SC_Lobby : MonoBehaviour
         {
             iaMembers.RemoveAt(index);
 
-            var name=iaToRemove.GetComponentInChildren<TMP_Text>();
-            var bot=GameManager.Instance.Server.Bots.Find(x=> x.Name==name.text);
+            var name = iaToRemove.GetComponentInChildren<TMP_Text>();
+            var bot = GameManager.Instance.Server.Bots.Find(x => x.Name == name.text);
             GameManager.Instance.Server.Bots.Remove(bot);
 
             Destroy(iaToRemove);
@@ -136,9 +112,45 @@ public class SC_Lobby : MonoBehaviour
     public void ClickStartButton()
     {
         GameManager.Instance.Client.Node.Send(RequestType.Start);
-        Debug.Log("Before Load");
         SceneManager.LoadScene("SC_Prison_Inside");
-        Debug.Log("After Load");
+    }
+
+    public void Notify(ServerData value)
+    {
+        GameObject[] playerPrefabs = GameObject.FindGameObjectsWithTag("Pseudo");
+
+        // Destroy each player prefab found
+        foreach (GameObject playerPrefab in playerPrefabs)
+        {
+            Destroy(playerPrefab);
+        }
+
+        var element_object = GameObject.Find("Element");
+
+        if(element_object is null)
+        {
+            return;
+        }
+
+        foreach (var client in value.Clients)
+        {
+            GameObject newPlayer = Instantiate(playerPrefab);
+            newPlayer.transform.SetParent(element_object.transform);
+
+            if (GameManager.Instance.Admin)
+            {
+                Button removePlayer = newPlayer.GetComponentInChildren<Button>();
+                removePlayer.onClick.AddListener(() => RemovePlayerButton(newPlayer));
+            }
+            else
+            {
+                Button removePlayer = newPlayer.GetComponentInChildren<Button>();
+                Destroy(removePlayer);
+            }
+
+            TMP_Text pseudo = newPlayer.GetComponentInChildren<TMP_Text>();
+            pseudo.text = client;
+        }
     }
 }
 

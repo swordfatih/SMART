@@ -27,7 +27,7 @@ public class popMessage : MonoBehaviour
 
     public void SetMessage(Question question)
     {
-        GameObject.Find("message").SetActive(true);
+        GameObject.Find("Demande_Choix").SetActive(true);
         
         titleMessage.text = question.Value;
     
