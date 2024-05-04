@@ -92,10 +92,11 @@ namespace Interface
                             {
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
-
+                            Debug.Log("affichage1");
                             GameObject popMessageObject = GameObject.Find("Demande_Choix");
                             popMessage popMessageScript = popMessageObject.GetComponent<popMessage>();
                             popMessageScript?.SetMessage(value);
+                            Debug.Log("affichage2");
                         }
                         else if (packet.Request == RequestType.End)
                         {
