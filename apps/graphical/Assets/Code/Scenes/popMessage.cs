@@ -14,7 +14,7 @@ public class popMessage : MonoBehaviour
     public void OnAnswerButtonClicked(int answerIndex)
     {
         Debug.Log("Réponse choisie : " + answerIndex);
-        Node.Send(RequestType.Choice, answerIndex.ToString());
+        GameManager.Instance.Client.Node.Send(RequestType.Choice, answerIndex.ToString());
 
         var choix_object = GameObject.Find("Choix");
 
@@ -39,6 +39,8 @@ public class popMessage : MonoBehaviour
         {
             Button choice = Instantiate(choicePrefab);
             choice.transform.SetParent(choix_object.transform);
+            choice.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+            choice.GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
 
             choice.GetComponentInChildren<TMP_Text>().text = question.Answers[i];
 
