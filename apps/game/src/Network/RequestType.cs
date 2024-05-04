@@ -14,6 +14,7 @@ namespace Network
         Input,
         NotifyPlayer,
         NotifyBoard,
+        NotifyServer,
         End
     }
 }

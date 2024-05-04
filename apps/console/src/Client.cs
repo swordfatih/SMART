@@ -143,6 +143,30 @@ namespace Interface
 
                     Console.WriteLine($"The game is over, {winner}");
                 }
+                else if(packet.Request == RequestType.NotifyServer)
+                {
+                    var data = JsonConvert.DeserializeObject<ServerData>(packet.Content[0], new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+
+                    if (data != null)
+                    {
+                        Console.WriteLine("Connected players: ");
+                        foreach (var client in data.Clients)
+                        {
+                            Console.WriteLine(client);
+                        }
+
+                        Console.WriteLine("Bots: ");
+                        foreach (var bot in data.Bots)
+                        {
+                            Console.WriteLine(bot);
+                        }
+
+                        Console.WriteLine(data.Running ? "The game is running" : "The game is not running");
+                    }
+                }
             }
         }
     }
