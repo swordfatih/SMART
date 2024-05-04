@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ce1cb56ebd1d75346b294361781d4d58
+guid: 0d1c9173c4bf1774db622413e68cb5a5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -62,7 +62,7 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
-  ignorePngGamma: 1
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
   cookieLightType: 0
