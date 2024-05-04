@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\game\game.csproj" />
-    <ProjectReference Include="..\network\network.csproj" />
   </ItemGroup>
 
   <ItemGroup>

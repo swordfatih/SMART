@@ -7,14 +7,12 @@ namespace Interface
     {
         public RandomClient(string name) : base(name)
         {
-
         }
 
         public RandomClient() : base(Guid.NewGuid().ToString())
         {
-
         }
-        
+
         public override int AskChoice(Question question)
         {
             return new Random().Next(0, question.Answers.Count);
@@ -25,18 +23,24 @@ namespace Interface
             return "";
         }
 
-        public override void SendMessage(string message)
+        public override void SendPlayerMessage(string origin, string message)
+        {
+        }
+
+        public override void SendBoardMessage(string message)
+        {
+        }
+
+        public override void SendChoiceAnswer(int position, Question question, int choice)
         {
         }
 
         public override void Notify(BoardData value)
         {
-
         }
 
         public override void Notify(PlayerData value)
         {
-
         }
 
         public override string ToString()
