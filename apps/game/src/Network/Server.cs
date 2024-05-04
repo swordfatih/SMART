@@ -149,6 +149,8 @@ namespace Interface
 
             var winner = Board.GetWinner();
             Broadcast(new Packet(RequestType.End, new string[] { winner.ToString() ?? "null" }));
+
+            Board = null;
         }
 
         public void Broadcast(Packet packet)

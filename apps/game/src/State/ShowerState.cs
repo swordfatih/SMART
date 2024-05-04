@@ -6,7 +6,7 @@ namespace Game
     {
         public override Action Action(Board board, Player player)
         {
-            if (player.Items.Any(x => x is Soap))
+            if (player.Items.Any(x => x is SoapItem))
             {
                 return new UseSoapAction(player);
             }
