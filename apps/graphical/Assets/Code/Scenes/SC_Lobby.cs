@@ -85,7 +85,7 @@ public class SC_Lobby : MonoBehaviour
 
                 iaMembers.Add(newIA);
 
-                GameManager.Instance.Bots.Add(new RandomClient(name));
+                GameManager.Instance.Server.Bots.Add(new RandomClient(name));
 
 
             }
@@ -103,8 +103,8 @@ public class SC_Lobby : MonoBehaviour
             iaMembers.RemoveAt(index);
 
             var name=iaToRemove.GetComponentInChildren<TMP_Text>();
-            var bot=GameManager.Instance.Bots.Find(x=> x.Name==name.text);
-            GameManager.Instance.Bots.Remove(bot);
+            var bot=GameManager.Instance.Server.Bots.Find(x=> x.Name==name.text);
+            GameManager.Instance.Server.Bots.Remove(bot);
 
             Destroy(iaToRemove);
         }
