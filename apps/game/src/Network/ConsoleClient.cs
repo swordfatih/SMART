@@ -39,9 +39,9 @@ namespace Interface
             Console.WriteLine("[Board] " + message);
         }
 
-        public override void SendChoiceAnswer(string origin, Question question, int choice)
+        public override void SendChoiceAnswer(int position, Question question, int choice)
         {
-            Console.WriteLine($"[Answer from {origin} to ${question.Value}] {question.Answers[choice]}");
+            Console.WriteLine($"[Answer from {position} to ${question.Value}] {question.Answers[choice]}");
         }
 
         public override void Notify(BoardData value)
