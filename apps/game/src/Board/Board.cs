@@ -28,12 +28,14 @@ namespace Game
         public void Init(List<Client> clients)
         {
             var randomizer = new Random();
-            var associate = randomizer.Next(0, clients.Count);
             GuardPosition = randomizer.Next(0, clients.Count);
+
+            var associate_count = Math.Ceiling((double) clients.Count / 4);
+            var associates = clients.OrderBy(x => randomizer.Next()).Take((int) associate_count).ToList();
 
             for (var i = 0; i < clients.Count; ++i)
             {
-                var player = new Player(clients[i], i, associate == i ? new AssociateRole() : new InmateRole());
+                var player = new Player(clients[i], i, associates.Contains(clients[i]) ? new AssociateRole() : new InmateRole());
                 Players.Add(player);
 
                 Logger.WriteLine(player.ToString());
@@ -161,7 +163,7 @@ namespace Game
             GuardPosition = NextGuardPosition ?? Players.AdjacentPosition(GuardPosition, Direction.Right);
             NextGuardPosition = null;
 
-            foreach (var player in Players)
+            foreach (var player in Players.Only(Team.Associate).Except(Status.Dead))
             {
                 if (player.Position == GuardPosition && player.HasDug)
                 {

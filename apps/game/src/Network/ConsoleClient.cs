@@ -29,9 +29,19 @@ namespace Interface
             return Console.ReadLine() ?? "";
         }
 
-        public override void SendMessage(string message)
+        public override void SendPlayerMessage(string origin, string message)
         {
-            Console.WriteLine("[" + Name + "] " + message);
+            Console.WriteLine($"[Message from {origin}] ${message}");
+        }
+
+        public override void SendBoardMessage(string message)
+        {
+            Console.WriteLine("[Board] " + message);
+        }
+
+        public override void SendChoiceAnswer(int position, Question question, int choice)
+        {
+            Console.WriteLine($"[Answer from {position} to ${question.Value}] {question.Answers[choice]}");
         }
 
         public override void Notify(BoardData value)
