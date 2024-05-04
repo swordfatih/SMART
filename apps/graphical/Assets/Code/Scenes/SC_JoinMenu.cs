@@ -15,10 +15,10 @@ public class SC_JoinMenu : MonoBehaviour
     {
         var host = addressField.text;
         var port = int.Parse(portField.text);
-        SceneManager.LoadScene("GameLobby");
 
         var node = new Node(host, port);
-        var client = new ClientInterface(node, pseudoField.text);
-        GameManager.Instance.Client = client;
+        GameManager.Instance.Client = new ClientInterface(node, pseudoField.text);;
+
+        SceneManager.LoadScene("GameLobby");
     }
 }

@@ -25,9 +25,9 @@ public class SC_LaunchGame : MonoBehaviour
         var listener = Task.Run(GameManager.Instance.Server.Listen);
         var receiver = Task.Run(GameManager.Instance.Server.Receive);
 
-        SceneManager.LoadScene("GameLobby");
-
         var node = new Node(host, port);
         GameManager.Instance.Client = new ClientInterface(node, pseudoField.text);
+
+        SceneManager.LoadScene("GameLobby");
     }
 }
