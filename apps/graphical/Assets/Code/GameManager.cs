@@ -51,6 +51,16 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Q
         QuestionObservers.Add(observer);
     }
 
+    public void Unsubscribe(IObserver<ServerData> observer)
+    {
+        ServerObservers.Remove(observer);
+    }
+
+    public void Unsubscribe(IObserver<Question> observer)
+    {
+        QuestionObservers.Remove(observer);
+    }
+
     public void Notify(ServerData serverData)
     {
         ServerData = serverData;
