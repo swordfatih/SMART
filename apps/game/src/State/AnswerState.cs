@@ -27,7 +27,7 @@ namespace Game
             else if (Communication is ChoiceCommunication c3)
             {
                 var choice = player.Client.AskChoice(c3.Question);
-                c3.Origin.Client.SendChoiceAnswer(player.Client.Name, c3.Question, choice);
+                c3.Origin.Client.SendChoiceAnswer(player.Position, c3.Question, choice);
             }
 
             return new IdleAction(player);

@@ -66,9 +66,9 @@ namespace Interface
             Node.Send(RequestType.BoardMessage, message);
         }
 
-        public override void SendChoiceAnswer(string origin, Question question, int choice)
+        public override void SendChoiceAnswer(int position, Question question, int choice)
         {
-            Node.Send(RequestType.ChoiceAnswer, new string[]{origin, JsonConvert.SerializeObject(question), choice.ToString()});
+            Node.Send(RequestType.ChoiceAnswer, new string[]{position.ToString(), JsonConvert.SerializeObject(question), choice.ToString()});
         }
 
         public override void Notify(BoardData value)
