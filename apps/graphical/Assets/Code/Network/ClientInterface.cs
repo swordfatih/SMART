@@ -28,7 +28,7 @@ namespace Interface
                 if (!Node.Connected())
                 {
                     Debug.Log("Connection lost.");
-                    SceneManager.LoadScene("GameMenu");
+                    GameManager.Instance.Disconnect();
                     return;
                 }
                 else
@@ -100,12 +100,13 @@ namespace Interface
                             var winner = team == "null" ? "there is no winner" : $"the winners are the {team} team";
 
                             Debug.Log($"The game is over, {winner}");
-                            SceneManager.LoadScene("GameMenu");
+                            GameManager.Instance.Disconnect();
                         }
                         else if (packet.Request == RequestType.Error)
                         {
-                            var error = packet.Content[0];
-                            Debug.Log($"Error: {error}");
+                            var message = packet.Content[0];
+                            Debug.Log($"Error: {message}");
+                            GameManager.Instance.Notify(new Message("Error", message));
                         }
                         else if (packet.Request == RequestType.NotifyServer)
                         {

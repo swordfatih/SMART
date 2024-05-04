@@ -58,7 +58,7 @@ namespace Interface
 
         public override void SendPlayerMessage(string origin, string message)
         {
-            Node.Send(RequestType.PlayerMessage, message);
+            Node.Send(RequestType.PlayerMessage, origin, message);
         }
 
         public override void SendBoardMessage(string message)

@@ -2,6 +2,7 @@ using UnityEngine;
 using Interface;
 using Game;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Choice>, IObservable<Message>
 {
@@ -35,11 +36,18 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
         ServerData = null;
         ServerObservers = new();
         ChoiceObservers = new();
+        MessageObservers = new();
     }
 
     public void Update()
     {
         Instance.Client?.Handle();
+    }
+
+    public void Disconnect()
+    {
+        Client = null;
+        SceneManager.LoadScene("GameMenu");
     }
 
     public void Subscribe(IObserver<ServerData> observer)
