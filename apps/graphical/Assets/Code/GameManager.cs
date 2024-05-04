@@ -3,13 +3,14 @@ using Interface;
 using Game;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour, IObservable<ServerData>
+public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Question>
 {
     public ClientInterface Client { get; set; }
     public Server Server { get; set; }
     public bool Admin { get; set; } = false;
     public ServerData ServerData { get; set; }
-    public List<IObserver<ServerData>> Observers { get; set; }
+    public List<IObserver<ServerData>> ServerObservers { get; set; }
+    public List<IObserver<Question>> QuestionObservers { get; set; }
 
     public static GameManager Instance { get; private set; }
 
@@ -31,7 +32,8 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>
         Client = null;
         Server = null;
         ServerData = null;
-        Observers = new();
+        ServerObservers = new();
+        QuestionObservers = new();
     }
 
     public void Update()
@@ -41,15 +43,38 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>
 
     public void Subscribe(IObserver<ServerData> observer)
     {
-        Debug.Log("Subscribing observer...");
-        Observers.Add(observer);
+        ServerObservers.Add(observer);
     }
 
-    public void Notify()
+    public void Subscribe(IObserver<Question> observer)
     {
-        foreach (var observer in Observers)
+        QuestionObservers.Add(observer);
+    }
+
+    public void Unsubscribe(IObserver<ServerData> observer)
+    {
+        ServerObservers.Remove(observer);
+    }
+
+    public void Unsubscribe(IObserver<Question> observer)
+    {
+        QuestionObservers.Remove(observer);
+    }
+
+    public void Notify(ServerData serverData)
+    {
+        ServerData = serverData;
+        foreach (var observer in ServerObservers)
         {
             observer.Notify(ServerData);
+        }
+    }
+
+    public void Notify(Question question)
+    {
+        foreach (var observer in QuestionObservers)
+        {
+            observer.Notify(question);
         }
     }
 }
