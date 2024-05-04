@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Game;
 using Network;
+using Newtonsoft.Json;
 
 namespace Interface
 {
@@ -86,8 +87,7 @@ namespace Interface
                     var client = new NetworkClient(packet.Content[0], node);
                     Clients.TryUpdate(socket, client, null);
                     ReplaceClient(client.Name, client);
-
-                    Broadcast($"{name} connected.");
+                    Notify();
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace Interface
             {
                 Clients.TryRemove(client.Node.Client, out _);
                 ReplaceClient(client.Name, new RandomClient(client.Name));
-                Broadcast($"{client.Name} disconnected.");
+                Notify();
                 return;
             }
 
@@ -143,9 +143,8 @@ namespace Interface
 
             Board.Init(clients);
 
-            Broadcast("Game starting.");
+            Notify();
             Board.Run();
-            Broadcast("Game over.");
 
             var winner = Board.GetWinner();
             Broadcast(new Packet(RequestType.End, new string[] { winner.ToString() ?? "null" }));
@@ -186,6 +185,23 @@ namespace Interface
                     Board.Notify(player.Client);
                 }
             }
+        }
+
+        private void Notify()
+        {
+            Broadcast(new Packet(RequestType.NotifyServer, new[] {
+                JsonConvert.SerializeObject(
+                    new ServerData(
+                        Clients.Where(x => x.Value != null).Select(x => x.Value?.Name ?? ""),
+                        Bots.Select(x => x.Name),
+                        Board != null
+                    ),
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    }
+                )
+            }));
         }
     }
 }
