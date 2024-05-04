@@ -16,7 +16,7 @@ public class SC_JoinMenu : MonoBehaviour
         var host = addressField.text;
         var port = int.Parse(portField.text);
 
-        SceneManager.LoadScene("GameInterface", LoadSceneMode.Additive);
+        SceneManager.LoadScene("GameLobby", LoadSceneMode.Additive);
 
         var node = new Node(host, port);
         var client = new ClientInterface(node, pseudoField.text);
