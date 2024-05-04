@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Linq;
 using Interface;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
@@ -21,20 +19,16 @@ public class SC_Lobby : MonoBehaviour
     public GameObject playerPrefab;
     private List<GameObject> iaMembers = new List<GameObject>();
 
-
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         iaNb = 0;
-
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        ConcurrentDictionary<TcpClient, NetworkClient?> clientList = GameManager.Instance.Server.Clients;
-
-
+        ConcurrentDictionary<TcpClient, NetworkClient> clientList = GameManager.Instance.Server.Clients;
         GameObject[] playerPrefabs = GameObject.FindGameObjectsWithTag("Pseudo");
 
         // Destroy each player prefab found
@@ -48,21 +42,15 @@ public class SC_Lobby : MonoBehaviour
         foreach (var client in clientList)
         {
             GameObject newPlayer = Instantiate(playerPrefab);
-
-
             newPlayer.transform.SetParent(element_object.transform);
 
-            //TO DO : modifications dans le server : kick le joueur
             Button removePlayer = newPlayer.GetComponentInChildren<Button>();
-            removePlayer.onClick.AddListener(() => removePlayerButton(newPlayer));
+            removePlayer.onClick.AddListener(() => RemovePlayerButton(newPlayer));
 
-            NetworkClient? networkClient = client.Value;
+            NetworkClient networkClient = client.Value;
             TMP_Text pseudo = newPlayer.GetComponentInChildren<TMP_Text>();
             pseudo.text = networkClient.Name;
-
         }
-
-
     }
 
     public void AddIAButton()
@@ -80,15 +68,13 @@ public class SC_Lobby : MonoBehaviour
                 Button removeButton = newIA.GetComponentInChildren<Button>();
                 TMP_Text iaName = newIA.GetComponentInChildren<TMP_Text>();
 
-                removeButton.onClick.AddListener(() => removeIAButton(newIA));
-                var name = "IA " + (iaNb).ToString();
+                removeButton.onClick.AddListener(() => RemoveIAButton(newIA));
+                var name = "IA " + iaNb.ToString();
                 iaName.text = name;
 
                 iaMembers.Add(newIA);
 
                 GameManager.Instance.Server.Bots.Add(new RandomClient(name));
-
-
             }
             else
             {
@@ -96,7 +82,7 @@ public class SC_Lobby : MonoBehaviour
             }
         }
     }
-    public void removeIAButton(GameObject iaToRemove)
+    public void RemoveIAButton(GameObject iaToRemove)
     {
         int index = iaMembers.IndexOf(iaToRemove);
         if (index != -1)
@@ -111,7 +97,7 @@ public class SC_Lobby : MonoBehaviour
         }
     }
 
-    public void removePlayerButton(GameObject playerToRemove)
+    public void RemovePlayerButton(GameObject playerToRemove)
     {
         TMP_Text pseudoText = playerToRemove.GetComponentInChildren<TMP_Text>();
         if (pseudoText == null)
@@ -126,7 +112,7 @@ public class SC_Lobby : MonoBehaviour
 
         foreach (var entry in GameManager.Instance.Server.Clients)
         {
-            NetworkClient? networkClient = entry.Value;
+            NetworkClient networkClient = entry.Value;
             if (networkClient != null && networkClient.Name == playerName)
             {
                 keyToRemove = entry.Key;
@@ -147,7 +133,7 @@ public class SC_Lobby : MonoBehaviour
         Destroy(playerToRemove);
     }
 
-    public void clickStartButton()
+    public void ClickStartButton()
     {
         GameManager.Instance.Client.Node.Send(RequestType.Start);
         Debug.Log("Before Load");
