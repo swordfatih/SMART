@@ -9,9 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public ClientInterface Client { get; set; }
     public Server Server { get; set; }
-    public bool Admin {get; set; } = false;
-    public List<Client> Bots;
-
+    public bool Admin { get; set; } = false;
 
     public static GameManager Instance { get; private set; }
 
@@ -32,6 +30,5 @@ public class GameManager : MonoBehaviour
         // Initialisation du Game Manager...
         Client = null;
         Server = null;
-        Bots= new();
     }
 }
