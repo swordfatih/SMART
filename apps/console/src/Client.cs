@@ -130,7 +130,7 @@ namespace Interface
                                 Console.WriteLine("You have the following items: ");
                                 foreach (var item in value.Player.Items)
                                 {
-                                    Console.WriteLine(item);
+                                    Console.WriteLine(item.Name);
                                 }
                             }
                         }
