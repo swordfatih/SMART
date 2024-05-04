@@ -24,9 +24,26 @@ namespace Interface
 
             foreach (var packet in packets)
             {
-                if (packet.Request == RequestType.Message)
+                if (packet.Request == RequestType.ServerMessage)
                 {
-                    Console.WriteLine(packet.Content[0]);
+                    Console.WriteLine($"[Server] {packet.Content[0]}");
+                }
+                else if (packet.Request == RequestType.BoardMessage)
+                {
+                    Console.WriteLine($"[Board] {packet.Content[0]}");
+                }
+                else if (packet.Request == RequestType.PlayerMessage)
+                {
+                    Console.WriteLine($"[Message from {packet.Content[0]}] {packet.Content[1]}");
+                }
+                else if (packet.Request == RequestType.ChoiceAnswer)
+                {
+                    var question = JsonConvert.DeserializeObject<Question>(packet.Content[1], new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+
+                    Console.WriteLine($"[Answer from {packet.Content[0]} to {question?.Value}] {packet.Content[2]}");
                 }
                 else if (packet.Request == RequestType.Input)
                 {
@@ -119,11 +136,11 @@ namespace Interface
                         }
                     }
                 }
-                else if(packet.Request == RequestType.End)
+                else if (packet.Request == RequestType.End)
                 {
                     var team = packet.Content[0];
                     var winner = team == "null" ? "there is no winner" : $"the winners are the {team} team";
-                    
+
                     Console.WriteLine($"The game is over, {winner}");
                 }
             }

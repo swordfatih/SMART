@@ -56,9 +56,19 @@ namespace Interface
             }
         }
 
-        public override void SendMessage(string message)
+        public override void SendPlayerMessage(string origin, string message)
         {
-            Node.Send(RequestType.Message, message);
+            Node.Send(RequestType.PlayerMessage, message);
+        }
+
+        public override void SendBoardMessage(string message)
+        {
+            Node.Send(RequestType.BoardMessage, message);
+        }
+
+        public override void SendChoiceAnswer(string origin, Question question, int choice)
+        {
+            Node.Send(RequestType.ChoiceAnswer, new string[]{origin, JsonConvert.SerializeObject(question), choice.ToString()});
         }
 
         public override void Notify(BoardData value)

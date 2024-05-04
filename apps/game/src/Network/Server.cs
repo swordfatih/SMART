@@ -160,7 +160,7 @@ namespace Interface
 
         public void Broadcast(string message)
         {
-            Broadcast(new Packet(RequestType.Message, new[] { message }));
+            Broadcast(new Packet(RequestType.ServerMessage, new[] { message }));
         }
 
         private void ReplaceClient(string name, Client source)

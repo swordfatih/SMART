@@ -19,10 +19,21 @@ namespace Game
             return "";
         }
 
-        public virtual void SendMessage(string message)
+        public virtual void SendPlayerMessage(string origin, string message)
         {
 
         }
+
+        public virtual void SendBoardMessage(string message)
+        {
+
+        }
+
+        public virtual void SendChoiceAnswer(string origin, Question question, int choice)
+        {
+            
+        }
+
 
         public virtual void Notify(BoardData value)
         {
