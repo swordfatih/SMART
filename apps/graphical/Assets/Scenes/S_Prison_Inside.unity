@@ -4937,7 +4937,6 @@ GameObject:
   - component: {fileID: 1398858954}
   - component: {fileID: 1398858953}
   - component: {fileID: 1398858952}
-  - component: {fileID: 1398858956}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: MainCamera
@@ -5028,22 +5027,6 @@ RectTransform:
   m_AnchoredPosition: {x: -14.45, y: 30.81}
   m_SizeDelta: {x: 697.2001, y: 374}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1398858956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398858949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8a8eb7b4036994f82fcd980d7bfa6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PF_Answer: {fileID: 4253105579229598827, guid: 7b743594301f6634eaee2e8c0da4a355, type: 3}
-  PF_Choice: {fileID: 1297349137987832124, guid: f73d0815c4dc807478705cc6752d2037, type: 3}
-  IT_Canvas: {fileID: 1398858949}
-  Block: {fileID: 0}
 --- !u!1001 &1402322846
 PrefabInstance:
   m_ObjectHideFlags: 0

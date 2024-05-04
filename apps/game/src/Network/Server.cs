@@ -88,6 +88,13 @@ namespace Interface
                     Clients.TryUpdate(socket, client, null);
                     ReplaceClient(client.Name, client);
                     Notify();
+
+                    if(Board != null)
+                    {
+                        client.Node.Send(new Packet(RequestType.Start));
+                    }
+
+                    client.Node.Send(new Packet(RequestType.Connect));
                 }
             }
         }
@@ -147,6 +154,7 @@ namespace Interface
             Board.Init(clients);
 
             Notify();
+            Broadcast(new Packet(RequestType.Start));
             Board.Run();
 
             var winner = Board.GetWinner();

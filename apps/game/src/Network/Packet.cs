@@ -17,6 +17,10 @@ namespace Network
             Content = content;
         }
 
+        public Packet(RequestType request) : this(request, new string[0])
+        {
+        }
+
         public override string ToString()
         {
             string packet = Request.ToString();

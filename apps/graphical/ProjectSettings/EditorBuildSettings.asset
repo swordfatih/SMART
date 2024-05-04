@@ -6,21 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GameMenu.unity
+    path: Assets/Scenes/S_Menu.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/GameInterface.unity
+    path: Assets/Scenes/S_Interface.unity
     guid: 318621399647a344f90a1b55d0453659
   - enabled: 1
-    path: Assets/Scenes/GameLobby.unity
+    path: Assets/Scenes/S_Lobby.unity
     guid: 000b98465ea47c84eb67ded05f33ba46
   - enabled: 1
-    path: Assets/Scenes/ShowerScene.unity
+    path: Assets/Scenes/S_Shower.unity
     guid: 96872c196a06045e3b2743fd6e6e215f
   - enabled: 1
-    path: Assets/Scenes/SC_Prison_Inside.unity
+    path: Assets/Scenes/S_Prison_Inside.unity
     guid: 1b7fbf3393961df448d2515df1520683
   - enabled: 1
-    path: Assets/Scenes/SC_Prison_Outside.unity
+    path: Assets/Scenes/S_Prison_Outside.unity
     guid: 249b72225994fb643bae2c00e0989003
   m_configObjects: {}

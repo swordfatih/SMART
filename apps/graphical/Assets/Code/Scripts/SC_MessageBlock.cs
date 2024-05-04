@@ -1,3 +1,4 @@
+using System.Collections;
 using Game;
 using Interface;
 using TMPro;
@@ -9,6 +10,7 @@ public class SC_MessageBlock : MonoBehaviour, IObserver<Message>
     public GameObject PF_Message;
     public GameObject Canvas { get; set; } = null;
     public GameObject Block { get; set; } = null;
+    public Message LastMessage { get; set; } = null;
 
     public void Start()
     {
@@ -20,6 +22,11 @@ public class SC_MessageBlock : MonoBehaviour, IObserver<Message>
         if (Canvas == null)
         {
             Canvas = GameObject.Find("Canvas");
+
+            if (LastMessage != null)
+            {
+                SetMessage(LastMessage);
+            }
         }
     }
 
@@ -28,11 +35,26 @@ public class SC_MessageBlock : MonoBehaviour, IObserver<Message>
         GameManager.Instance.Unsubscribe(this);
     }
 
-    public void SetMessage(Message message)
+    public IEnumerator Close(float time)
     {
+        yield return new WaitForSeconds(time);
+
         if (Block != null)
         {
-            GameObject.Destroy(Block);
+            Destroy(Block);
+            Block = null;
+        }
+
+        LastMessage = null;
+    }
+
+    public void SetMessage(Message message)
+    {
+        LastMessage = message;
+
+        if (Block != null)
+        {
+            Destroy(Block);
         }
 
         Block = Instantiate(PF_Message, Canvas.transform);
@@ -41,11 +63,18 @@ public class SC_MessageBlock : MonoBehaviour, IObserver<Message>
         text.text = $"You received a message from {message.Origin}:\n{message.Value}";
 
         var button = Block.GetComponentInChildren<Button>();
-        button.onClick.AddListener(() => GameObject.Destroy(Block));
+        button.onClick.AddListener(() =>
+        {
+            StopAllCoroutines();
+            StartCoroutine(Close(0f));
+        });
     }
 
     public void Notify(Message message)
     {
         SetMessage(message);
+
+        StopAllCoroutines();
+        StartCoroutine(Close(5.0f));
     }
 }

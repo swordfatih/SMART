@@ -17,7 +17,5 @@ public class SC_JoinMenu : MonoBehaviour
 
         var node = new Node(host, port);
         GameManager.Instance.Client = new ClientInterface(node, IT_NameInput.text);;
-
-        SceneManager.LoadScene("GameLobby");
     }
 }

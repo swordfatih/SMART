@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Game
 {
@@ -43,7 +45,7 @@ namespace Game
             return new(Players.Where(x => x.Status == status));
         }
 
-        public PlayerList Except(Player except)
+        public PlayerList Except(Player? except)
         {
             return new(Players.Where(x => x != except));
         }
@@ -53,20 +55,17 @@ namespace Game
             return new(Players.Where(x => x.Status != status));
         }
 
-        public Player AdjacentPlayer(Player current, Direction direction)
+        public Player? AdjacentPlayer(Player current, Direction direction)
         {
-            return Players[AdjacentPosition(current.Position, direction)];
+            return AdjacentPlayer(current.Position, direction);
         }
 
-        public Player AdjacentPlayer(int position, Direction direction)
+        public Player? AdjacentPlayer(int position, Direction direction)
         {
-            return Players[AdjacentPosition(position, direction)];
-        }
+            var max = Players.Max(x => x.Position);
+            var sorted = Except(FindByPosition(position)).Players.OrderBy(x => (x.Position + max - position) % max);
 
-        public int AdjacentPosition(int position, Direction direction)
-        {
-            static int mod(int x, int m) => (x % m + m) % m;
-            return mod(position + (direction == Direction.Right ? 1 : -1), Players.Count);
+            return direction == Direction.Right ? sorted.FirstOrDefault() : sorted.LastOrDefault();
         }
 
         public Player? FindByPosition(int position)

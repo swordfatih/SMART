@@ -11,11 +11,11 @@ namespace Game
 
         public override void Run(Board board)
         {
-            var target = board.Players.AdjacentPlayer(Player, Communication.Direction);
+            var target = board.Players.Only(Status.Alive).AdjacentPlayer(Player, Communication.Direction);
 
             if (target != Communication.Origin)
             {
-                target.States.Push(new AnswerState(Communication));
+                target?.States.Push(new AnswerState(Communication));
             }
         }
 

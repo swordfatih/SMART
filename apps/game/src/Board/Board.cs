@@ -63,7 +63,7 @@ namespace Game
                 Day++;
                 Logger.WriteLine($"day:{Day}");
 
-                foreach (var player in Players.Except(Status.Dead))
+                foreach (var player in Players.Except(Status.Dead).Except(Status.Escaped))
                 {
                     // new state
                     player.States.Clear();
@@ -182,7 +182,7 @@ namespace Game
 
         public void UpdateGuard()
         {
-            GuardPosition = NextGuardPosition ?? Players.AdjacentPosition(GuardPosition, Direction.Right);
+            GuardPosition = NextGuardPosition ?? Players.Only(Status.Alive).AdjacentPlayer(GuardPosition, Direction.Right)?.Position ?? -1;
             NextGuardPosition = null;
 
             foreach (var player in Players.Only(Team.Associate).Except(Status.Dead))

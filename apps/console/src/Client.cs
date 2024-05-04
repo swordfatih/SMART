@@ -136,6 +136,10 @@ namespace Interface
                         }
                     }
                 }
+                else if (packet.Request == RequestType.Start)
+                {
+                    Console.WriteLine("The game is starting");
+                }
                 else if (packet.Request == RequestType.End)
                 {
                     var team = packet.Content[0];
@@ -143,7 +147,7 @@ namespace Interface
 
                     Console.WriteLine($"The game is over, {winner}");
                 }
-                else if(packet.Request == RequestType.NotifyServer)
+                else if (packet.Request == RequestType.NotifyServer)
                 {
                     var data = JsonConvert.DeserializeObject<ServerData>(packet.Content[0], new JsonSerializerSettings
                     {
