@@ -40,7 +40,7 @@ namespace Interface
                     foreach (var packet in packets)
                     {
                         Debug.Log("Handling packet...");
-                        if (packet.Request == RequestType.Message)
+                        if (packet.Request == RequestType.PlayerMessage)
                         {
                             Debug.Log("Message packet...");
                             var message = packet.Content[0];
@@ -80,7 +80,7 @@ namespace Interface
 
                             input.GetComponent<InputField>().onEndEdit.AddListener((string value) =>
                             {
-                                Node.Send(RequestType.Message, value);
+                                Node.Send(RequestType.Input, value);
                             });
 
                             var textRect = text.GetComponent<RectTransform>();
