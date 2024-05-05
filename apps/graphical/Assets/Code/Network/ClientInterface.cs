@@ -108,7 +108,6 @@ namespace Interface
                             {
                                 SceneManager.LoadScene("S_Isolement");
                                 Debug.Log("You are confined, you can't play.");
-                                
                             }
                             
                             GameManager.Instance.Notify(data);

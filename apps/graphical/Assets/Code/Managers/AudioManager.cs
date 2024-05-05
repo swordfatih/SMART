@@ -24,10 +24,7 @@ public class AudioManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-    }
 
-    public void Start()
-    {
         AudioSource = GetComponent<AudioSource>();
     }
 
