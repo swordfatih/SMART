@@ -11,6 +11,8 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
     public GameObject PF_Associate;
     public GameObject PF_Inmate;
     public GameObject PF_Shovel;
+    public GameObject PF_Soap;
+    public GameObject PF_Poison;
     public bool Initialized { get; set; }
 
     void Start()
@@ -48,6 +50,7 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
         var Progression = HUD.transform.Find("Progression");
         var Day = HUD.transform.Find("Day");
         var Guard = HUD.transform.Find("Guard");
+        var Items = HUD.transform.Find("Items");
 
         if (!Initialized)
         {
@@ -100,6 +103,31 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
             guard.transform.SetParent(Guard.transform);
             guard.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
             guard.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+        }
+
+        // update items
+        foreach (Transform child in Items.GetComponentInChildren<Transform>())
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        foreach (var item in PlayerData.Player.Items)
+        { 
+            var GO_Item = item.Name switch {
+                "Soap" => Instantiate(PF_Soap),
+                "Poison" => Instantiate(PF_Poison),
+                _ => null
+            };
+
+            if(GO_Item is null)
+            {
+                continue;
+            }
+        
+            GO_Item.transform.SetParent(Items.transform);
+            GO_Item.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, 0f);
+            GO_Item.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            GO_Item.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
         }
     }
 }
