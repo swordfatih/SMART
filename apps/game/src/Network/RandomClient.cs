@@ -31,7 +31,7 @@ namespace Interface
         {
         }
 
-        public override void SendChoiceAnswer(int position, Choice choice, int answer)
+        public override void SendChoiceAnswer(int position, string name, Choice choice, int answer)
         {
         }
 

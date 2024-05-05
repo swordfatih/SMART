@@ -38,12 +38,12 @@ namespace Interface
                 }
                 else if (packet.Request == RequestType.ChoiceAnswer)
                 {
-                    var choice = JsonConvert.DeserializeObject<Choice>(packet.Content[1], new JsonSerializerSettings
+                    var choice = JsonConvert.DeserializeObject<Choice>(packet.Content[2], new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
 
-                    Console.WriteLine($"[Answer from {packet.Content[0]} to {choice?.Value}] {packet.Content[2]}");
+                    Console.WriteLine($"[Answer from {packet.Content[1]} to {choice?.Value}] {packet.Content[2]}");
                 }
                 else if (packet.Request == RequestType.Input)
                 {
