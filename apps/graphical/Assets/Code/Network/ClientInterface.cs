@@ -102,14 +102,26 @@ namespace Interface
                             {
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
-
+                            
                             Debug.Log(data.Player.States.Peek().GetType().Name);
-                            if (data.Player.States.Peek() is ConfinedState)
+                            if (data.Player.States.Count != 0)
                             {
-                                SceneManager.LoadScene("S_Isolement");
-                                Debug.Log("You are confined, you can't play.");
+                                if(data.Player.States.Peek() is ConfinedState)
+                                {
+                                    SceneManager.LoadScene("S_Isolement");
+                                    Debug.Log("You are confined, you can't play.");
+                                } else if (data.Player.States.Peek() is GuardState || data.Player.States.Peek() is SafeState)
+                                {
+                                    SceneManager.LoadScene("S_Prison_Inside");
+                                    Debug.Log("You are a guard, you can't play.");
+                                } else if (data.Player.States.Peek() is ShowerState)
+                                {
+                                    SceneManager.LoadScene("S_Shower");
+                                }
+                                
                             }
-
+                           
+                            
                             GameManager.Instance.Notify(data);
                         }
                         else if (packet.Request == RequestType.NotifyBoard)
