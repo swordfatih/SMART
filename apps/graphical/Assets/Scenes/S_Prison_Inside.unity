@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.5
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.063658744, g: 0.067073785, b: 0.06053935, a: 0.5}
+  m_IndirectSpecularColor: {r: 0.06365852, g: 0.067073636, b: 0.060539268, a: 0.5}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -47194,7 +47194,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: e53d2c83f4d30174abd466a4c3cb28ee, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -56753,10 +56753,10 @@ PlayableDirector:
     value: {fileID: 1803458555}
   - key: {fileID: 8203226349482661889, guid: fc9bbe2ab3ab1e14d8fe9581d1aff671, type: 2}
     value: {fileID: 1596437214}
-  - key: {fileID: 2630322539298026367, guid: fc9bbe2ab3ab1e14d8fe9581d1aff671, type: 2}
-    value: {fileID: 2103458810}
   - key: {fileID: 5777315188986190471, guid: fc9bbe2ab3ab1e14d8fe9581d1aff671, type: 2}
     value: {fileID: 2069380748}
+  - key: {fileID: 1737973218720390447, guid: fc9bbe2ab3ab1e14d8fe9581d1aff671, type: 2}
+    value: {fileID: 2103458810}
   m_ExposedReferences:
     m_References: []
 --- !u!1001 &1746378932
@@ -68079,12 +68079,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 1978818526718913223, guid: 8f8287dcf474f3d4e94668ee06ad0d28, type: 2}
     value: {fileID: 2103458810}
-  - key: {fileID: -7259099564364636363, guid: 8f8287dcf474f3d4e94668ee06ad0d28, type: 2}
-    value: {fileID: 1415850259}
   - key: {fileID: 1620939174104255438, guid: 8f8287dcf474f3d4e94668ee06ad0d28, type: 2}
     value: {fileID: 1803458555}
-  - key: {fileID: -2351895824829758543, guid: 8f8287dcf474f3d4e94668ee06ad0d28, type: 2}
-    value: {fileID: 1596437214}
   - key: {fileID: -6738791741215859991, guid: 8f8287dcf474f3d4e94668ee06ad0d28, type: 2}
     value: {fileID: 2069380748}
   m_ExposedReferences:
