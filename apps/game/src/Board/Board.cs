@@ -15,7 +15,7 @@ namespace Game
         public int GuardPosition { get; set; }
         public int? NextGuardPosition { get; set; } = null;
         public int Day { get; set; } = 0;
-        public static int SHOWER_RATE = 2;
+        public static int SHOWER_RATE = 4;
 
         public Board(Stream logger)
         {
