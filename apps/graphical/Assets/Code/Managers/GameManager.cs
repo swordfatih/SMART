@@ -97,12 +97,12 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
 
     public void Unsubscribe(IObserver<PlayerData> observer)
     {
-        throw new System.NotImplementedException();
+        PlayerObservers.Remove(observer);
     }
 
     public void Unsubscribe(IObserver<BoardData> observer)
     {
-        throw new System.NotImplementedException();
+        BoardObservers.Remove(observer);
     }
 
     public void Unsubscribe(IObserver<UserInput> observer)
