@@ -103,10 +103,13 @@ namespace Interface
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
                             
-                            if(data.Player.States.Peek().GetType() == typeof(ConfinedState))
+                            Debug.Log(data.Player.States.Peek());
+                            Debug.Log(data.Player.States.Peek().getTypes());
+                            if(data.Player.States.Peek() is (ConfinedState))
                             {
                                 SceneManager.LoadScene("S_Isolement");
                                 Debug.Log("You are confined, you can't play.");
+                                
                             }
                             
                             GameManager.Instance.Notify(data);
