@@ -123,11 +123,7 @@ namespace Interface
                         else if (packet.Request == RequestType.Input)
                         {
                             var instruction = packet.Content[0];
-
-                            /*input.GetComponent<InputField>().onEndEdit.AddListener((string value) =>
-                            {
-                                Node.Send(RequestType.Input, value);
-                            });*/
+                            GameManager.Instance.Notify(new UserInput(instruction));
                         }
                     }
                 }

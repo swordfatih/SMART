@@ -1,10 +1,9 @@
 using UnityEngine;
-using Interface;
 using Game;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+using Interface;
 
-public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Choice>, IObservable<Message>, IObservable<PlayerData>, IObservable<BoardData>
+public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<Choice>, IObservable<Message>, IObservable<PlayerData>, IObservable<BoardData>, IObservable<UserInput>
 {
     public ClientInterface Client { get; set; }
     public Server Server { get; set; }
@@ -15,6 +14,7 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
     public List<IObserver<Message>> MessageObservers { get; set; }
     public List<IObserver<PlayerData>> PlayerObservers { get; set; }
     public List<IObserver<BoardData>> BoardObservers { get; set; }
+    public List<IObserver<UserInput>> InputObservers { get; set; }
 
     public static GameManager Instance { get; private set; }
 
@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
         MessageObservers = new();
         PlayerObservers = new();
         BoardObservers = new();
+        InputObservers = new();
     }
 
     public void Update()
@@ -73,6 +74,11 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
         throw new System.NotImplementedException();
     }
 
+    public void Subscribe(IObserver<UserInput> observer)
+    {
+        InputObservers.Add(observer);
+    }
+
     public void Unsubscribe(IObserver<ServerData> observer)
     {
         ServerObservers.Remove(observer);
@@ -96,6 +102,11 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
     public void Unsubscribe(IObserver<BoardData> observer)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void Unsubscribe(IObserver<UserInput> observer)
+    {
+        InputObservers.Remove(observer);
     }
 
     public void Notify(ServerData serverData)
@@ -136,6 +147,14 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
         foreach (var observer in BoardObservers)
         {
             observer.Notify(boardData);
+        }
+    }
+
+    public void Notify(UserInput userInput)
+    {
+        foreach (var observer in InputObservers)
+        {
+            observer.Notify(userInput);
         }
     }
 }

@@ -6,12 +6,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SC_InputBlock : MonoBehaviour, IObserver<Interface.Input>
+public class SC_InputBlock : MonoBehaviour, IObserver<UserInput>
 {
     public GameObject PF_Input;
     public GameObject Canvas { get; set; } = null;
     public GameObject Block { get; set; } = null;
-    public Interface.Input LastInput { get; set; } = null;
+    public UserInput LastInput { get; set; } = null;
     public string Message { get; set; } = null ;
 
     public void Start()
@@ -50,7 +50,7 @@ public class SC_InputBlock : MonoBehaviour, IObserver<Interface.Input>
         LastInput = null;
     }
 
-    public void SetInput(Interface.Input Input)
+    public void SetInput(UserInput Input)
     {
         LastInput = Input;
 
@@ -75,7 +75,7 @@ public class SC_InputBlock : MonoBehaviour, IObserver<Interface.Input>
 
     }
 
-    public void Notify(Interface.Input Input)
+    public void Notify(UserInput Input)
     {
         SetInput(Input);
 
