@@ -20,6 +20,7 @@ namespace Game
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
         public Role Role { get; set; }
         public int Position { get; set; }
+        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
         public Stack<State> States { get; set; }
         public Status Status { get; set; } = Status.Alive;
         public int Progression { get; set; }

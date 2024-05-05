@@ -13,12 +13,14 @@ public class SC_MainMenu : MonoBehaviour
 
     public void Start()
     {
+        AudioManager.Instance.PlayMusic("Menu", 0.2f);
         MainMenuButton();
         IT_HostInput.text = GetLocalIPAddress();
     }
 
     public void ServerMenuButton()
     {
+        AudioManager.Instance.PlaySound("Select");
         IT_Form.SetActive(true);
         IT_MainMenu.SetActive(false);
         IT_ClientMenu.SetActive(false);
@@ -27,6 +29,7 @@ public class SC_MainMenu : MonoBehaviour
 
     public void MainMenuButton()
     {
+        AudioManager.Instance.PlaySound("Select");
         IT_Form.SetActive(false);
         IT_MainMenu.SetActive(true);
         IT_ClientMenu.SetActive(false);
@@ -35,6 +38,7 @@ public class SC_MainMenu : MonoBehaviour
 
     public void ClientMenuButton()
     {
+        AudioManager.Instance.PlaySound("Select");
         IT_Form.SetActive(true);
         IT_MainMenu.SetActive(false);
         IT_ClientMenu.SetActive(true);
@@ -43,6 +47,7 @@ public class SC_MainMenu : MonoBehaviour
 
     public void QuitButton()
     {
+        AudioManager.Instance.PlaySound("Select");
         Application.Quit();
     }
 
