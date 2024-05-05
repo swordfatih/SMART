@@ -4153,6 +4153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f86c77f145e3374e9e0df761c9067e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PF_Guard: {fileID: 7801294641360833878, guid: ed1ccb2a6f2a0e740b656705b18cc523, type: 3}
+  PF_Associate: {fileID: 1184743462507116654, guid: 0dcd5112eaa9c2e48956e2c821ec7d23, type: 3}
+  PF_Inmate: {fileID: 4483467954754774947, guid: 28cefba96b892e04991aad914b9ab235, type: 3}
+  PF_Shovel: {fileID: 2375443097019657262, guid: 11678ecdbb198cb49a5bb6b08f708e96, type: 3}
 --- !u!1001 &1402322846
 PrefabInstance:
   m_ObjectHideFlags: 0
