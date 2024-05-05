@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/S_Prison_Outside.unity
     guid: 249b72225994fb643bae2c00e0989003
+  - enabled: 1
+    path: Assets/Scenes/S_Isolement.unity
+    guid: 84f11e384373dba4cbc9ea884ba8aba5
   m_configObjects: {}
