@@ -21,8 +21,8 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.Subscribe((IObserver<BoardData>(this)));
-        GameManager.Instance.Subscribe((IObserver<PlayerData>(this)));
+        GameManager.Instance.Subscribe(IObserver<BoardData>(this));
+        GameManager.Instance.Subscribe(IObserver<PlayerData>(this));
 
         GameObject rolePlace = GameObject.Find("Role");
 
