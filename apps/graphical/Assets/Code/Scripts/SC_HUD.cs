@@ -34,7 +34,7 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
 
     public void UpdateHUD()
     {
-        if (!Initialized)
+        if (!Initialized && PlayerData != null)
         {
             GameObject rolePlace = GameObject.Find("Role");
 
