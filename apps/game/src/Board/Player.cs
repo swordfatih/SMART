@@ -60,7 +60,7 @@ namespace Game
 
         public override string ToString()
         {
-            return $"{Client.Name}:{Role}";
+            return $"{Client.Name}:{Role}:{Position}";
         }
     }
 }
