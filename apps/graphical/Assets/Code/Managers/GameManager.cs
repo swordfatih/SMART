@@ -67,12 +67,12 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
 
     public void Subscribe(IObserver<PlayerData> observer)
     {
-        throw new System.NotImplementedException();
+        PlayerObservers.Add(observer);
     }
 
     public void Subscribe(IObserver<BoardData> observer)
     {
-        throw new System.NotImplementedException();
+        BoardObservers.Add(observer);
     }
 
     public void Subscribe(IObserver<UserInput> observer)
