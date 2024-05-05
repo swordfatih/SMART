@@ -97,15 +97,15 @@ namespace Game
 
                 // Notify subscribers
                 Observers.ForEach(Notify);
-
-                foreach (var player in Players)
-                {
-                    player.Notify(player.Client, this);
-                }
+                NotifyPlayers();
 
                 // Run day
                 Tour();
                 UpdateGuard();
+
+                // Notify subscribers
+                Observers.ForEach(Notify);
+                NotifyPlayers();
             }
         }
 
@@ -230,6 +230,14 @@ namespace Game
                 new List<string>(Players.Except(Status.Dead).Select(x => x.Client.Name)),
                 Day
             ));
+        }
+
+        public void NotifyPlayers()
+        {
+            foreach (var player in Players)
+            {
+                player.Notify(player.Client, this);
+            }
         }
 
         override public string ToString()
