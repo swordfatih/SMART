@@ -2809,7 +2809,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: OUTBOUND
+  m_text: UNBOUND
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5f13634ecd37245a1a2f2cfc29b6a812, type: 2}
   m_sharedMaterial: {fileID: 9168729205939192704, guid: 5f13634ecd37245a1a2f2cfc29b6a812, type: 2}
@@ -3264,7 +3264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 4
-  m_AspectRatio: 1.7485505
+  m_AspectRatio: 1.83
 --- !u!1 &1516400709
 GameObject:
   m_ObjectHideFlags: 0

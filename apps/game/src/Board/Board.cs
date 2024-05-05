@@ -71,13 +71,13 @@ namespace Game
                     {
                         player.States.Push(new ShowerState());
                     }
-                    else if (GuardPosition == player.Position)
-                    {
-                        player.States.Push(new GuardState());
-                    }
                     else if (player.Status == Status.Confined)
                     {
                         player.States.Push(new ConfinedState());
+                    }
+                    else if (GuardPosition == player.Position)
+                    {
+                        player.States.Push(new GuardState());
                     }
                     else
                     {
