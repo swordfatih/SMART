@@ -108,7 +108,7 @@ namespace Interface
                             {
                                 if (data.Player.States.Peek() is ConfinedState)
                                 {
-                                    SceneManager.LoadScene("S_Isolement");
+                                   // SceneManager.LoadScene("S_Isolement");
                                 }
                                 else if (data.Player.States.Peek() is GuardState || data.Player.States.Peek() is SafeState)
                                 {

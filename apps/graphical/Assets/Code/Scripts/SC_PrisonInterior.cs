@@ -18,16 +18,14 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
     public void Start()
     {
         GameManager.Instance.Subscribe((IObserver<PlayerData>)this);
+        Isolement.Play();
+        Isolement.stopped += (PlayableDirector source) => OnAnimationEnd(source, Isolement, "S_Isolation");
+        Massacre.stopped += (PlayableDirector source) => OnAnimationEnd(source, Massacre, "S_Prison_Outside"); 
     }
     
     public void Notify(PlayerData playerData)
     {
         PlayerData = playerData;
-        Update();
-    }
-
-    public void Update()
-    {
         RunAnimation();
     }
     
@@ -37,22 +35,25 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
           {
             if(PlayerData.Player.States.Peek() is ConfinedState)
             {
-                //SceneManager.LoadScene("S_Isolement");
-                Debug.Log("You are confined, you can't play.");
+                Isolement.Play();  
+                
             } else {
                 if (PlayerData.HasGuard && PlayerData.Player.HasDug)
                 {
-                  Massacre.Play();  
+                    Massacre.Play();
                 }
-                else
+                else if(PlayerData.Player.HasDug)
                 {
                     Dig.Play();
                 }
             }
           }
     }
-    public void OnAnimationEnd()
+    void OnAnimationEnd(PlayableDirector source, PlayableDirector director, string scene)
+    {
+        if (source == director)
         {
-            SceneManager.LoadScene("S_Isolement");
+            SceneManager.LoadScene(scene);
         }
+    }
 }
