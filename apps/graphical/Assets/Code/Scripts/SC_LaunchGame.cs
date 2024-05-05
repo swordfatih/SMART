@@ -14,6 +14,7 @@ public class SC_LaunchGame : MonoBehaviour
 
     public void ClickLaunchButton()
     {
+        AudioManager.Instance.PlaySound("Select");
         var host = addressField.text;
         var port = int.Parse(portField.text);
         GameManager.Instance.Server = new Server(host, port);

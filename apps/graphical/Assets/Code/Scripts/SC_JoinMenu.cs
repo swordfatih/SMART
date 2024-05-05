@@ -12,6 +12,7 @@ public class SC_JoinMenu : MonoBehaviour
 
     public void ClickJoinButton()
     {
+        AudioManager.Instance.PlaySound("Select");
         var host = IT_HostInput.text;
         var port = int.Parse(IT_PortInput.text);
 

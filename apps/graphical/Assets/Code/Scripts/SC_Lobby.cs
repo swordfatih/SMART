@@ -115,6 +115,7 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
 
     public void ClickStartButton()
     {
+        AudioManager.Instance.PlaySound("Select");
         GameManager.Instance.Client.Node.Send(RequestType.Start);
     }
 
