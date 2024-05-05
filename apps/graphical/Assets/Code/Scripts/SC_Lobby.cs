@@ -144,7 +144,7 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
             GameObject newPlayer = Instantiate(playerPrefab);
             newPlayer.transform.SetParent(element_object.transform);
 
-            if (GameManager.Instance.Admin)
+            if (GameManager.Instance.Admin == true)
             {
                 Button removePlayer = newPlayer.GetComponentInChildren<Button>();
                 removePlayer.onClick.AddListener(() => RemovePlayerButton(newPlayer));
@@ -152,7 +152,7 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
             else
             {
                 Button removePlayer = newPlayer.GetComponentInChildren<Button>();
-                Destroy(removePlayer);
+                removePlayer.gameObject.SetActive(false);
             }
 
             TMP_Text pseudo = newPlayer.GetComponentInChildren<TMP_Text>();

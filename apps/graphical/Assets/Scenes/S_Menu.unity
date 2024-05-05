@@ -4123,6 +4123,7 @@ MonoBehaviour:
   LoseSound: {fileID: 8300000, guid: fe9f7766068c32d4eb750e76755fa6fb, type: 3}
   MenuMusic: {fileID: 8300000, guid: c5862ec3067efee47b0e2ed846f3709a, type: 3}
   GameMusic: {fileID: 8300000, guid: 0caedd3f26d011343a577d0067854028, type: 3}
+  ErrorSound: {fileID: 8300000, guid: f73f47c673f317a4bbfbd8dd577e838d, type: 3}
 --- !u!82 &1811297770
 AudioSource:
   m_ObjectHideFlags: 0

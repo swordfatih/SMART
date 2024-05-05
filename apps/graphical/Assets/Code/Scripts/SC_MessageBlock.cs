@@ -74,6 +74,11 @@ public class SC_MessageBlock : MonoBehaviour, IObserver<Message>
     {
         SetMessage(message);
 
+        if(message.Origin == "Error")
+        {
+            AudioManager.Instance.PlaySound("Error");
+        }
+
         StopAllCoroutines();
         StartCoroutine(Close(5.0f));
     }
