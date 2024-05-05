@@ -3,6 +3,7 @@ using Game;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Playables;
 
 public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
 {
