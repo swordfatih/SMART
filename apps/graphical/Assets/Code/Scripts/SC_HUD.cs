@@ -10,25 +10,14 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
     public GameObject PF_Associate;
     public GameObject PF_Inmate;
     public GameObject PF_Shovel;
+    public bool Initialized { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.Subscribe((IObserver<BoardData>)this);
         GameManager.Instance.Subscribe((IObserver<PlayerData>)this);
-
-        GameObject rolePlace = GameObject.Find("Role");
-
-        if (PlayerData.Player.Role.ToString() == "Associate")
-        {
-            var associate = Instantiate(PF_Associate);
-            associate.transform.SetParent(rolePlace.transform);
-        }
-        else
-        {
-            var inmate = Instantiate(PF_Inmate);
-            inmate.transform.SetParent(rolePlace.transform);
-        }
+        Initialized = false;
     }
 
     public void Notify(BoardData board)
@@ -45,6 +34,24 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
 
     public void UpdateHUD()
     {
+        if (!Initialized)
+        {
+            GameObject rolePlace = GameObject.Find("Role");
+
+            if (PlayerData.Player.Role.ToString() == "Associate")
+            {
+                var associate = Instantiate(PF_Associate);
+                associate.transform.SetParent(rolePlace.transform);
+            }
+            else
+            {
+                var inmate = Instantiate(PF_Inmate);
+                inmate.transform.SetParent(rolePlace.transform);
+            }
+
+            Initialized = true;
+        }
+
         GameObject shovelPlace = GameObject.Find("avancement");
 
         //Update de l'anvancement
