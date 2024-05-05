@@ -29,7 +29,7 @@ namespace Game
 
         }
 
-        public virtual void SendChoiceAnswer(int position, Choice choice, int answer)
+        public virtual void SendChoiceAnswer(int position, string name, Choice choice, int answer)
         {
             
         }

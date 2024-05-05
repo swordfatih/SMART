@@ -39,7 +39,7 @@ namespace Interface
             Console.WriteLine("[Board] " + message);
         }
 
-        public override void SendChoiceAnswer(int position, Choice choice, int answer)
+        public override void SendChoiceAnswer(int position, string name, Choice choice, int answer)
         {
             Console.WriteLine($"[Answer from {position} to ${choice.Value}] {choice.Answers[answer]}");
         }

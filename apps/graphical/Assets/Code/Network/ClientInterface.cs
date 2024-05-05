@@ -108,7 +108,7 @@ namespace Interface
                             {
                                 if (data.Player.States.Peek() is ConfinedState)
                                 {
-                                   // SceneManager.LoadScene("S_Isolement");
+                                    // SceneManager.LoadScene("S_Isolement");
                                 }
                                 else if (data.Player.States.Peek() is GuardState || data.Player.States.Peek() is SafeState)
                                 {
@@ -137,6 +137,17 @@ namespace Interface
                         {
                             var instruction = packet.Content[0];
                             GameManager.Instance.Notify(new UserInput(instruction));
+                        }
+                        else if (packet.Request == RequestType.ChoiceAnswer)
+                        {
+                            var name = packet.Content[1];
+                            var choice = JsonConvert.DeserializeObject<Choice>(packet.Content[2], new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.Auto
+                            });
+                            var answer = int.Parse(packet.Content[3]);
+                            
+                            GameManager.Instance.Notify(new Message(name, "Response to : " + choice.Value + "\n" + choice.Answers[answer]));
                         }
                     }
                 }
