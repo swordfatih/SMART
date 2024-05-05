@@ -45,6 +45,7 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
 
     public void SetChoice(Choice choice)
     {
+        Canvas = GameObject.Find("Canvas");
         LastChoice = choice;
 
         if (Block != null)

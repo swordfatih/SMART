@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
     public List<IObserver<PlayerData>> PlayerObservers { get; set; }
     public List<IObserver<BoardData>> BoardObservers { get; set; }
     public List<IObserver<UserInput>> InputObservers { get; set; }
-
     public static GameManager Instance { get; private set; }
 
     private void Awake()

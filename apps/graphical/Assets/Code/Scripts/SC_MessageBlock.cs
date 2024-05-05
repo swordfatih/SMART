@@ -50,6 +50,11 @@ public class SC_MessageBlock : MonoBehaviour, IObserver<Message>
 
     public void SetMessage(Message message)
     {
+        if(Canvas == null)
+        {
+            return;
+        }
+
         LastMessage = message;
 
         if (Block != null)

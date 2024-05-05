@@ -1,6 +1,7 @@
 using UnityEngine;
 using Game;
 using TMPro;
+using Network;
 
 public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
 {
@@ -12,17 +13,19 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
     public GameObject PF_Shovel;
     public bool Initialized { get; set; }
 
-    // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.Subscribe((IObserver<BoardData>)this);
         GameManager.Instance.Subscribe((IObserver<PlayerData>)this);
         Initialized = false;
+
+        GameManager.Instance.Client.Node.Send(RequestType.NotifyPlayer);
+        GameManager.Instance.Client.Node.Send(RequestType.NotifyBoard);
     }
 
-    public void Notify(BoardData board)
+    public void Notify(BoardData boardData)
     {
-        BoardData = board;
+        BoardData = boardData;
         UpdateHUD();
     }
 
@@ -34,57 +37,69 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
 
     public void UpdateHUD()
     {
-        if (!Initialized && PlayerData != null)
-        {
-            GameObject rolePlace = GameObject.Find("Role");
+        var HUD = GameObject.Find("HUD");
 
+        if (PlayerData is null || BoardData is null || HUD is null)
+        {
+            return;
+        }
+
+        var Role = HUD.transform.Find("Role");
+        var Progression = HUD.transform.Find("Progression");
+        var Day = HUD.transform.Find("Day");
+        var Guard = HUD.transform.Find("Guard");
+
+        if (!Initialized)
+        {
             if (PlayerData.Player.Role.ToString() == "Associate")
             {
                 var associate = Instantiate(PF_Associate);
-                associate.transform.SetParent(rolePlace.transform);
+                associate.transform.SetParent(Role.transform);
+                associate.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+                associate.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             }
             else
             {
                 var inmate = Instantiate(PF_Inmate);
-                inmate.transform.SetParent(rolePlace.transform);
+                inmate.transform.SetParent(Role.transform);
+                inmate.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+                inmate.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             }
 
             Initialized = true;
         }
 
-        GameObject shovelPlace = GameObject.Find("avancement");
-
-        //Update de l'anvancement
-        Transform[] shovelPrefabs = shovelPlace.GetComponentsInChildren<Transform>();
-        foreach (Transform shovel in shovelPrefabs)
+        // delete all shovels
+        foreach (Transform child in Progression.GetComponentInChildren<Transform>())
         {
-            GameObject.Destroy(shovel.gameObject);
+            GameObject.Destroy(child.gameObject);
         }
+
         for (int i = 0; i < PlayerData.Player.Progression; ++i)
         {
             var shovel = Instantiate(PF_Shovel);
-            shovel.transform.SetParent(shovelPlace.transform);
-            shovel.GetComponent<RectTransform>().localPosition = new Vector3(130 + (i + 1) * 50, 60, 0);
+            shovel.transform.SetParent(Progression.transform);
+            shovel.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, 0f);
+            shovel.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            shovel.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
         }
 
-        //Update des Jours
-        var jours = GameObject.Find("jours");
-        var nbJours = jours.GetComponentInChildren<TMP_Text>();
-        nbJours.text = BoardData.Day.ToString();
+        // Update des Jours
+        var count = Day.GetComponentInChildren<TMP_Text>();
+        count.text = BoardData.Day.ToString();
 
-        //Update de la présence du gardien
-        GameObject guardPlace = GameObject.Find("Guard");
-        Transform guardIcon = guardPlace.transform.GetChild(0);
-
-        if (guardIcon != null)
+        // delete all guard children
+        foreach (Transform child in Guard.GetComponentInChildren<Transform>())
         {
-            GameObject.Destroy(guardIcon.gameObject);
+            GameObject.Destroy(child.gameObject);
         }
+
         if (PlayerData.HasGuard)
         {
             var guard = Instantiate(PF_Guard);
-            guard.transform.SetParent(guardPlace.transform);
-            guard.GetComponent<RectTransform>().localPosition = new Vector3(-500, 96, 0);
+            guard.transform.SetParent(Guard.transform);
+            guard.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+            guard.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
         }
     }
 }

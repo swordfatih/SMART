@@ -87,9 +87,11 @@ namespace Interface
                     var client = new NetworkClient(packet.Content[0], node);
                     Clients.TryUpdate(socket, client, null);
                     ReplaceClient(client.Name, client);
-                    Notify();
 
-                    client.Node.Send(new Packet(Board != null ? RequestType.Start : RequestType.Connect));
+                    var already = Board?.Players.FindByName(client.Name) is not null;
+                    client.Node.Send(new Packet(already ? RequestType.Start : RequestType.Connect));
+
+                    Notify();
                 }
             }
         }
@@ -121,6 +123,12 @@ namespace Interface
                         break;
                     case RequestType.NotifyServer:
                         Notify();
+                        break;
+                    case RequestType.NotifyBoard:
+                        Board?.Notify(client);
+                        break;
+                    case RequestType.NotifyPlayer:
+                        Board?.Players.FindByName(client.Name)?.Notify(client, Board);
                         break;
                     default:
                         client.Node.Packets.Enqueue(packet);
