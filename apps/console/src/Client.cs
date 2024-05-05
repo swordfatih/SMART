@@ -108,9 +108,10 @@ namespace Interface
                 else if (packet.Request == RequestType.NotifyPlayer)
                 {
                     var data = packet.Content[0];
+                    Console.WriteLine(data);
                     var value = JsonConvert.DeserializeObject<PlayerData>(data, new JsonSerializerSettings
                     {
-                        TypeNameHandling = TypeNameHandling.Auto
+                        TypeNameHandling = TypeNameHandling.All,
                     });
 
                     if (value != null)

@@ -20,11 +20,11 @@ namespace Game
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
         public Role Role { get; set; }
         public int Position { get; set; }
-        [JsonProperty(TypeNameHandling = TypeNameHandling.All, ItemTypeNameHandling = TypeNameHandling.All)]
+        [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public Stack<State> States { get; set; }
         public Status Status { get; set; } = Status.Alive;
         public int Progression { get; set; }
-        [JsonProperty(TypeNameHandling = TypeNameHandling.All, ItemTypeNameHandling = TypeNameHandling.All)]
+        [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public List<Item> Items { get; set; }
         [JsonIgnore]
         public Func<Action>? CurrentState;
