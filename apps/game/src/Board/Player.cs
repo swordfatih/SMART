@@ -24,7 +24,7 @@ namespace Game
         public Stack<State> States { get; set; }
         public Status Status { get; set; } = Status.Alive;
         public int Progression { get; set; }
-        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto, ItemTypeNameHandling = TypeNameHandling.Auto)]
+        [JsonProperty(TypeNameHandling = TypeNameHandling.All, ItemTypeNameHandling = TypeNameHandling.All)]
         public List<Item> Items { get; set; }
         [JsonIgnore]
         public Func<Action>? CurrentState;
