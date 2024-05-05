@@ -89,12 +89,7 @@ namespace Interface
                     ReplaceClient(client.Name, client);
                     Notify();
 
-                    if(Board != null)
-                    {
-                        client.Node.Send(new Packet(RequestType.Start));
-                    }
-
-                    client.Node.Send(new Packet(RequestType.Connect));
+                    client.Node.Send(new Packet(Board != null ? RequestType.Start : RequestType.Connect));
                 }
             }
         }
