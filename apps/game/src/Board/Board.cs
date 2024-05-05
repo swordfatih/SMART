@@ -185,7 +185,7 @@ namespace Game
             GuardPosition = NextGuardPosition ?? Players.Only(Status.Alive).AdjacentPlayer(GuardPosition, Direction.Right)?.Position ?? -1;
             NextGuardPosition = null;
 
-            foreach (var player in Players.Only(Team.Associate).Except(Status.Dead))
+            foreach (var player in Players.Except(Team.Associate).Except(Status.Dead))
             {
                 if (player.Position == GuardPosition && player.HasDug)
                 {

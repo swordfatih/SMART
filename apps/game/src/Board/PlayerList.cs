@@ -50,6 +50,11 @@ namespace Game
             return new(Players.Where(x => x != except));
         }
 
+        public PlayerList Except(Team? except)
+        {
+            return new(Players.Where(x => x.Role.Team != except));
+        }
+
         public PlayerList Except(Status status)
         {
             return new(Players.Where(x => x.Status != status));
