@@ -29,7 +29,14 @@ namespace Game
                 switch (choice.Answers[answer])
                 {
                     case "Donation":
-                        var item = player.Items[player.Client.SendChoice(new("Choisissez votre objet", new(player.Items.Select(x => x.Name))))];
+                        var items = player.Items.Select(x => x.Name).ToList();
+
+                        if(player.Role.Team == Team.Inmate)
+                        {
+                            items.Remove("Poison");
+                        }
+
+                        var item = player.Items[player.Client.SendChoice(new("Choisissez votre objet", items))];
                         communication = new ItemCommunication(player, direction, item);
                         break;
                     case "Message":

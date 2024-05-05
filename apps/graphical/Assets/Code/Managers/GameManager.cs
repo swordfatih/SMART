@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
     public List<IObserver<PlayerData>> PlayerObservers { get; set; }
     public List<IObserver<BoardData>> BoardObservers { get; set; }
     public List<IObserver<UserInput>> InputObservers { get; set; }
-
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -67,12 +66,12 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
 
     public void Subscribe(IObserver<PlayerData> observer)
     {
-        throw new System.NotImplementedException();
+        PlayerObservers.Add(observer);
     }
 
     public void Subscribe(IObserver<BoardData> observer)
     {
-        throw new System.NotImplementedException();
+        BoardObservers.Add(observer);
     }
 
     public void Subscribe(IObserver<UserInput> observer)
@@ -97,12 +96,12 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
 
     public void Unsubscribe(IObserver<PlayerData> observer)
     {
-        throw new System.NotImplementedException();
+        PlayerObservers.Remove(observer);
     }
 
     public void Unsubscribe(IObserver<BoardData> observer)
     {
-        throw new System.NotImplementedException();
+        BoardObservers.Remove(observer);
     }
 
     public void Unsubscribe(IObserver<UserInput> observer)

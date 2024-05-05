@@ -67,6 +67,11 @@ namespace Game
 
         public Player? AdjacentPlayer(int position, Direction direction)
         {
+            if(Players.Count == 0)
+            {
+                return null;
+            }
+
             var max = Players.Max(x => x.Position);
             var sorted = Except(FindByPosition(position)).Players.OrderBy(x => (x.Position + max - position) % max);
 
