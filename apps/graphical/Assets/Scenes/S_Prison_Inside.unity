@@ -47194,7 +47194,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: e53d2c83f4d30174abd466a4c3cb28ee, type: 2}
-  m_InitialState: 0
+  m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -48495,10 +48495,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51dfead96c4c14cb1a233e8536332152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Guard: {fileID: 2069380747}
-  Dig: {fileID: 1415850258}
-  Isolement: {fileID: 2069380747}
-  Massacre: {fileID: 1746150626}
 --- !u!1001 &1469081355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55273,6 +55269,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1678381261}
+  - component: {fileID: 1678381262}
   m_Layer: 0
   m_Name: Animations
   m_TagString: Untagged
@@ -55299,6 +55296,18 @@ Transform:
   - {fileID: 2069380746}
   m_Father: {fileID: 1468873083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1678381262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678381260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51dfead96c4c14cb1a233e8536332152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1679494450
 PrefabInstance:
   m_ObjectHideFlags: 0
