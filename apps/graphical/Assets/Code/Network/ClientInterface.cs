@@ -102,14 +102,14 @@ namespace Interface
                             {
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
-                            
+
                             Debug.Log(data.Player.States.Peek().GetType().Name);
-                            if(data.Player.States.Peek() is ConfinedState)
+                            if (data.Player.States.Peek() is ConfinedState)
                             {
                                 SceneManager.LoadScene("S_Isolement");
                                 Debug.Log("You are confined, you can't play.");
                             }
-                            
+
                             GameManager.Instance.Notify(data);
                         }
                         else if (packet.Request == RequestType.NotifyBoard)

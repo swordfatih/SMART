@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip LoseSound;
     public AudioClip MenuMusic;
     public AudioClip GameMusic;
+    public AudioClip ErrorSound;
 
     private void Awake()
     {
@@ -59,6 +60,9 @@ public class AudioManager : MonoBehaviour
                 break;
             case "Lose":
                 AudioSource.PlayOneShot(LoseSound, volume);
+                break;
+            case "Error":
+                AudioSource.PlayOneShot(ErrorSound, volume);
                 break;
             default:
                 break;

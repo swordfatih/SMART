@@ -12,11 +12,18 @@ public class SC_JoinMenu : MonoBehaviour
 
     public void ClickJoinButton()
     {
-        AudioManager.Instance.PlaySound("Select");
-        var host = IT_HostInput.text;
-        var port = int.Parse(IT_PortInput.text);
+        try
+        {
+            AudioManager.Instance.PlaySound("Select");
+            var host = IT_HostInput.text;
+            var port = int.Parse(IT_PortInput.text);
 
-        var node = new Node(host, port);
-        GameManager.Instance.Client = new ClientInterface(node, IT_NameInput.text);;
+            var node = new Node(host, port);
+            GameManager.Instance.Client = new ClientInterface(node, IT_NameInput.text);
+        }
+        catch
+        {
+            GameManager.Instance.Notify(new Message("Error", "Unable to join server\nPlease check the IP and port."));
+        }
     }
 }

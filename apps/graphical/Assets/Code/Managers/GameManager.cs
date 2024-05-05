@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
 {
     public ClientInterface Client { get; set; }
     public Server Server { get; set; }
-    public bool Admin { get; set; } = false;
+    public bool Admin { get; set; }
     public ServerData ServerData { get; set; }
     public List<IObserver<ServerData>> ServerObservers { get; set; }
     public List<IObserver<Choice>> ChoiceObservers { get; set; }
@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour, IObservable<ServerData>, IObservable<C
         DontDestroyOnLoad(gameObject);
 
         // Initialisation du Game Manager...
+        Admin = false;
         Client = null;
         Server = null;
         ServerData = null;
