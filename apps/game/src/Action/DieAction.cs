@@ -13,7 +13,6 @@ namespace Game
 
         public override string ToString()
         {
-            // return $"{Player} dies";
             return $"die_action:{Player.Client.Name}";
         }
     }

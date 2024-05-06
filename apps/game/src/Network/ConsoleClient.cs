@@ -41,7 +41,12 @@ namespace Interface
 
         public override void SendChoiceAnswer(int position, string name, Choice choice, int answer)
         {
-            Console.WriteLine($"[Answer from {position} to ${choice.Value}] {choice.Answers[answer]}");
+            Console.WriteLine($"[Answer from {name} to ${choice.Value}] {choice.Answers[answer]}");
+        }
+
+        public virtual void SendProgressionAnswer(int position, string name, Choice choice, int answer, int? newPosition)
+        {
+            Console.WriteLine($"[Answer from {name} to ${choice.Value}] Progression: {choice.Answers[answer]}");
         }
 
         public override void Notify(BoardData value)

@@ -100,7 +100,7 @@ namespace Game
                 Tour();
                 Notify();
 
-                UpdateGuard();  
+                UpdateGuard();
                 Notify();
             }
         }
@@ -185,7 +185,10 @@ namespace Game
             {
                 if (player.Position == GuardPosition && player.HasDug)
                 {
-                    player.Status = Status.Dead;
+                    var action = new DieAction(player);
+                    action.Run(this);
+
+                    Logger.WriteLine(action.ToString());
                 }
 
                 player.HasDug = false;

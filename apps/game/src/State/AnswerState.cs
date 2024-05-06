@@ -4,14 +4,14 @@ namespace Game
     {
         private Communication Communication { get; }
 
-        public AnswerState(Communication communication) 
+        public AnswerState(Communication communication)
         {
             Communication = communication;
         }
 
         public override Action Action(Board board, Player player)
         {
-            if (player.Client.SendChoice(new("You received a message from " + Communication.Origin.Client.Name, new(){"Accept", "Propagate"})) == 1)
+            if (player.Client.SendChoice(new("You received a message from " + Communication.Origin.Client.Name, new() { "Accept", "Propagate" })) == 1)
             {
                 return new PropagateAction(player, Communication);
             }
@@ -27,7 +27,13 @@ namespace Game
             else if (Communication is ChoiceCommunication c3)
             {
                 var choice = player.Client.SendChoice(c3.Choice);
-                c3.Origin.Client.SendChoiceAnswer(player.Position, player.Client.Name, c3.Choice, choice);
+                c3.Origin.Client.SendChoiceAnswer(c3.Origin.Position, c3.Origin.Client.Name, c3.Choice, choice);
+            }
+            else if (Communication is ProgressionCommunication c3)
+            {
+                var choice = player.Client.SendChoice(c3.Choice);
+                c3.Origin.Client.SendProgressionAnswer(c3.Origin.Position, c3.Origin.Client.Name, c3.Choice, choice, choice == 0 ? c3.Origin.Position : null);
+                c3.Origin.Client.SendProgressionAnswer(player.Position, player.Client.Name, c3.Choice, choice, choice == 0 ? player.Position : null);
             }
 
             return new IdleAction(player);
