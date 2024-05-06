@@ -43,7 +43,8 @@ namespace Interface
                         TypeNameHandling = TypeNameHandling.Auto
                     });
 
-                    Console.WriteLine($"[Answer from {packet.Content[1]} to {choice?.Value}] {packet.Content[2]}");
+                    var answer = choice?.Answers[Convert.ToInt32(packet.Content[3])];
+                    Console.WriteLine($"[Answer from {packet.Content[1]} to {choice?.Value}] {answer}");
                 }
                 else if (packet.Request == RequestType.Input)
                 {

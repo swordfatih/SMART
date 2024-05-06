@@ -33,7 +33,7 @@ namespace Network
 
         public IList<Packet> Receive()
         {
-            var buffer = new byte[1024];
+            var buffer = new byte[2048];
             var received = Client.GetStream().Read(buffer, 0, buffer.Length);
             var packets = Encoding.UTF8.GetString(buffer, 0, received).Split(new string[] { Packet.EOP }, System.StringSplitOptions.None);
 
