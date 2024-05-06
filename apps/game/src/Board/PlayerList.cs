@@ -73,7 +73,11 @@ namespace Game
         public Player? AdjacentPlayer(Player current, Direction direction)
         {
             var players = new List<Player>(Players);
-            players.Add(current);
+
+            if(!players.Contains(current))
+            {
+                players.Add(current);
+            }
 
             if (players.Count <= 1)
             {
