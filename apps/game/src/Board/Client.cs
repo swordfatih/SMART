@@ -34,7 +34,7 @@ namespace Game
             
         }
 
-        public virtual void SendProgressionAnswer(int position, string name, Choice choice, int answer, int? newPosition)
+        public virtual void SendProgressionAnswer(int position, string name, Choice choice, int answer, int? progression)
         {
             
         }

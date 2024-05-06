@@ -11,7 +11,7 @@ namespace Game
 
         public override Action Action(Board board, Player player)
         {
-            if (player.Client.SendChoice(new("You received a message from " + Communication.Origin.Client.Name, new() { "Accept", "Propagate" })) == 1)
+            if (player.Client.SendChoice(new("You received a message from " + Communication.Origin.Client.Name, new() { "Accept", "Propagate" }, Communication.Origin.Position)) == 1)
             {
                 return new PropagateAction(player, Communication);
             }
@@ -29,11 +29,11 @@ namespace Game
                 var choice = player.Client.SendChoice(c3.Choice);
                 c3.Origin.Client.SendChoiceAnswer(c3.Origin.Position, c3.Origin.Client.Name, c3.Choice, choice);
             }
-            else if (Communication is ProgressionCommunication c3)
+            else if (Communication is ProgressionCommunication c4)
             {
-                var choice = player.Client.SendChoice(c3.Choice);
-                c3.Origin.Client.SendProgressionAnswer(c3.Origin.Position, c3.Origin.Client.Name, c3.Choice, choice, choice == 0 ? c3.Origin.Position : null);
-                c3.Origin.Client.SendProgressionAnswer(player.Position, player.Client.Name, c3.Choice, choice, choice == 0 ? player.Position : null);
+                var choice = player.Client.SendChoice(c4.Choice);
+                c4.Origin.Client.SendProgressionAnswer(c4.Origin.Position, c4.Origin.Client.Name, c4.Choice, choice, choice == 0 ? c4.Origin.Position : null);
+                c4.Origin.Client.SendProgressionAnswer(player.Position, player.Client.Name, c4.Choice, choice, choice == 0 ? player.Position : null);
             }
 
             return new IdleAction(player);

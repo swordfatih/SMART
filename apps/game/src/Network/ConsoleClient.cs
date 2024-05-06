@@ -44,7 +44,7 @@ namespace Interface
             Console.WriteLine($"[Answer from {name} to ${choice.Value}] {choice.Answers[answer]}");
         }
 
-        public virtual void SendProgressionAnswer(int position, string name, Choice choice, int answer, int? newPosition)
+        public override void SendProgressionAnswer(int position, string name, Choice choice, int answer, int? progression)
         {
             Console.WriteLine($"[Answer from {name} to ${choice.Value}] Progression: {choice.Answers[answer]}");
         }
