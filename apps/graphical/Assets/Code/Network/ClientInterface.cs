@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using Game;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace Interface
 {
@@ -152,17 +153,11 @@ namespace Interface
                         else if (packet.Request == RequestType.ProgressionAnswer)
                         {
                             var name = packet.Content[1];
-                            var choice = JsonConvert.DeserializeObject<Choice>(packet.Content[2], new JsonSerializerSettings
-                            {
-                                TypeNameHandling = TypeNameHandling.Auto
-                            });
-
-                            var answer = choice?.Answers[Convert.ToInt32(packet.Content[3])];
-
+                            var answer = Convert.ToInt32(packet.Content[3]);
+                            
                             if (answer == 0)
                             {
                                 var progression = packet.Content[4];
-                                Console.WriteLine($"[Answer from {name} to {choice?.Value}] Progression: {progression}");
                                 GameManager.Instance.Notify(new Message(name, "Progression: " + progression));
                             }
                             else
