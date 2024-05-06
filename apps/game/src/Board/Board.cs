@@ -95,17 +95,13 @@ namespace Game
                     }
                 }
 
-                // Notify subscribers
-                Observers.ForEach(Notify);
-                NotifyPlayers();
+                Notify();
 
-                // Run day
                 Tour();
-                UpdateGuard();
+                Notify();
 
-                // Notify subscribers
-                Observers.ForEach(Notify);
-                NotifyPlayers();
+                UpdateGuard();  
+                Notify();
             }
         }
 
@@ -230,6 +226,12 @@ namespace Game
                 new List<string>(Players.Except(Status.Dead).Select(x => x.Client.Name)),
                 Day
             ));
+        }
+
+        public void Notify()
+        {
+            Observers.ForEach(Notify);
+            NotifyPlayers();
         }
 
         public void NotifyPlayers()
