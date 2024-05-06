@@ -30,6 +30,12 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
         PlayableDirector Isolement = GameObject.Find("isolement").GetComponent<PlayableDirector>();
         PlayableDirector Massacre = GameObject.Find("Massacre").GetComponent<PlayableDirector>();
 
+        
+        // if (PlayerData.Player.HasDug)
+        // {
+        //     Dig.Play();
+        //     Debug.Log("Digging");
+        // }
         if (PlayerData.Player.States.Count != 0)
         {
             if (PlayerData.Player.States.Peek() is ConfinedState)
@@ -43,10 +49,6 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
                 {
                     Massacre.Play();
                     Massacre.stopped += (PlayableDirector source) => OnAnimationEnd(source, Massacre, "S_Prison_Outside");
-                }
-                else if (PlayerData.Player.HasDug)
-                {
-                    Dig.Play();
                 }
             }
         }

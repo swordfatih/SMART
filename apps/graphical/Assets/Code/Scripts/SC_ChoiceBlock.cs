@@ -36,8 +36,18 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
         GameManager.Instance.Unsubscribe(this);
     }
 
-    public void OnAnswered(int answerIndex)
+    public void OnAnswered(Choice choice, int answerIndex)
     {
+        if(choice.Value.Contains("action du jour") && answerIndex == 0)
+        {
+            var animation = GameObject.Find("digging_action");
+            if (animation is not null)
+            {
+                PlayableDirector Dig = animation.GetComponent<PlayableDirector>();
+                Dig.Play();
+            }
+        }
+        
         GameManager.Instance.Client.Node.Send(RequestType.Choice, answerIndex.ToString());
         GameObject.Destroy(Block);
         LastChoice = null;
@@ -71,7 +81,7 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
             answer.GetComponentInChildren<TMP_Text>().text = choice.Answers[i];
 
             int index = i;
-            answer.GetComponent<Button>().onClick.AddListener(() => OnAnswered(index));
+            answer.GetComponent<Button>().onClick.AddListener(() => OnAnswered(choice, index));
         }
     }
 
