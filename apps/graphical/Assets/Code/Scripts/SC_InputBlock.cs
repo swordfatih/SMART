@@ -37,19 +37,6 @@ public class SC_InputBlock : MonoBehaviour, IObserver<UserInput>
         GameManager.Instance.Unsubscribe(this);
     }
 
-    public IEnumerator Close(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        if (Block != null)
-        {
-            Destroy(Block);
-            Block = null;
-        }
-
-        LastInput = null;
-    }
-
     public void SetInput(UserInput Input)
     {
         LastInput = Input;
@@ -60,6 +47,7 @@ public class SC_InputBlock : MonoBehaviour, IObserver<UserInput>
         }
 
         Block = Instantiate(PF_Input, Canvas.transform);
+        Block.transform.localPosition = new Vector3(0, 0, 0);
 
         var input = Block.GetComponentInChildren<TMP_InputField>();
         input.onValueChanged.AddListener((message) =>
@@ -72,15 +60,11 @@ public class SC_InputBlock : MonoBehaviour, IObserver<UserInput>
         {
             Send(Message);
         }); 
-
     }
 
     public void Notify(UserInput Input)
     {
         SetInput(Input);
-
-        StopAllCoroutines();
-        StartCoroutine(Close(5.0f));
     }
 
     public void Send(string message)
