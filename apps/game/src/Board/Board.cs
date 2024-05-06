@@ -79,7 +79,7 @@ namespace Game
                     {
                         player.States.Push(new GuardState());
                     }
-                    else
+                    else if (player.Status == Status.Alive)
                     {
                         player.States.Push(new SafeState());
                     }
@@ -87,12 +87,10 @@ namespace Game
                     // new status
                     if (player.Progression == Player.MAX_PROGRESSION && Day % SHOWER_RATE != 0)
                     {
-                        player.Status = Status.Escaped;
+                        player.Escaping = true;
                     }
-                    else
-                    {
-                        player.Status = Status.Alive;
-                    }
+
+                    player.Status = Status.Alive;
                 }
 
                 Notify();
@@ -101,6 +99,7 @@ namespace Game
                 Notify();
 
                 UpdateGuard();
+                UpdateEscapes();
                 Notify();
             }
         }
@@ -176,12 +175,17 @@ namespace Game
             }
         }
 
+        public void UpdateEscapes()
+        {
+            Players.Where(x => x.Escaping).ForEach(x => x.Progression++);
+        }
+
         public void UpdateGuard()
         {
             GuardPosition = NextGuardPosition ?? Players.Only(Status.Alive).AdjacentPlayer(GuardPosition, Direction.Right)?.Position ?? -1;
             NextGuardPosition = null;
 
-            foreach (var player in Players.Except(Team.Associate).Except(Status.Dead))
+            foreach (var player in Players.Except(Team.Associate).Except(Status.Dead).Except(Status.Escaped))
             {
                 if (player.Position == GuardPosition && player.HasDug)
                 {
