@@ -32,8 +32,8 @@ namespace Game
             else if (Communication is ProgressionCommunication c4)
             {
                 var choice = player.Client.SendChoice(c4.Choice);
-                c4.Origin.Client.SendProgressionAnswer(c4.Origin.Position, c4.Origin.Client.Name, c4.Choice, choice, choice == 0 ? c4.Origin.Position : null);
-                c4.Origin.Client.SendProgressionAnswer(player.Position, player.Client.Name, c4.Choice, choice, choice == 0 ? player.Position : null);
+                player.Client.SendProgressionAnswer(c4.Origin.Position, c4.Origin.Client.Name, c4.Choice, choice, choice == 0 ? c4.Origin.Progression : null);
+                c4.Origin.Client.SendProgressionAnswer(player.Position, player.Client.Name, c4.Choice, choice, choice == 0 ? player.Progression : null);
             }
 
             return new IdleAction(player);
