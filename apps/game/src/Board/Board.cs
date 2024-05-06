@@ -85,7 +85,7 @@ namespace Game
                     }
 
                     // new status
-                    if (player.Progression == Player.MAX_PROGRESSION && Day % SHOWER_RATE != 0)
+                    if (player.Role.Team != Team.Associate && player.Progression >= Player.MAX_PROGRESSION && Day % SHOWER_RATE != 0)
                     {
                         player.Escaping = true;
                     }

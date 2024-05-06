@@ -45,7 +45,7 @@ namespace Game
 
         public void Notify(IObserver<PlayerData> observer, Board board)
         {
-            observer.Notify(new PlayerData(this, board.GuardPosition == Position));
+            observer.Notify(new PlayerData(this, board.GuardPosition == Position, board.Day));
         }
 
         public void Subscribe(IObserver<PlayerData> observer)

@@ -119,6 +119,10 @@ namespace Interface
                                 {
                                     SceneManager.LoadScene("S_Shower");
                                 }
+                                else if (data.Player.States.Peek() is ConfinedState && data.Day % Board.SHOWER_RATE + 1 == 0)
+                                {
+                                    SceneManager.LoadScene("S_Confinement");
+                                }
 
                                 SceneManager.LoadScene("S_HUD", LoadSceneMode.Additive);
                             }
