@@ -115,7 +115,7 @@ namespace Game
                 var actions = new List<Action>();
 
                 // récupérer les states
-                foreach (var player in Players.Except(Status.Dead).Except(Status.Escaped).Except(Status.Confined))
+                foreach (var player in Players.Except(Status.Dead).Except(Status.Escaped))
                 {
                     if (player.States.Count > 0)
                     {
@@ -199,9 +199,10 @@ namespace Game
 
                         Logger.WriteLine(action.ToString());
                     }
-                    else
+                    else if(player.Confine)
                     {
                         player.Status = Status.Confined;
+                        player.Confine = false;
                     }
                 }
 

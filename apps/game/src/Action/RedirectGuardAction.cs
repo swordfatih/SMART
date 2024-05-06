@@ -12,6 +12,7 @@ namespace Game
         public override void Run(Board board)
         {
             board.NextGuardPosition = Target.Position;
+            Target.Confine = true;
         }
 
         public override string ToString()

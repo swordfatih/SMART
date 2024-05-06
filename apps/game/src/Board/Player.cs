@@ -30,6 +30,7 @@ namespace Game
         public Func<Action>? CurrentState;
         public bool HasDug { get; set; } = false;
         public bool Escaping { get; set; } = false;
+        public bool Confine { get; set; } = false;
 
         public Player(Client client, int position, Role role)
         {
