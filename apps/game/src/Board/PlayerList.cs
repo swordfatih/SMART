@@ -45,6 +45,11 @@ namespace Game
             return new(Players.Where(x => x.Status == status));
         }
 
+        public PlayerList Except(int position)
+        {
+            return new(Players.Where(x => x.Position != position));
+        }
+
         public PlayerList Except(Player? except)
         {
             return new(Players.Where(x => x != except));
@@ -65,17 +70,22 @@ namespace Game
             return AdjacentPlayer(current.Position, direction);
         }
 
+        private static int Mod(int a, int b)
+        {
+            return (a % b + b) % b;
+        }
+
         public Player? AdjacentPlayer(int position, Direction direction)
         {
-            if(Players.Count == 0)
+            if (Players.Count <= 1)
             {
                 return null;
             }
 
-            var max = Players.Max(x => x.Position);
-            var sorted = Except(FindByPosition(position)).Players.OrderBy(x => (x.Position + max - position) % max);
-
-            return direction == Direction.Right ? sorted.FirstOrDefault() : sorted.LastOrDefault();
+            var sorted = Players.OrderBy(player => player.Position).ToList();
+            var index = sorted.FindIndex(player => player.Position == position);
+            var next = Mod(index + (int) direction, sorted.Count);
+            return sorted[next];
         }
 
         public Player? FindByPosition(int position)
