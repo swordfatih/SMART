@@ -201,7 +201,7 @@ namespace Interface
             }
         }
 
-        private void Notify()
+        public void Notify()
         {
             Broadcast(new Packet(RequestType.NotifyServer, new[] {
                 JsonConvert.SerializeObject(

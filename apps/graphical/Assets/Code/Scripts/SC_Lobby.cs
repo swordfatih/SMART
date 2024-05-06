@@ -17,7 +17,6 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
     public Transform iaPanel;
     public Transform playerPanel;
     public GameObject playerPrefab;
-    private List<GameObject> iaMembers = new List<GameObject>();
 
     // Start is called before the first frame update
     public void Start()
@@ -26,6 +25,12 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
 
         GameManager.Instance.Subscribe(this);
         GameManager.Instance.Client.Node.Send(RequestType.NotifyServer);
+
+        if (GameManager.Instance.Admin == false)
+        {
+            var IA_add = GameObject.Find("Add");
+            IA_add.SetActive(false);
+        }
     }
 
     public void OnDestroy()
@@ -33,32 +38,47 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
         GameManager.Instance.Unsubscribe(this);
     }
 
+    public GameObject AddIA(string name)
+    {
+        var IA_object = GameObject.Find("IAContainer");
+
+        GameObject newIA = Instantiate(iaPrefab);
+        newIA.transform.SetParent(IA_object.transform);
+        newIA.transform.localScale = new Vector3(1, 1, 1);
+        newIA.transform.localPosition = new Vector3(0, 0, 0);
+
+        if (GameManager.Instance.Admin == true)
+        {
+            Button removeButton = newIA.GetComponentInChildren<Button>();
+            removeButton.onClick.AddListener(() => RemoveIAButton(newIA));
+        }
+        else
+        {
+            Button removeButton = newIA.GetComponentInChildren<Button>();
+            removeButton.gameObject.SetActive(false);
+        }
+
+        TMP_Text iaName = newIA.GetComponentInChildren<TMP_Text>();
+        iaName.text = name;
+
+        return newIA;
+    }
+
     public void AddIAButton()
     {
         if (GameManager.Instance.Admin == true)
         {
-            if (iaMembers.Count < 8)
-            { //pour l'affichage
-                iaNb = iaNb + 1;
-                var IA_object = GameObject.Find("IAContainer");
-
-                GameObject newIA = Instantiate(iaPrefab);
-                newIA.transform.SetParent(IA_object.transform);
-
-                Button removeButton = newIA.GetComponentInChildren<Button>();
-                TMP_Text iaName = newIA.GetComponentInChildren<TMP_Text>();
-
-                removeButton.onClick.AddListener(() => RemoveIAButton(newIA));
+            if (iaNb < 8)
+            {
+                iaNb++;
                 var name = "IA " + iaNb.ToString();
-                iaName.text = name;
-
-                iaMembers.Add(newIA);
-
                 GameManager.Instance.Server.Bots.Add(new RandomClient(name));
+                GameManager.Instance.Server.Notify();
             }
             else
             {
-                Debug.Log("You can't add more than 8 IA.");
+                GameManager.Instance.Notify(new Message("Server", "You can't add more than 8 IA"));
+                AudioManager.Instance.PlaySound("Error");
             }
         }
     }
@@ -66,17 +86,10 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
     {
         if (GameManager.Instance.Admin == true)
         {
-            int index = iaMembers.IndexOf(iaToRemove);
-            if (index != -1)
-            {
-                iaMembers.RemoveAt(index);
-
-                var name = iaToRemove.GetComponentInChildren<TMP_Text>();
-                var bot = GameManager.Instance.Server.Bots.Find(x => x.Name == name.text);
-                GameManager.Instance.Server.Bots.Remove(bot);
-
-                Destroy(iaToRemove);
-            }
+            var name = iaToRemove.GetComponentInChildren<TMP_Text>().text;
+            iaNb--;
+            GameManager.Instance.Server.Bots.RemoveAll(bot => bot.Name == name);
+            GameManager.Instance.Server.Notify();
         }
     }
 
@@ -146,7 +159,7 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
             newPlayer.transform.localScale = new Vector3(1, 1, 1);
             newPlayer.transform.localPosition = new Vector3(0, 0, 0);
 
-            if (GameManager.Instance.Admin == true)
+            if (GameManager.Instance.Admin == true && client != GameManager.Instance.Client.Name)
             {
                 Button removePlayer = newPlayer.GetComponentInChildren<Button>();
                 removePlayer.onClick.AddListener(() => RemovePlayerButton(newPlayer));
@@ -159,6 +172,21 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
 
             TMP_Text pseudo = newPlayer.GetComponentInChildren<TMP_Text>();
             pseudo.text = client;
+        }
+
+        var IA_object = GameObject.Find("IAContainer");
+
+        foreach (var ia in IA_object.GetComponentsInChildren<Transform>())
+        {
+            if (ia != IA_object.transform)
+            {
+                Destroy(ia.gameObject);
+            }
+        }
+
+        foreach (var bot in value.Bots)
+        {
+            AddIA(bot);
         }
     }
 }
