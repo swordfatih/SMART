@@ -55,8 +55,7 @@ namespace Interface
                         TypeNameHandling = TypeNameHandling.Auto
                     });
 
-                    var answer = choice?.Answers[Convert.ToInt32(packet.Content[3])];
-
+                    var answer = Convert.ToInt32(packet.Content[3]);
                     if (answer == 0)
                     {
                         var progression = packet.Content[4];
