@@ -7,22 +7,18 @@ using UnityEngine.Playables;
 
 public class SC_Death : MonoBehaviour
 {
-    public void Start()
+    public void Update()
     {
         var Animation = GameObject.Find("Anim_death");
 
-        if(Animation is not null)
+        if (Animation != null)
         {
-            var Director = Animation.GetComponent<PlayableDirector>();
-            Director.stopped += (PlayableDirector source) => OnAnimationEnd(source, Director, "S_Lobby");
-        }
-    }
+            var director = Animation.GetComponent<PlayableDirector>();
 
-    void OnAnimationEnd(PlayableDirector source, PlayableDirector director, string scene)
-    {
-        if (source == director)
-        {
-            SceneManager.LoadScene(scene);
+            if (director.state == PlayState.Paused)
+            {
+                SceneManager.LoadScene("S_Lobby");
+            }
         }
     }
 }
