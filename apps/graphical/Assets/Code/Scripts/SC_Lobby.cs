@@ -143,6 +143,8 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
         {
             GameObject newPlayer = Instantiate(playerPrefab);
             newPlayer.transform.SetParent(element_object.transform);
+            newPlayer.transform.localScale = new Vector3(1, 1, 1);
+            newPlayer.transform.localPosition = new Vector3(0, 0, 0);
 
             if (GameManager.Instance.Admin == true)
             {
