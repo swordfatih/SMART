@@ -90,7 +90,10 @@ namespace Game
                         player.Escaping = true;
                     }
 
-                    player.Status = Status.Alive;
+                    if (player.Status != Status.Confined)
+                    {
+                        player.Status = Status.Alive;
+                    }
                 }
 
                 Notify();
@@ -112,7 +115,7 @@ namespace Game
                 var actions = new List<Action>();
 
                 // récupérer les states
-                foreach (var player in Players.Except(Status.Dead).Except(Status.Escaped))
+                foreach (var player in Players.Except(Status.Dead).Except(Status.Escaped).Except(Status.Confined))
                 {
                     if (player.States.Count > 0)
                     {
@@ -177,7 +180,7 @@ namespace Game
 
         public void UpdateEscapes()
         {
-            Players.Where(x => x.Escaping).ToList().ForEach(x => x.Progression++);
+            Players.Where(x => x.Escaping).ToList().ForEach(x => x.Status = Status.Escaped);
         }
 
         public void UpdateGuard()
@@ -187,12 +190,19 @@ namespace Game
 
             foreach (var player in Players.Except(Team.Associate).Except(Status.Dead).Except(Status.Escaped))
             {
-                if (player.Position == GuardPosition && player.HasDug)
+                if (player.Position == GuardPosition)
                 {
-                    var action = new DieAction(player);
-                    action.Run(this);
+                    if (player.HasDug)
+                    {
+                        var action = new DieAction(player);
+                        action.Run(this);
 
-                    Logger.WriteLine(action.ToString());
+                        Logger.WriteLine(action.ToString());
+                    }
+                    else
+                    {
+                        player.Status = Status.Confined;
+                    }
                 }
 
                 player.HasDug = false;
