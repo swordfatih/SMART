@@ -112,7 +112,7 @@ namespace Game
                 var actions = new List<Action>();
 
                 // récupérer les states
-                foreach (var player in Players.Except(Status.Dead))
+                foreach (var player in Players.Except(Status.Dead).Except(Status.Escaped))
                 {
                     if (player.States.Count > 0)
                     {
@@ -143,7 +143,7 @@ namespace Game
                 }
 
                 // traitement des poisons
-                foreach (var player in Players.Except(Status.Dead).Only(Team.Inmate))
+                foreach (var player in Players.Except(Status.Dead).Except(Status.Escaped).Only(Team.Inmate))
                 {
                     if (player.Items.Any(x => x is PoisonItem))
                     {
@@ -177,7 +177,7 @@ namespace Game
 
         public void UpdateEscapes()
         {
-            Players.Where(x => x.Escaping).ForEach(x => x.Progression++);
+            Players.Where(x => x.Escaping).ToList().ForEach(x => x.Progression++);
         }
 
         public void UpdateGuard()
@@ -230,7 +230,7 @@ namespace Game
         public void Notify(IObserver<BoardData> observer)
         {
             observer.Notify(new BoardData(
-                new List<string>(Players.Except(Status.Dead).Select(x => x.Client.Name)),
+                new List<string>(Players.Select(x => x.Client.Name)),
                 Day
             ));
         }

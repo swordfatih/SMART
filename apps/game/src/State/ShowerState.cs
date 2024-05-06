@@ -11,7 +11,7 @@ namespace Game
                 return new UseSoapAction(player);
             }
 
-            var targets = board.Players.Except(Status.Dead).Except(player);
+            var targets = board.Players.Except(Status.Dead).Except(Status.Escaped).Except(player);
             return new VoteAction(player, targets.ElementAt(player.Client.SendChoice(new("Contre qui vous voulez voter ?", new(targets.Select(x => x.Client.Name))))));
         }
     }
