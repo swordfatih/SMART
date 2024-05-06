@@ -85,7 +85,7 @@ namespace Game
             }
 
             var sorted = Players.OrderBy(player => player.Position).ToList();
-            var index = sorted.FindIndex(player => player.Position == position);
+            var index = sorted.FindIndex(player => player.Position == current.Position);
             var next = Mod(index + (int)direction, sorted.Count);
             return sorted[next];
         }
