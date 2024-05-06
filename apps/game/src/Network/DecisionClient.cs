@@ -16,6 +16,7 @@ namespace Interface
     public class DecisionClient : Client
     {   public Dictionary<int,bool> playerAnswerGuardien;
         public int positionRepondeur;
+        public int LastReceivedPosition { get; set; }
         public BoardData? BoardData { get; set; }
 
         public PlayerData? PlayerData { get; set; }
@@ -31,7 +32,7 @@ namespace Interface
             var instruction = question.Value.ToString();
             if (instruction == "Que vouliez-vous communiquez ?"){
                 if (instruction.Contains("You received a message from(Accept, Propagate"))
-                {   return AccepterPropager();
+                {   return AccepterPropager(question);
 
                 }
                 else if (instruction.Contains("Vers quel joueur rediriger le gardien"))
@@ -81,7 +82,9 @@ namespace Interface
         }
 
         
-        private int AccepterPropager(){
+        private int AccepterPropager(Choice question){
+            LastReceivedPosition = question.Origin;
+
             if(new Random().Next(100) < 50){
                 return 0;
             }
@@ -94,14 +97,15 @@ namespace Interface
         private int RedirigerGuardien(){
             //Seulement pour les mechants : va rediriger vers celui qu'on est le plus sur qu'il est gentil donc le plus grand Trust
             int trust = 60;
-            for(int i=0 ; i < PlayerReviews.Count;i++){
+            for(int i=0 ; i < PlayerReviews.Count; i++){
 
                 if(PlayerReviews[i].Trust > trust){
                     trust = PlayerReviews[i].Trust;
+                    return i;
                 }
-                
+             
         //rediriger le guardien vers position receptrice
-                return i; 
+             
             }
            return 0;
         }
@@ -218,8 +222,8 @@ namespace Interface
         }
         private int RecevoirObjet()
         {
-            var position = GetNextPosition();
-            if (PlayerReviews[position].Trust < 60)
+            
+            if (PlayerReviews[LastReceivedPosition].Trust < 60)
             {
 
                 return RecevoirObjet1();
