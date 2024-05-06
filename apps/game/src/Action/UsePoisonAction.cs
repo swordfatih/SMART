@@ -14,7 +14,7 @@ namespace Game
 
         public override string ToString()
         {
-            return $"use_soap:{Player.Client.Name}";
+            return $"use_poison:{Player.Client.Name}";
         }
     }
 }

@@ -56,6 +56,7 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
         if (source == director)
         {
             SceneManager.LoadScene(scene);
+            SceneManager.LoadScene("S_HUD", LoadSceneMode.Additive);
         }
     }
 }
