@@ -185,7 +185,7 @@ namespace Game
 
         public void UpdateGuard()
         {
-            GuardPosition = NextGuardPosition ?? Players.Only(Status.Alive).AdjacentPlayer(GuardPosition, Direction.Right)?.Position ?? -1;
+            GuardPosition = NextGuardPosition ?? Players.Only(Status.Alive).AdjacentPlayer(Players.FindByPosition(GuardPosition), Direction.Right)?.Position ?? 0;
             NextGuardPosition = null;
 
             foreach (var player in Players.Except(Team.Associate).Except(Status.Dead).Except(Status.Escaped))

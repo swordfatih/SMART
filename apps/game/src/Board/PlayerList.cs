@@ -65,26 +65,24 @@ namespace Game
             return new(Players.Where(x => x.Status != status));
         }
 
-        public Player? AdjacentPlayer(Player current, Direction direction)
-        {
-            return AdjacentPlayer(current.Position, direction);
-        }
-
         private static int Mod(int a, int b)
         {
             return (a % b + b) % b;
         }
 
-        public Player? AdjacentPlayer(int position, Direction direction)
+        public Player? AdjacentPlayer(Player current, Direction direction)
         {
-            if (Players.Count <= 1)
+            var players = new List<Player>(Players);
+            players.Add(current);
+
+            if (players.Count <= 1)
             {
                 return null;
             }
 
             var sorted = Players.OrderBy(player => player.Position).ToList();
             var index = sorted.FindIndex(player => player.Position == position);
-            var next = Mod(index + (int) direction, sorted.Count);
+            var next = Mod(index + (int)direction, sorted.Count);
             return sorted[next];
         }
 
