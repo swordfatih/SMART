@@ -47,6 +47,15 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
                 Dig.Play();
             }
         }
+        if(choice.Value.Contains("Vers quel joueur rediriger le gardien ?") && answerIndex == 0)
+        {
+            var animation = GameObject.Find("Envoi_gardien");
+            if (animation is not null)
+            {
+                PlayableDirector Send = animation.GetComponent<PlayableDirector>();
+                Send.Play();
+            }
+        }
         
         GameManager.Instance.Client.Node.Send(RequestType.Choice, answerIndex.ToString());
         GameObject.Destroy(Block);
