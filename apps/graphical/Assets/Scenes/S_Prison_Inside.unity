@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.5
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06365852, g: 0.067073636, b: 0.060539268, a: 0.5}
+  m_IndirectSpecularColor: {r: 0.06365852, g: 0.0670736, b: 0.060539283, a: 0.5}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -58093,7 +58093,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1765922923}
   - component: {fileID: 1765922924}
-  - component: {fileID: 1765922925}
   m_Layer: 0
   m_Name: Envoi_gardien
   m_TagString: Untagged
@@ -58135,42 +58134,10 @@ PlayableDirector:
     value: {fileID: 2103458810}
   - key: {fileID: -8903174127026978144, guid: aa88fc132f8cd3e42b08468861efa415, type: 2}
     value: {fileID: 1749602827}
-  - key: {fileID: -231484791351957826, guid: aa88fc132f8cd3e42b08468861efa415, type: 2}
-    value: {fileID: 1765922925}
   - key: {fileID: 8511988070581461953, guid: aa88fc132f8cd3e42b08468861efa415, type: 2}
     value: {fileID: 1803458555}
   m_ExposedReferences:
     m_References: []
---- !u!114 &1765922925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765922922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: 3ebbf7a88fdbe3442855f03f49032bfe, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 293733505}
-          m_TargetAssemblyTypeName: BulleScript, Assembly-CSharp
-          m_MethodName: call_affichage
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1001 &1766242866
 PrefabInstance:
   m_ObjectHideFlags: 0
