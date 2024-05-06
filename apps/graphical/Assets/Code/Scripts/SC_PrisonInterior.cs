@@ -12,7 +12,7 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
 
     public void Start()
     {
-        GameManager.Instance.Subscribe((IObserver<PlayerData>)this);
+        GameManager.Instance.Subscribe(this);
     }
 
     public void Notify(PlayerData playerData)
