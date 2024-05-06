@@ -23,28 +23,30 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
 
     public void RunAnimation()
     {
-        var isolement_animation = GameObject.Find("Isolement");
+        var isolement_animation = GameObject.Find("isolement");
         var massacre_animation = GameObject.Find("Massacre");
 
-        if (isolement_animation is not null && massacre_animation is not null)
+        if (isolement_animation is null && massacre_animation is null)
         {
-           
-            PlayableDirector Isolement = isolement_animation.GetComponent<PlayableDirector>();
-            PlayableDirector Massacre = massacre_animation.GetComponent<PlayableDirector>();
+            Debug.Log("Animation not found");
+            return;
+        }
+        
+        PlayableDirector Isolement = isolement_animation.GetComponent<PlayableDirector>();
+        PlayableDirector Massacre = massacre_animation.GetComponent<PlayableDirector>();
 
-            if (PlayerData.Player.Status == Status.Dead)
-            {
-                Massacre.Play();
-                Massacre.stopped += (PlayableDirector source) => OnAnimationEnd(source, Massacre, "S_death");
-            }
+        if (PlayerData.Player.Status == Status.Dead)
+        {
+            Massacre.Play();
+            Massacre.stopped += (PlayableDirector source) => OnAnimationEnd(source, Massacre, "S_death");
+        }
 
-            if (PlayerData.Player.States.Count != 0)
+        if (PlayerData.Player.States.Count != 0)
+        {
+            if (PlayerData.Player.States.Peek() is ConfinedState)
             {
-                if (PlayerData.Player.States.Peek() is ConfinedState)
-                {
-                    Isolement.Play();
-                    Isolement.stopped += (PlayableDirector source) => OnAnimationEnd(source, Isolement, "S_Isolement");
-                }
+                Isolement.Play();
+                Isolement.stopped += (PlayableDirector source) => OnAnimationEnd(source, Isolement, "S_Isolement");
             }
         }
     }
