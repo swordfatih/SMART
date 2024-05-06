@@ -38,25 +38,18 @@ public class SC_ChoiceBlock : MonoBehaviour, IObserver<Choice>
 
     public void OnAnswered(Choice choice, int answerIndex)
     {
-        if(choice.Value.Contains("action du jour") && answerIndex == 0)
+        if (choice.Value.Contains("action du jour") && answerIndex == 0)
         {
             var animation = GameObject.Find("digging_action");
-            if (animation is not null)
-            {
-                PlayableDirector Dig = animation.GetComponent<PlayableDirector>();
-                Dig.Play();
-            }
+            animation?.GetComponent<PlayableDirector>().Play();
         }
-        if(choice.Value.Contains("Vers quel joueur rediriger le gardien ?") && answerIndex == 0)
+
+        if (choice.Value.Contains("Vers quel joueur rediriger le gardien ?"))
         {
             var animation = GameObject.Find("Envoi_gardien");
-            if (animation is not null)
-            {
-                PlayableDirector Send = animation.GetComponent<PlayableDirector>();
-                Send.Play();
-            }
+            animation?.GetComponent<PlayableDirector>().Play();
         }
-        
+
         GameManager.Instance.Client.Node.Send(RequestType.Choice, answerIndex.ToString());
         GameObject.Destroy(Block);
         LastChoice = null;

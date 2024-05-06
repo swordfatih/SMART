@@ -24,19 +24,21 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
     public void RunAnimation()
     {
         var dig_animation = GameObject.Find("digging_action");
-        var isolement_animation = GameObject.Find("Envoi_gardien");
+        var isolement_animation = GameObject.Find("Isolement");
         var massacre_animation = GameObject.Find("Massacre");
-        
+
         if (dig_animation is not null && isolement_animation is not null && massacre_animation is not null)
         {
             PlayableDirector Dig = dig_animation.GetComponent<PlayableDirector>();
             PlayableDirector Isolement = isolement_animation.GetComponent<PlayableDirector>();
             PlayableDirector Massacre = massacre_animation.GetComponent<PlayableDirector>();
+
             if (PlayerData.Player.Status == Status.Dead)
             {
                 Massacre.Play();
                 Massacre.stopped += (PlayableDirector source) => OnAnimationEnd(source, Massacre, "S_death");
             }
+
             if (PlayerData.Player.States.Count != 0)
             {
                 if (PlayerData.Player.States.Peek() is ConfinedState)
@@ -46,11 +48,8 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
                 }
             }
         }
-        
-        
-
-        
     }
+
     void OnAnimationEnd(PlayableDirector source, PlayableDirector director, string scene)
     {
         if (source == director)

@@ -104,13 +104,13 @@ namespace Interface
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
 
-                            if (data.Player.States.Count != 0)
+                            if (data.Player.Status == Status.Escaped)
                             {
-                                if (data.Player.States.Peek() is ConfinedState)
-                                {
-                                    // SceneManager.LoadScene("S_Isolement");
-                                }
-                                else if (data.Player.States.Peek() is GuardState || data.Player.States.Peek() is SafeState)
+                                SceneManager.LoadScene("S_Prison_Outside");
+                            }
+                            else if (data.Player.States.Count != 0)
+                            {
+                                if (data.Player.States.Peek() is GuardState || data.Player.States.Peek() is SafeState)
                                 {
                                     SceneManager.LoadScene("S_Prison_Inside");
                                 }
@@ -146,7 +146,7 @@ namespace Interface
                                 TypeNameHandling = TypeNameHandling.Auto
                             });
                             var answer = int.Parse(packet.Content[3]);
-                            
+
                             GameManager.Instance.Notify(new Message(name, "Response to : " + choice.Value + "\n" + choice.Answers[answer]));
                         }
                     }
