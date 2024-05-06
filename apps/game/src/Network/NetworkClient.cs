@@ -71,6 +71,11 @@ namespace Interface
             Node.Send(RequestType.ChoiceAnswer, new string[]{position.ToString(), name, JsonConvert.SerializeObject(choice), answer.ToString()});
         }
 
+        public override void SendProgressionAnswer(int position, string name, Choice choice, int answer, int? progression)
+        {
+            Node.Send(RequestType.ProgressionAnswer, new string[]{position.ToString(), name, JsonConvert.SerializeObject(choice), answer.ToString(), progression is null ? "" : progression.ToString()});
+        }
+
         public override void Notify(BoardData value)
         {
             Node.Send(RequestType.NotifyBoard, JsonConvert.SerializeObject(value));

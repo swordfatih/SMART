@@ -23,13 +23,12 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
 
     public void RunAnimation()
     {
-        var dig_animation = GameObject.Find("digging_action");
         var isolement_animation = GameObject.Find("Isolement");
         var massacre_animation = GameObject.Find("Massacre");
 
-        if (dig_animation is not null && isolement_animation is not null && massacre_animation is not null)
+        if (isolement_animation is not null && massacre_animation is not null)
         {
-            PlayableDirector Dig = dig_animation.GetComponent<PlayableDirector>();
+           
             PlayableDirector Isolement = isolement_animation.GetComponent<PlayableDirector>();
             PlayableDirector Massacre = massacre_animation.GetComponent<PlayableDirector>();
 

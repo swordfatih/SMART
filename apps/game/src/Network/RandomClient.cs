@@ -35,6 +35,10 @@ namespace Interface
         {
         }
 
+        public override void SendProgressionAnswer(int position, string name, Choice choice, int answer, int? progression)
+        {
+        }
+
         public override void Notify(BoardData value)
         {
         }

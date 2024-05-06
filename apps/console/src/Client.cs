@@ -38,13 +38,34 @@ namespace Interface
                 }
                 else if (packet.Request == RequestType.ChoiceAnswer)
                 {
+                    var name = packet.Content[1];
                     var choice = JsonConvert.DeserializeObject<Choice>(packet.Content[2], new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
 
                     var answer = choice?.Answers[Convert.ToInt32(packet.Content[3])];
-                    Console.WriteLine($"[Answer from {packet.Content[1]} to {choice?.Value}] {answer}");
+                    Console.WriteLine($"[Answer from {name} to {choice?.Value}] {answer}");
+                }
+                else if (packet.Request == RequestType.ProgressionAnswer)
+                {
+                    var name = packet.Content[1];
+                    var choice = JsonConvert.DeserializeObject<Choice>(packet.Content[2], new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+
+                    var answer = choice?.Answers[Convert.ToInt32(packet.Content[3])];
+
+                    if (answer == 0)
+                    {
+                        var progression = packet.Content[4];
+                        Console.WriteLine($"[Answer from {name} to {choice?.Value}] Progression: {progression}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[Answer from {name} to {choice?.Value}] Refused to share progression");
+                    }
                 }
                 else if (packet.Request == RequestType.Input)
                 {

@@ -10,6 +10,7 @@ namespace Network
         PlayerMessage,
         BoardMessage,
         ChoiceAnswer,
+        ProgressionAnswer,
         Choice,
         Input,
         NotifyPlayer,

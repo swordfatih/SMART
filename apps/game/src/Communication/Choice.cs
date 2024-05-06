@@ -6,11 +6,13 @@ namespace Game
     {
         public string Value { get; }
         public List<string> Answers { get; }
+        public int Origin { get; }
 
-        public Choice(string value, List<string> answers)
+        public Choice(string value, List<string> answers, int origin = -1)
         {
             Value = value;
             Answers = answers;
+            Origin = origin;
         }
 
         public override string ToString()
