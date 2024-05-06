@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/S_HUD.unity
     guid: 8a7b3a42f4793c142903c0a1e05a3800
+  - enabled: 1
+    path: Assets/Scenes/S_death.unity
+    guid: 3274fe3a6eae5ac4f8bf3b22eaf0d827
   m_configObjects: {}

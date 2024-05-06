@@ -12,9 +12,6 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
 
     public void Start()
     {
-        PlayableDirector Dig = GameObject.Find("digging_action").GetComponent<PlayableDirector>();
-        PlayableDirector Isolement = GameObject.Find("isolement").GetComponent<PlayableDirector>();
-        PlayableDirector Massacre = GameObject.Find("Massacre").GetComponent<PlayableDirector>();
         GameManager.Instance.Subscribe((IObserver<PlayerData>)this);
     }
 
@@ -26,32 +23,33 @@ public class SC_PrisonInterior : MonoBehaviour, IObserver<PlayerData>
 
     public void RunAnimation()
     {
-        PlayableDirector Dig = GameObject.Find("digging_action").GetComponent<PlayableDirector>();
-        PlayableDirector Isolement = GameObject.Find("isolement").GetComponent<PlayableDirector>();
-        PlayableDirector Massacre = GameObject.Find("Massacre").GetComponent<PlayableDirector>();
-
+        var dig_animation = GameObject.Find("digging_action");
+        var isolement_animation = GameObject.Find("Envoi_gardien");
+        var massacre_animation = GameObject.Find("Massacre");
         
-        // if (PlayerData.Player.HasDug)
-        // {
-        //     Dig.Play();
-        //     Debug.Log("Digging");
-        // }
-        if (PlayerData.Player.States.Count != 0)
+        if (dig_animation is not null && isolement_animation is not null && massacre_animation is not null)
         {
-            if (PlayerData.Player.States.Peek() is ConfinedState)
+            PlayableDirector Dig = dig_animation.GetComponent<PlayableDirector>();
+            PlayableDirector Isolement = isolement_animation.GetComponent<PlayableDirector>();
+            PlayableDirector Massacre = massacre_animation.GetComponent<PlayableDirector>();
+            if (PlayerData.Player.Status == Status.Dead)
             {
-                Isolement.Play();
-                Isolement.stopped += (PlayableDirector source) => OnAnimationEnd(source, Isolement, "S_Isolement");
+                Massacre.Play();
+                Massacre.stopped += (PlayableDirector source) => OnAnimationEnd(source, Massacre, "S_death");
             }
-            else
+            if (PlayerData.Player.States.Count != 0)
             {
-                if (PlayerData.HasGuard && PlayerData.Player.HasDug)
+                if (PlayerData.Player.States.Peek() is ConfinedState)
                 {
-                    Massacre.Play();
-                    Massacre.stopped += (PlayableDirector source) => OnAnimationEnd(source, Massacre, "S_Prison_Outside");
+                    Isolement.Play();
+                    Isolement.stopped += (PlayableDirector source) => OnAnimationEnd(source, Isolement, "S_Isolement");
                 }
             }
         }
+        
+        
+
+        
     }
     void OnAnimationEnd(PlayableDirector source, PlayableDirector director, string scene)
     {
