@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 135.1, y: 0.90923}
-  m_SizeDelta: {x: 314.9087, y: 64.872}
+  m_AnchoredPosition: {x: 137.7, y: 0.0000047684}
+  m_SizeDelta: {x: 230.9082, y: 46.3741}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5170288911071391090
 CanvasRenderer:
@@ -154,8 +154,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -131, y: 6.2}
-  m_SizeDelta: {x: 279.7353, y: 285.7}
+  m_AnchoredPosition: {x: -139.3, y: -0.00000095367}
+  m_SizeDelta: {x: 237.332, y: 249.3542}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5308745548333043221
 CanvasRenderer:
@@ -230,8 +230,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -120.4318, y: 3.1838}
-  m_SizeDelta: {x: 340.8635, y: 93.6323}
+  m_AnchoredPosition: {x: -101.977554, y: 3.1838}
+  m_SizeDelta: {x: 377.7721, y: 93.6323}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7723645937698103741
 GameObject:
@@ -267,8 +267,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.6, y: -0.000012398}
-  m_SizeDelta: {x: 216.3632, y: 63.0535}
+  m_AnchoredPosition: {x: 1.4089, y: -13.406}
+  m_SizeDelta: {x: 221.6359, y: 66.82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8408672536200111036
 CanvasRenderer:
@@ -325,8 +325,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
