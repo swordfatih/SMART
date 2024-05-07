@@ -1013,6 +1013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iaNb: 0
+  iaCount: 0
   canvas: {fileID: 637743762}
   iaPrefab: {fileID: 6639356660650300486, guid: b033e8b631b09aa4c97bee0da175e4ae, type: 3}
   addButton: {fileID: 782741079}
@@ -1458,7 +1459,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: IA List
+  m_text: Bot List
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e719f61ab042ac94baf4b2e494f26531, type: 2}
   m_sharedMaterial: {fileID: -6474244447903513250, guid: e719f61ab042ac94baf4b2e494f26531, type: 2}
