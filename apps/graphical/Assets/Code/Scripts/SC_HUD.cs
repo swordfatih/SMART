@@ -2,6 +2,7 @@ using UnityEngine;
 using Game;
 using TMPro;
 using Network;
+using UnityEngine.UI;
 
 public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
 {
@@ -13,6 +14,7 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
     public GameObject PF_Shovel;
     public GameObject PF_Soap;
     public GameObject PF_Poison;
+    public GameObject PF_Player_HUD;
     public bool Initialized { get; set; }
 
     void Start()
@@ -51,6 +53,7 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
         var Day = HUD.transform.Find("Day");
         var Guard = HUD.transform.Find("Guard");
         var Items = HUD.transform.Find("Items");
+        var Players = HUD.transform.Find("Players");
 
         if (!Initialized)
         {
@@ -112,22 +115,65 @@ public class SC_HUD : MonoBehaviour, IObserver<PlayerData>, IObserver<BoardData>
         }
 
         foreach (var item in PlayerData.Player.Items)
-        { 
-            var GO_Item = item.Name switch {
+        {
+            var GO_Item = item.Name switch
+            {
                 "Soap" => Instantiate(PF_Soap),
                 "Poison" => Instantiate(PF_Poison),
                 _ => null
             };
 
-            if(GO_Item is null)
+            if (GO_Item is null)
             {
                 continue;
             }
-        
+
             GO_Item.transform.SetParent(Items.transform);
             GO_Item.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, 0f);
             GO_Item.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             GO_Item.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+        }
+
+        // update players
+        foreach (Transform child in Players.GetComponentInChildren<Transform>())
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        foreach (var player in PlayerData.Positions)
+        {
+            var player_hud = Instantiate(PF_Player_HUD);
+            player_hud.transform.SetParent(Players.transform);
+            player_hud.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0f, 0f, 0f);
+            player_hud.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            player_hud.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+
+            var name = player_hud.transform.Find("Name").GetComponent<TMP_Text>();
+            var icon = player_hud.transform.Find("Icon");
+
+            name.text = player.Name;
+
+            if (player.Status == Status.Dead)
+            {
+                name.color = Color.red;
+            }
+            else if (player.Status == Status.Confined)
+            {
+                name.color = Color.yellow;
+            }
+            else if (player.Status == Status.Escaped)
+            {
+                name.color = Color.green;
+            }
+
+            if (player.Team == Team.Associate)
+            {
+                icon.GetComponent<Image>().sprite = PF_Associate.GetComponent<Image>().sprite;
+            }
+            else
+            {
+                icon.GetComponent<Image>().sprite = PF_Inmate.GetComponent<Image>().sprite;
+            }
         }
     }
 }

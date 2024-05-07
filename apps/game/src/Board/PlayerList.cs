@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Game
 {
@@ -65,6 +64,11 @@ namespace Game
             return new(Players.Where(x => x.Status != status));
         }
 
+        public PlayerList Sort()
+        {
+            return new(Players.OrderBy(player => player.Position));
+        }
+
         private static int Mod(int a, int b)
         {
             return (a % b + b) % b;
@@ -74,7 +78,7 @@ namespace Game
         {
             var players = new List<Player>(Players);
 
-            if(!players.Contains(current))
+            if (!players.Contains(current))
             {
                 players.Add(current);
             }

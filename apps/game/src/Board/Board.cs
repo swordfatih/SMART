@@ -185,7 +185,7 @@ namespace Game
 
         public void UpdateGuard()
         {
-            GuardPosition = NextGuardPosition ?? Players.Only(Status.Alive).AdjacentPlayer(Players.FindByPosition(GuardPosition), Direction.Right)?.Position ?? 0;
+            GuardPosition = NextGuardPosition ?? Players.Only(Status.Alive).AdjacentPlayer(Players.FindByPosition(GuardPosition) ?? Players.First(), Direction.Right)?.Position ?? 0;
             NextGuardPosition = null;
 
             foreach (var player in Players.Except(Team.Associate).Except(Status.Dead).Except(Status.Escaped))
@@ -199,7 +199,7 @@ namespace Game
 
                         Logger.WriteLine(action.ToString());
                     }
-                    else if(player.Confine)
+                    else if (player.Confine)
                     {
                         player.Status = Status.Confined;
                         player.Confine = false;

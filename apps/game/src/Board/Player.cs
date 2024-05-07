@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Game
@@ -45,7 +46,7 @@ namespace Game
 
         public void Notify(IObserver<PlayerData> observer, Board board)
         {
-            observer.Notify(new PlayerData(this, board.GuardPosition == Position, board.Day));
+            observer.Notify(new PlayerData(this, board.GuardPosition == Position, board.Day, new List<PlayerPositionData>(board.Players.Sort().Select(x => new PlayerPositionData(x.Client.Name, x.Position, x.Status, Role.Team == Team.Associate ? x.Role.Team : null)))));
         }
 
         public void Subscribe(IObserver<PlayerData> observer)
