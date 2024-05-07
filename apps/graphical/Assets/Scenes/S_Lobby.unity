@@ -1019,6 +1019,7 @@ MonoBehaviour:
   iaPanel: {fileID: 15274496}
   playerPanel: {fileID: 1669563189}
   playerPrefab: {fileID: 5807415738531992301, guid: 4c169055613b71a45aee1828f698f41a, type: 3}
+  IT_BotSelect: {fileID: 376625724}
 --- !u!1 &724403479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1357,7 +1358,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1919169471}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9993227
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

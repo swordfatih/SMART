@@ -11,17 +11,20 @@ using Game;
 public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
 {
     public int iaNb;
+    public int iaCount;
     public Canvas canvas; // Le Canvas où ajouter le prefab
     public GameObject iaPrefab; // Le prefab à ajouter au Canvas
     public GameObject addButton;
     public Transform iaPanel;
     public Transform playerPanel;
     public GameObject playerPrefab;
+    public GameObject IT_BotSelect;
 
     // Start is called before the first frame update
     public void Start()
     {
         iaNb = 0;
+        iaCount = 0;
 
         GameManager.Instance.Subscribe(this);
         GameManager.Instance.Client.Node.Send(RequestType.NotifyServer);
@@ -68,11 +71,15 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
     {
         if (GameManager.Instance.Admin == true)
         {
-            if (iaNb < 8)
+            if (iaCount < 8)
             {
                 iaNb++;
-                var name = "IA " + iaNb.ToString();
-                GameManager.Instance.Server.Bots.Add(new RandomClient(name));
+                iaCount++;
+
+                var Label = IT_BotSelect.GetComponent<TMP_Text>();
+                var name = Label.text + "_" + iaNb.ToString();
+
+                GameManager.Instance.Server.Bots.Add(Label.text == "Random" ? new RandomClient(name) : new DecisionClient(name));
                 GameManager.Instance.Server.Notify();
             }
             else
@@ -87,7 +94,7 @@ public class SC_Lobby : MonoBehaviour, IObserver<ServerData>
         if (GameManager.Instance.Admin == true)
         {
             var name = iaToRemove.GetComponentInChildren<TMP_Text>().text;
-            iaNb--;
+            iaCount--;
             GameManager.Instance.Server.Bots.RemoveAll(bot => bot.Name == name);
             GameManager.Instance.Server.Notify();
         }
